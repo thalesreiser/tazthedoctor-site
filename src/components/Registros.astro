@@ -1,0 +1,28 @@
+---
+interface Props {
+  itens: { rotulo: string; valor: string; href?: string | undefined }[];
+}
+
+const { itens } = Astro.props;
+---
+
+{
+  itens.length > 0 && (
+    <dl class="mt-10 grid gap-x-8 gap-y-5 border-t border-texto/15 pt-6 sm:grid-cols-3">
+      {itens.map((item) => (
+        <div>
+          <dt class="font-mono text-xs tracking-[0.15em] text-destaque-frio uppercase">{item.rotulo}</dt>
+          <dd class="mt-1 text-lg font-bold break-words">
+            {item.href ? (
+              <a href={item.href} target="_blank" rel="noopener" class="text-primaria underline underline-offset-4">
+                {item.valor}
+              </a>
+            ) : (
+              item.valor
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}

@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import Rodape from '../components/Rodape.astro';
+import { Content } from '../../content/politica-de-privacidade.md';
+import { carregarConteudo } from '../lib/conteudo.ts';
+
+const conteudo = carregarConteudo();
+const rodape = conteudo.secoes.find((secao) => secao.tipo === 'rodape' && secao.ativo);
+---
+
+<Base
+  conteudo={conteudo}
+  titulo={`Política de privacidade | ${conteudo.site.nome}`}
+  descricao={`Como ${conteudo.artista.nome} trata os dados pessoais enviados por este site.`}
+>
+  <article class="secao container-site prose-politica max-w-3xl">
+    <h1 class="text-6xl leading-none sm:text-7xl">Política de privacidade</h1>
+    <p class="mt-4 text-texto-suave">
+      Responsável pelo tratamento: <strong>{conteudo.artista.nome}</strong> ({conteudo.artista.nome_artistico}). Contato:
+      <a href={`mailto:${conteudo.contato.email}`} class="text-primaria underline">{conteudo.contato.email}</a>.
+    </p>
+    <Content />
+  </article>
+  <Fragment slot="depois">
+    {rodape?.tipo === 'rodape' && <Rodape secao={rodape} conteudo={conteudo} />}
+  </Fragment>
+</Base>
+
+<style>
+  .prose-politica :global(h2) {
+    margin-top: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .prose-politica :global(p),
+  .prose-politica :global(ul) {
+    margin-top: 1rem;
+    color: var(--cor-texto-suave);
+    line-height: 1.7;
+  }
+
+  .prose-politica :global(ul) {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+</style>

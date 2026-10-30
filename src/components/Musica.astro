@@ -1,0 +1,32 @@
+---
+import ACompletar from './ACompletar.astro';
+import Player from './Player.astro';
+import TituloSecao from './TituloSecao.astro';
+import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'musica'>;
+  rotulo: string;
+  cor: string;
+  emConstrucao: boolean;
+}
+
+const { secao, rotulo, cor, emConstrucao } = Astro.props;
+const ancora = ancoraSecao(secao);
+const idTitulo = `${ancora}-titulo`;
+---
+
+<section id={ancora} class="secao" aria-labelledby={idTitulo}>
+  <div class="container-site">
+    <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.subtitulo} />
+    <p class="mt-4 flex items-center gap-2 font-mono text-xs text-texto-suave">
+      <span class="size-2 rounded-full bg-destaque" aria-hidden="true"></span>
+      {secao.aviso_players}
+    </p>
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4" data-revelar-grupo>
+      {secao.itens.map((item) => <Player item={item} cor={cor} />)}
+    </div>
+    {secao.nota && <p class="mt-10 font-titulo text-2xl text-texto uppercase sm:text-3xl">{secao.nota}</p>}
+    <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />
+  </div>
+</section>
