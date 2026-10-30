@@ -21,7 +21,7 @@ const [primeiraFoto, segundaFoto] = secao.fotos;
     <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4" data-revelar-grupo>
       {
         primeiraFoto && (
-          <li class="azulejo overflow-hidden rounded-cartao">
+          <li class="azulejo reticula overflow-hidden rounded-cartao">
             <Imagem imagem={primeiraFoto} sizes="(min-width: 768px) 16rem, 50vw" larguras={[240, 360, 540, 741]} class="foto-azulejo aspect-square h-full w-full object-cover" />
           </li>
         )
@@ -53,7 +53,7 @@ const [primeiraFoto, segundaFoto] = secao.fotos;
       }
       {
         segundaFoto && (
-          <li class="azulejo overflow-hidden rounded-cartao">
+          <li class="azulejo reticula overflow-hidden rounded-cartao">
             <Imagem imagem={segundaFoto} sizes="(min-width: 768px) 16rem, 50vw" larguras={[240, 360, 540, 800]} class="foto-azulejo aspect-square h-full w-full object-cover" />
           </li>
         )

@@ -20,14 +20,11 @@ const idTitulo = `${ancora}-titulo`;
   <div class="container-site grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
     <div class="relative order-2 lg:order-1">
       <div class="absolute -inset-8 rounded-full bg-destaque/15 blur-3xl" aria-hidden="true"></div>
-      <Imagem
-        imagem={secao.foto}
-        sizes="(min-width: 1024px) 30rem, calc(100vw - 2rem)"
-        larguras={[360, 540, 720, 960, 1280]}
-        class="relative aspect-[4/5] w-full rounded-[24px] object-cover shadow-2xl shadow-black/50"
-      />
+      <div class="reticula overflow-hidden rounded-[24px] shadow-2xl shadow-black/50">
+        <Imagem imagem={secao.foto} sizes="(min-width: 1024px) 30rem, calc(100vw - 2rem)" larguras={[360, 540, 720, 960, 1280]} class="aspect-[4/5] w-full object-cover" />
+      </div>
     </div>
-    <div class="order-1 lg:order-2">
+    <div class="order-1 lg:order-2" data-revelar-grupo>
       <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.texto} />
       <Registros itens={secao.itens} />
       <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />

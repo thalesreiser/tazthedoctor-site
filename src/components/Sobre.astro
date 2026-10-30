@@ -2,6 +2,7 @@
 import ACompletar from './ACompletar.astro';
 import Imagem from './Imagem.astro';
 import Registros from './Registros.astro';
+import Adesivo from './arte/Adesivo.astro';
 import TituloSecao from './TituloSecao.astro';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
@@ -16,9 +17,9 @@ const ancora = ancoraSecao(secao);
 const idTitulo = `${ancora}-titulo`;
 ---
 
-<section id={ancora} class="secao" aria-labelledby={idTitulo}>
+<section id={ancora} class="secao parede" aria-labelledby={idTitulo}>
   <div class="container-site grid items-center gap-12 lg:grid-cols-[1fr_24rem] lg:gap-20">
-    <div>
+    <div data-revelar-grupo>
       <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} />
       <div class="mt-8 max-w-2xl space-y-5 text-lg text-texto-suave">
         {secao.paragrafos.map((paragrafo, i) => <p class:list={[i === 0 && 'text-xl text-texto sm:text-2xl']}>{paragrafo}</p>)}
@@ -29,12 +30,10 @@ const idTitulo = `${ancora}-titulo`;
     {
       secao.foto && (
         <div class="relative mx-auto w-full max-w-xs lg:max-w-none">
-          <Imagem
-            imagem={secao.foto}
-            sizes="(min-width: 1024px) 24rem, 20rem"
-            larguras={[320, 480, 640, 768]}
-            class="aspect-[4/5] w-full -rotate-2 rounded-[22px] object-cover shadow-2xl shadow-black/50"
-          />
+          <div class="reticula -rotate-2 overflow-hidden rounded-[22px] shadow-2xl shadow-black/50">
+            <Imagem imagem={secao.foto} sizes="(min-width: 1024px) 24rem, 20rem" larguras={[320, 480, 640, 768]} class="aspect-[4/5] w-full object-cover" />
+          </div>
+          {secao.adesivos[0] && <Adesivo adesivo={secao.adesivos[0]} class="absolute -top-7 -right-3 w-36 sm:-right-10 sm:w-40" giro={8} />}
           <span class="absolute -bottom-4 -left-3 rotate-[-6deg] rounded-full bg-destaque px-4 py-1.5 font-titulo text-lg text-primaria-contraste uppercase" aria-hidden="true">
             99'
           </span>

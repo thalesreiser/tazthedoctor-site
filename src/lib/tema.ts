@@ -12,6 +12,9 @@ export type Animacoes = (typeof ANIMACOES)[number];
 // Opacity of the warm glow drawn behind the hero (global.css, .brilho-palco).
 export const OPACIDADE_BRILHO = 0.12;
 
+// Opacity of the concrete wall texture (global.css, .parede): its lightest blotches are cream.
+export const OPACIDADE_PAREDE = 0.06;
+
 /**
  * Background of each section, in order. An explicit `fundo` wins; the others alternate the two
  * dark colors (starting with palco), skipping over cream bands so dark sections never repeat.

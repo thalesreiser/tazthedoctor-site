@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { misturar, razaoContraste } from '../src/lib/contraste.ts';
 import { conteudoSchema } from '../src/lib/schema.ts';
-import { OPACIDADE_BRILHO } from '../src/lib/tema.ts';
+import { OPACIDADE_BRILHO, OPACIDADE_PAREDE } from '../src/lib/tema.ts';
 
 const AA = 4.5;
 // Fixed color of form field errors (--color-erro in global.css).
@@ -34,6 +34,10 @@ test('every color pair used by the components passes WCAG AA', () => {
     ['brilho sobre superfície', misturar(t.cor_primaria, t.cor_superficie, OPACIDADE_BRILHO)],
     ['grão sobre palco', misturar('#FFFFFF', t.cor_fundo, OPACIDADE_GRAO)],
     ['grão sobre superfície', misturar('#FFFFFF', t.cor_superficie, OPACIDADE_GRAO)],
+    // Concrete wall (Sobre, Contato) at its lightest blotch, alone and over the stage glow.
+    ['parede sobre palco', misturar(t.cor_creme, t.cor_fundo, OPACIDADE_PAREDE)],
+    ['parede sobre superfície', misturar(t.cor_creme, t.cor_superficie, OPACIDADE_PAREDE)],
+    ['parede sobre brilho', misturar(t.cor_creme, misturar(t.cor_primaria, t.cor_fundo, OPACIDADE_BRILHO), OPACIDADE_PAREDE)],
   ];
   const pares: [string, string, string][] = [
     // Text, muted text (paragraphs, placeholders, labels), primary (links, outlined buttons),
@@ -50,9 +54,16 @@ test('every color pair used by the components passes WCAG AA', () => {
     ]),
     // Primary buttons, construction notice, play buttons and text selection.
     ['botão primário', t.cor_primaria_contraste, t.cor_primaria],
-    // Hero ticker (amber strip) is the primary button pair above; contact ticker and the
-    // "ninja dos beats" sticker ring draw the stage color on spray orange.
-    ['faixa e adesivo sobre spray', t.cor_fundo, t.cor_spray],
+    // Sticker texts (Adesivo.astro): the "ninja" ring on spray, the street sign in cream on blue,
+    // dark text on the pink label, the lime starburst and the mint pick, the cassette label on
+    // amber and "REC" in cream on the dark sticker.
+    ['adesivo ninja: anel sobre spray', t.cor_fundo, t.cor_spray],
+    ['adesivo placa: creme sobre azul', t.cor_creme, t.cor_adesivo_azul],
+    ['adesivo etiqueta: escuro sobre rosa', t.cor_fundo, t.cor_adesivo_rosa],
+    ['adesivo explosão: escuro sobre lima', t.cor_fundo, t.cor_adesivo_lima],
+    ['adesivo palheta: escuro sobre menta', t.cor_fundo, t.cor_destaque_frio],
+    ['adesivo fita: escuro sobre âmbar', t.cor_fundo, t.cor_primaria],
+    ['adesivo rec: creme sobre escuro', t.cor_creme, t.cor_fundo],
     // Platform stickers on the cream band: dark icon on spray.
     ['creme: adesivo spray', t.cor_creme_texto, t.cor_spray],
     // "99'" sticker on the about photo.

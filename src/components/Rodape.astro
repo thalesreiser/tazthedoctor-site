@@ -1,5 +1,8 @@
 ---
 import Icone from './Icone.astro';
+import Rasgo from './Rasgo.astro';
+import Rabisco from './arte/Rabisco.astro';
+import ThrowUp from './arte/ThrowUp.astro';
 import { temRastreamento } from '../lib/consentimento.ts';
 import { linkEmail } from '../lib/email.ts';
 import type { Conteudo, SecaoDo } from '../lib/schema.ts';
@@ -17,10 +20,22 @@ const redes = conteudo.secoes.flatMap((s) => (s.tipo === 'plataformas' && s.ativ
 const lugar = [artista.bairro, `${artista.cidade}/${artista.uf}`].filter(Boolean).join(', ');
 ---
 
-<footer class="bg-superficie pt-16 pb-10">
+<footer class="rodape relative bg-superficie pt-16 pb-10">
+  <Rasgo semente={91} cartaz="ambar" fita quantidadePingos={4} />
   <div class="container-site">
-    <p class="aspero font-tag text-[clamp(2.75rem,11vw,6.5rem)] leading-tight text-texto">{conteudo.site.nome}</p>
-    {secao.texto && <p class="mt-3 text-lg text-texto-suave">{secao.texto}</p>}
+    {/* The name in dripping paint, next to the throw-up piece of it (decorative, same name). */}
+    <div class="grid items-center gap-8 md:grid-cols-[1fr_auto]">
+      <div>
+        <p class="aspero font-tinta text-[clamp(2.6rem,10vw,5.5rem)] leading-tight text-texto">
+          {conteudo.site.nome}<Rabisco nome="estrela" class="rodape-estrela" />
+        </p>
+        {secao.texto && <p class="mt-3 text-lg text-texto-suave">{secao.texto}</p>}
+      </div>
+      <div class="relative" data-anima aria-hidden="true">
+        <ThrowUp nome={conteudo.site.nome} class="w-full max-w-sm md:w-[22rem]" />
+        <Rabisco nome="pingos" class="rodape-pingos" />
+      </div>
+    </div>
     <div class="mt-12 grid gap-10 md:grid-cols-3">
       <address class="text-sm not-italic text-texto-suave">
         <p>{lugar}</p>

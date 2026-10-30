@@ -1,0 +1,22 @@
+---
+import { MONOGRAMA } from '../../lib/arte.ts';
+
+interface Props {
+  class?: string;
+}
+
+const { class: classe } = Astro.props;
+---
+
+{/*
+  "TTD" hand tag: one stroke color (currentColor) over a dark offset copy, like a marker tag on a
+  wall. Pure paths, so it never waits for a font. Decorative.
+*/}
+<svg class:list={['monograma', classe]} viewBox="-4 -4 124 68" aria-hidden="true" focusable="false">
+  <g class="monograma-sombra" transform="translate(2.5 2.5)">
+    {MONOGRAMA.map((d, i) => <path class="desenha" d={d} pathLength="1" style={`--j:${i}`} />)}
+  </g>
+  <g class="monograma-traco">
+    {MONOGRAMA.map((d, i) => <path class="desenha" d={d} pathLength="1" style={`--j:${i}`} />)}
+  </g>
+</svg>

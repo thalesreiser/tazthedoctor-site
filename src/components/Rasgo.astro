@@ -1,0 +1,53 @@
+---
+import { bordaRasgada, ondaOsciloscopio, pingos, respingos } from '../lib/arte.ts';
+
+interface Props {
+  // Different seed, different tear: each boundary gets its own edge.
+  semente: number;
+  // What else is on the edge: an older poster peeking out, a strip of tape, the scope line.
+  cartaz?: 'ambar' | 'spray' | 'menta' | undefined;
+  fita?: boolean;
+  onda?: boolean;
+  // Paint drips running down from the edge.
+  quantidadePingos?: number;
+}
+
+const { semente, cartaz, fita = false, onda = false, quantidadePingos = 3 } = Astro.props;
+const papel = bordaRasgada(semente);
+const fundo = cartaz ? bordaRasgada(semente + 101, { amplitude: 9 }) : '';
+const specks = respingos(semente + 7, 70, 600, 50);
+const linha = onda ? ondaOsciloscopio(semente + 29) : '';
+const posicaoFita = 12 + ((semente * 37) % 60);
+// No drip right under the tape (it is translucent).
+const gotas = pingos(semente + 13, quantidadePingos).filter((g) => !fita || g.x < posicaoFita - 3 || g.x > posicaoFita + 26);
+---
+
+{/*
+  Section boundary as a ripped poster (global.css, .rasgo): the next section's paper torn over the
+  previous one, maybe an older poster under it, tape, spray specks, drips and a scope line that
+  draws itself. Sits above the section's top edge; decorative only.
+*/}
+<div class="rasgo" aria-hidden="true" data-anima>
+  {
+    cartaz && (
+      <svg class:list={['rasgo-cartaz', `rasgo-cartaz-${cartaz}`]} viewBox="0 0 1200 40" preserveAspectRatio="none" focusable="false">
+        <path d={fundo} />
+      </svg>
+    )
+  }
+  <svg class="rasgo-papel" viewBox="0 0 1200 40" preserveAspectRatio="none" focusable="false">
+    <path d={papel} />
+  </svg>
+  <svg class="rasgo-respingos" viewBox="0 0 600 50" preserveAspectRatio="xMidYMin slice" focusable="false">
+    {specks.map((s) => <circle cx={s.cx} cy={s.cy} r={s.r} opacity={s.opacidade} />)}
+  </svg>
+  {
+    onda && (
+      <svg class="rasgo-onda" viewBox="0 0 1200 40" preserveAspectRatio="none" focusable="false">
+        <path class="desenha" d={linha} pathLength="1" vector-effect="non-scaling-stroke" />
+      </svg>
+    )
+  }
+  {fita && <span class="rasgo-fita" style={`left:${posicaoFita}%`} />}
+  {gotas.map((g, i) => <span class="pingo" style={`left:${g.x}%;--comprimento:${g.comprimento}px;--largura:${g.largura}px;--i:${i}`} />)}
+</div>

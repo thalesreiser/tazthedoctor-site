@@ -5,6 +5,7 @@ import Equipamento from '../components/Equipamento.astro';
 import Hero from '../components/Hero.astro';
 import Musica from '../components/Musica.astro';
 import Plataformas from '../components/Plataformas.astro';
+import Rasgo from '../components/Rasgo.astro';
 import Rodape from '../components/Rodape.astro';
 import Servicos from '../components/Servicos.astro';
 import Sobre from '../components/Sobre.astro';
@@ -23,13 +24,25 @@ const classesFundo = { palco: 'fundo-palco', superficie: 'fundo-superficie', cre
 // Kicker above each section title: its position and menu name, e.g. "02 · música".
 const rotulos = blocos.map((secao, i) => `${String(i).padStart(2, '0')} · ${('menu' in secao && secao.menu) || ''}`.replace(/ · $/, ''));
 const { em_construcao: emConstrucao } = conteudo;
+// Ripped-poster boundary on top of every section after the first. The extras rotate so no two
+// neighbouring edges look alike: an older poster under the tear, or a strip of tape; the
+// oscilloscope line only on the first boundary.
+const cartazes = ['ambar', 'menta', 'spray'] as const;
+const rasgo = (i: number) => ({
+  semente: i * 17 + 3,
+  cartaz: i % 2 === 1 ? cartazes[((i - 1) / 2) % cartazes.length] : undefined,
+  fita: i % 2 === 0,
+  onda: i === 1,
+  quantidadePingos: 2 + (i % 3),
+});
 ---
 
 <Base conteudo={conteudo}>
   <script is:inline slot="head" type="application/ld+json" set:html={serializarJsonLd(gerarJsonLd(conteudo))} />
   {
     blocos.map((secao, i) => (
-      <div class={classesFundo[fundos[i]!]}>
+      <div class:list={['relative', classesFundo[fundos[i]!]]}>
+        {i > 0 && <Rasgo {...rasgo(i)} />}
         {(() => {
           const rotulo = rotulos[i]!;
           switch (secao.tipo) {

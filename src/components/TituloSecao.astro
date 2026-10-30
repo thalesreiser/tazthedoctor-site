@@ -1,4 +1,7 @@
 ---
+import Rabisco from './arte/Rabisco.astro';
+import type { NomeRabisco } from '../lib/arte.ts';
+
 interface Props {
   id: string;
   // Short kicker above the title, e.g. "02 · música".
@@ -8,10 +11,18 @@ interface Props {
 }
 
 const { id, rotulo, titulo, subtitulo } = Astro.props;
+// A different doodle next to each title, picked by the section number in the kicker.
+const rabiscos: NomeRabisco[] = ['coroa', 'raio', 'estrela', 'equalizador', 'palheta', 'seta', 'pingos'];
+const rabisco = rabiscos[(parseInt(rotulo, 10) || 0) % rabiscos.length]!;
+// The doodle sticks to the last word, so it never wraps onto a line of its own.
+const palavras = titulo.split(' ');
+const ultima = palavras.pop();
 ---
 
 <p class="rotulo-mono flex items-center gap-3" aria-hidden="true">
   <span class="h-px w-8 bg-current"></span>{rotulo}
 </p>
-<h2 id={id} class="titulo-secao mt-4">{titulo}</h2>
+<h2 id={id} class="titulo-secao mt-4">
+  {palavras.length > 0 && `${palavras.join(' ')} `}<span class="whitespace-nowrap">{ultima}<Rabisco nome={rabisco} class="titulo-rabisco" /></span>
+</h2>
 {subtitulo && <p class="mt-6 max-w-2xl text-lg text-texto-suave">{subtitulo}</p>}

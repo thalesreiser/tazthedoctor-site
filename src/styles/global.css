@@ -15,7 +15,6 @@
   --font-titulo: var(--fonte-titulo);
   --font-texto: var(--fonte-texto);
   --font-mono: var(--fonte-mono);
-  --font-tag: var(--fonte-tag);
   --font-tinta: var(--fonte-tinta);
   --radius-cartao: 10px;
   --radius-botao: 6px;
@@ -84,13 +83,16 @@
   Section backgrounds (index.astro wraps each section in one of these). The cream band
   redefines the theme colors inside it, so components need no variant of their own.
 */
+/* --cor-secao is the section's own paper: the torn edge on top of it (.rasgo) is filled with it. */
 @utility fundo-palco {
   --cor-cartao: var(--cor-superficie);
+  --cor-secao: var(--cor-fundo);
   background-color: var(--cor-fundo);
 }
 
 @utility fundo-superficie {
   --cor-cartao: var(--cor-fundo);
+  --cor-secao: var(--cor-superficie);
   background-color: var(--cor-superficie);
 }
 
@@ -104,13 +106,17 @@
   --cor-destaque: var(--creme-primaria);
   --cor-destaque-frio: var(--creme-primaria);
   --cor-cartao: transparent;
+  --cor-secao: var(--creme-fundo);
   --cor-foco: var(--creme-primaria);
   color-scheme: light;
   background-color: var(--creme-fundo);
   color: var(--creme-texto);
 }
 
+/* fit-content: the spray reveal sweeps across the words, not the empty width after them. */
 @utility titulo-secao {
+  width: fit-content;
+  max-width: 100%;
   @apply text-5xl leading-[0.95] sm:text-6xl lg:text-7xl;
 }
 
@@ -125,6 +131,7 @@
   never move the layout.
 */
 @utility botao {
+  position: relative;
   @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-botao px-6 py-3 text-base font-bold;
   transition-property: color, background-color, border-color, box-shadow, translate, scale;
   transition-duration: 160ms;
@@ -353,7 +360,8 @@
   }
 
   .grao::after,
-  .faixa-moldura {
+  .rasgo-respingos,
+  .rasgo-onda {
     display: none;
   }
 }
@@ -406,8 +414,9 @@
 }
 
 /*
-  Hero name: "Taz" in dripping paint (spray orange), "TheDoctor" as a hand tag (cream). Mixed
-  case on purpose, like a signature; the roughen filter frays both outlines.
+  Hero name, all in dripping paint (Rubik Wet Paint): "Taz" big in spray orange with extra drips
+  running from it, "TheDoctor" smaller in cream, tilted the other way, with a hard amber 3D shadow
+  instead of drips. Mixed case on purpose, like a signature; the roughen filter frays both.
 */
 .nome-hero {
   text-transform: none;
@@ -417,24 +426,60 @@
 .nome-tinta,
 .nome-tag {
   position: relative;
+  font-family: var(--fonte-tinta);
   filter: url(#aspero);
 }
 
 .nome-tinta {
-  font-family: var(--fonte-tinta);
+  display: inline-block;
   font-size: clamp(5rem, 29vw, 10rem);
   line-height: 0.82;
   color: var(--cor-spray);
+  rotate: -1.5deg;
 }
 
 .nome-tag {
-  font-family: var(--fonte-tag);
-  font-size: clamp(3.4rem, 20vw, 7.25rem);
+  font-size: clamp(2.6rem, 13.6vw, 5.6rem);
   line-height: 1;
-  margin-top: 0.06em;
+  margin-top: 0.12em;
   color: var(--cor-texto);
-  rotate: -2deg;
+  rotate: 2.5deg;
   transform-origin: left center;
+  text-shadow: 0.045em 0.055em 0 var(--tinta-ambar);
+}
+
+/* Basquiat-style crown over the T, amber over the orange. */
+.nome-coroa {
+  position: absolute;
+  top: -0.3em;
+  left: -0.04em;
+  width: 0.4em;
+  color: var(--tinta-ambar);
+  rotate: -16deg;
+  filter: none;
+}
+
+/* Extra drips under "Taz": thin spray runs with a drop at the end, growing slowly at load. */
+.pingo-nome {
+  position: absolute;
+  top: 0.66em;
+  width: 0.05em;
+  height: var(--comprimento);
+  border-radius: 0 0 99px 99px;
+  background: var(--cor-spray);
+  transform-origin: top;
+}
+
+.pingo-nome::after {
+  content: '';
+  position: absolute;
+  bottom: -0.035em;
+  left: 50%;
+  width: 0.085em;
+  height: 0.1em;
+  translate: -50% 0;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: inherit;
 }
 
 /*
@@ -558,7 +603,8 @@
 
 .fita-cantos::before,
 .fita-cantos::after,
-.lambe-lambe::after {
+.lambe-lambe::after,
+.rasgo-fita {
   content: '';
   position: absolute;
   z-index: 3;
@@ -596,106 +642,6 @@
 
 .cartao.fita-cantos::after {
   right: -0.95rem;
-}
-
-/* "Ninja dos beats" sticker on the hero photo: vinyl circle, slightly tilted. */
-.adesivo {
-  z-index: 4;
-  rotate: 12deg;
-  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.45));
-}
-
-.adesivo-borda {
-  fill: var(--cor-texto);
-}
-
-.adesivo-fundo {
-  fill: var(--cor-spray);
-}
-
-.adesivo-miolo {
-  fill: var(--cor-fundo);
-}
-
-.adesivo-anel {
-  font-family: var(--fonte-titulo);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  fill: var(--cor-fundo);
-}
-
-.adesivo-eq rect {
-  fill: var(--cor-destaque-frio);
-}
-
-.adesivo-eq rect:nth-child(2n) {
-  fill: var(--cor-primaria);
-}
-
-/*
-  Lambe-lambe posters (services): paper-flat corners, a strip of tape on top and a slight tilt that
-  alternates card to card. Hover or focus inside straightens and lifts them. No tilt on phones.
-*/
-.lambe-lambe {
-  border-radius: 3px;
-  box-shadow: 0 10px 24px -18px rgb(0 0 0 / 0.8);
-  transition:
-    rotate 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    translate 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    box-shadow 250ms,
-    border-color 250ms;
-}
-
-.lambe-lambe::after {
-  top: -0.7rem;
-  left: 1.5rem;
-  rotate: -4deg;
-}
-
-.lambe-lambe:nth-child(2n)::after {
-  left: auto;
-  right: 1.5rem;
-  rotate: 5deg;
-}
-
-@media (min-width: 640px) {
-  .lambe-lambe {
-    --rotacao: -1.6deg;
-    rotate: var(--rotacao);
-  }
-
-  .lambe-lambe:nth-child(2) {
-    --rotacao: 1.4deg;
-  }
-
-  .lambe-lambe:nth-child(3) {
-    --rotacao: 0.9deg;
-  }
-
-  .lambe-lambe:nth-child(4) {
-    --rotacao: -1.1deg;
-  }
-}
-
-.lambe-lambe:hover,
-.lambe-lambe:focus-within {
-  --rotacao: 0deg;
-  rotate: 0deg;
-  border-color: color-mix(in oklab, var(--cor-primaria) 70%, transparent);
-  box-shadow: 0 22px 40px -22px rgb(0 0 0 / 0.9);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  [data-animacoes='sutil'] .lambe-lambe:hover,
-  [data-animacoes='sutil'] .lambe-lambe:focus-within {
-    translate: 0 -4px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lambe-lambe {
-    transition: none;
-  }
 }
 
 /*
@@ -755,77 +701,715 @@ li:nth-child(3n) > .rede .adesivo-rede {
   }
 }
 
+/* ---------------------------------------------------------------------------------------------
+  Street layer, second pass: wall textures, torn posters between sections, graffiti tags and
+  doodles (src/lib/arte.ts), die-cut stickers (arte/Adesivo.astro) and their motion. All of it is
+  aria-hidden decoration; with reduced motion or tema.animacoes "nenhuma" it is simply static.
+--------------------------------------------------------------------------------------------- */
+
 /*
-  Ticker strips: a tilted band wider than the screen, with the text track moving left forever
-  (two identical halves, translate -50%). The frame clips the tilt so the page never scrolls
-  sideways. Static with reduced motion or tema.animacoes "nenhuma".
+  Concrete / plaster wall (Sobre, Contato): two noise layers from an inline SVG filter, cream
+  blotches and dark pores, at a low opacity (OPACIDADE_PAREDE in src/lib/tema.ts, checked in
+  tests/contraste.test.ts). Rendered once per tile, nothing downloaded.
 */
-.faixa-moldura {
-  overflow: hidden;
-  padding-block: 1.25rem;
+.parede {
+  position: relative;
+  isolation: isolate;
 }
 
-.faixa {
-  width: 110%;
-  margin-left: -5%;
-  rotate: var(--inclinacao, 0deg);
-  border-block: 3px solid var(--cor-fundo);
-  overflow: hidden;
+.parede::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .94 0 0 0 0 .89 0 0 0 0 .82 0 0 0 2.6 -1.2'/%3E%3C/filter%3E%3Cfilter id='b' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -12 4.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23a%29'/%3E%3Crect width='100%25' height='100%25' filter='url%28%23b%29'/%3E%3C/svg%3E");
 }
 
-.faixa-primaria {
-  background: var(--cor-primaria);
-  color: var(--cor-primaria-contraste);
+/* Halftone / photocopy dots over photos: a dark dot grid multiplied in, light enough to keep detail. */
+.reticula {
+  position: relative;
 }
 
-.faixa-spray {
+.reticula::after,
+.reticula-camada {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgb(21 17 10 / 0.7) 0.75px, transparent 1.35px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/*
+  Lambe-lambe posters (services): torn paper (clip-path, ragged top and a deeper tear at the
+  bottom), a strip of tape on top and a slight tilt that alternates card to card. The paper is the
+  ::before layer, so the tape (::after) and the shadow are not clipped. No tilt on phones.
+*/
+.lambe-lambe {
+  isolation: isolate;
+  filter: drop-shadow(0 12px 14px rgb(0 0 0 / 0.35));
+  transition:
+    rotate 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 250ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lambe-lambe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(172deg, color-mix(in srgb, var(--cor-texto) 5%, var(--cor-cartao)), var(--cor-cartao) 60%);
+  clip-path: polygon(
+    0 4px, 4% 1px, 9% 3px, 15% 0, 22% 2px, 30% 0, 38% 3px, 47% 0, 55% 2px, 63% 0, 71% 3px, 80% 1px, 88% 3px, 95% 0, 100% 3px,
+    100% calc(100% - 6px), 96% calc(100% - 1px), 91% calc(100% - 8px), 86% 100%, 80% calc(100% - 6px), 74% calc(100% - 2px),
+    69% calc(100% - 10px), 63% calc(100% - 1px), 56% calc(100% - 7px), 50% 100%, 44% calc(100% - 9px), 38% calc(100% - 2px),
+    31% calc(100% - 6px), 25% 100%, 19% calc(100% - 9px), 13% calc(100% - 2px), 7% calc(100% - 7px), 2% calc(100% - 1px), 0 calc(100% - 5px)
+  );
+}
+
+.lambe-lambe::after {
+  top: -0.7rem;
+  left: 1.5rem;
+  rotate: -4deg;
+}
+
+li:nth-child(2n) > .lambe-lambe::after {
+  left: auto;
+  right: 1.5rem;
+  rotate: 5deg;
+}
+
+@media (min-width: 640px) {
+  .lambe-lambe {
+    --rotacao: -1.6deg;
+    rotate: var(--rotacao);
+  }
+
+  li:nth-child(2) > .lambe-lambe {
+    --rotacao: 1.4deg;
+  }
+
+  li:nth-child(3) > .lambe-lambe {
+    --rotacao: 0.9deg;
+  }
+
+  li:nth-child(4) > .lambe-lambe {
+    --rotacao: -1.1deg;
+  }
+}
+
+.lambe-lambe:hover,
+.lambe-lambe:focus-within {
+  --rotacao: 0deg;
+  rotate: 0deg;
+}
+
+/*
+  Section boundaries (Rasgo.astro): instead of a straight cut, the next section's paper is torn
+  over the previous one. Layers: an older poster peeking out (amber, mint or spray), the torn
+  paper itself in the section color, spray specks, tape or the scope line, and drips.
+*/
+.rasgo {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  z-index: 5;
+  height: 2.25rem;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .rasgo {
+    height: 3rem;
+  }
+}
+
+.rasgo > svg {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.rasgo-papel,
+.rasgo-cartaz {
+  bottom: -1px;
+  height: calc(100% + 1px);
+}
+
+.rasgo-papel path {
+  fill: var(--cor-secao, var(--cor-fundo));
+}
+
+.rasgo-cartaz {
+  translate: 0 -42%;
+  rotate: -0.4deg;
+}
+
+.rasgo-cartaz-ambar path {
+  fill: var(--tinta-ambar);
+}
+
+.rasgo-cartaz-menta path {
+  fill: var(--tinta-menta);
+}
+
+.rasgo-cartaz-spray path {
+  fill: var(--cor-spray);
+}
+
+.rasgo-respingos {
+  top: 50%;
+  height: 3.5rem;
+}
+
+.rasgo-respingos circle {
+  fill: var(--cor-spray);
+}
+
+.rasgo-onda {
+  top: 10%;
+  height: 75%;
+}
+
+.rasgo-onda path {
+  fill: none;
+  stroke: var(--tinta-menta);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--tinta-menta) 60%, transparent));
+}
+
+.rasgo-fita {
+  top: 30%;
+  width: 5.5rem;
+  height: 1.5rem;
+  rotate: -5deg;
+}
+
+/* Paint running down from the torn edge, ending in a drop. */
+.pingo {
+  position: absolute;
+  top: 55%;
+  width: var(--largura);
+  height: var(--comprimento);
+  border-radius: 0 0 99px 99px;
   background: var(--cor-spray);
-  color: var(--cor-fundo);
+  transform-origin: top;
 }
 
-.faixa-trilho {
-  display: flex;
-  width: max-content;
+.pingo::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: calc(var(--largura) + 3px);
+  height: calc(var(--largura) + 4px);
+  translate: -50% 0;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: inherit;
 }
 
-.faixa-metade {
-  display: flex;
-  flex-shrink: 0;
+/* Doodles, the "TTD" tag and the throw-up: round marker strokes. */
+.rabisco,
+.monograma,
+.throw-up {
+  overflow: visible;
 }
 
-.faixa-item {
-  display: inline-flex;
-  align-items: center;
-  padding-block: 0.55rem;
+.rabisco path,
+.monograma path,
+.throw-up path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rabisco path {
+  stroke: currentColor;
+  stroke-width: 3.4;
+}
+
+.titulo-rabisco {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-left: 0.14em;
+  vertical-align: 0.42em;
+  color: var(--cor-spray);
+  rotate: 10deg;
+}
+
+.monograma-sombra path {
+  stroke: var(--tinta-escura);
+  stroke-width: 6.5;
+  opacity: 0.8;
+}
+
+.monograma-traco path {
+  stroke: currentColor;
+  stroke-width: 4.2;
+}
+
+/* Throw-up: the same letter strokes stacked into bubble letters (ThrowUp.astro). */
+.tu-bloco path {
+  stroke: var(--tinta-ambar);
+  stroke-width: 6.2;
+}
+
+.tu-corte path {
+  stroke: var(--tinta-creme);
+  stroke-width: 6.2;
+}
+
+.tu-contorno path {
+  stroke: var(--tinta-escura);
+  stroke-width: 4.6;
+}
+
+.tu-recheio path {
+  stroke: var(--cor-spray);
+  stroke-width: 3;
+}
+
+.tu-recheio-2 path {
+  stroke: var(--tinta-menta);
+}
+
+.tu-brilho path {
+  stroke: #fff;
+  stroke-width: 0.55;
+  stroke-dasharray: 0.14 1;
+  opacity: 0.85;
+}
+
+.tu-faisca path {
+  fill: var(--tinta-creme);
+}
+
+.rodape {
+  --cor-secao: var(--cor-superficie);
+}
+
+.rodape-estrela {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-left: 0.1em;
+  vertical-align: 0.55em;
+  color: var(--cor-spray);
+  rotate: 12deg;
+}
+
+.rodape-pingos {
+  position: absolute;
+  right: -0.5rem;
+  bottom: -1.75rem;
+  width: 3rem;
+  color: var(--cor-spray);
+  rotate: -6deg;
+}
+
+/*
+  Stickers (Adesivo.astro): die-cut white rim, a two-step shadow, a peeled corner on the
+  rectangular ones. Positioned and tilted by the section; three nested boxes so floating,
+  slapping on and hovering never fight over the same property.
+*/
+.adesivo-pos {
+  display: block;
+  z-index: 6;
+  rotate: var(--giro, 0deg);
+}
+
+.adesivo-colar {
+  display: block;
+}
+
+.adesivo {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 3px 2px rgb(0 0 0 / 0.35)) drop-shadow(0 10px 12px rgb(0 0 0 / 0.25));
+}
+
+.a-borda {
+  fill: #fffaf2;
+  stroke: #fffaf2;
+  stroke-width: 10;
+  stroke-linejoin: round;
+}
+
+.a-spray {
+  fill: var(--cor-spray);
+}
+
+.a-escura {
+  fill: var(--tinta-escura);
+}
+
+.a-creme {
+  fill: var(--tinta-creme);
+}
+
+.a-ambar {
+  fill: var(--tinta-ambar);
+}
+
+.a-menta {
+  fill: var(--tinta-menta);
+}
+
+.a-rosa {
+  fill: var(--adesivo-rosa);
+}
+
+.a-azul {
+  fill: var(--adesivo-azul);
+}
+
+.a-lima {
+  fill: var(--adesivo-lima);
+}
+
+.a-branco {
+  fill: #fff;
+}
+
+.a-filete {
+  fill: none;
+  stroke: var(--tinta-creme);
+  stroke-width: 2;
+}
+
+.a-traco-escuro {
+  stroke: var(--tinta-escura);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+
+.a-aba {
+  fill: #e8dfd0;
+  filter: drop-shadow(-1px -1px 1.5px rgb(0 0 0 / 0.35));
+}
+
+.a-titulo {
   font-family: var(--fonte-titulo);
-  font-size: clamp(1.15rem, 2.6vw, 1.6rem);
-  line-height: 1.1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.faixa-item::after {
-  content: '·';
-  padding-inline: 0.8em;
-  opacity: 0.7;
-}
-
-/* The contact call in dripping paint. */
-.faixa-tinta {
-  font-family: var(--fonte-tinta);
-  font-size: clamp(1.4rem, 3.2vw, 2rem);
   letter-spacing: 0.02em;
 }
 
-@keyframes rolar {
+.a-tinta {
+  font-family: var(--fonte-tinta);
+}
+
+.a-txt-creme {
+  fill: var(--tinta-creme);
+}
+
+.a-txt-escuro {
+  fill: var(--tinta-escura);
+}
+
+.a-anel {
+  font-family: var(--fonte-titulo);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  fill: var(--tinta-escura);
+}
+
+.a-janela {
+  fill: #3a2f1e;
+}
+
+.a-carretel {
+  fill: var(--tinta-escura);
+  stroke: var(--tinta-creme);
+  stroke-width: 2;
+}
+
+.a-linha-creme {
+  fill: none;
+  stroke: var(--tinta-creme);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.a-reflexo {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+/* Spray burst around buttons on hover: a ring of paint specks that puffs out once. */
+.botao-primario::after,
+.botao-secundario::after {
+  content: '';
+  position: absolute;
+  inset: -12px -16px;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, var(--cor-spray) 1.5px, transparent 2.1px) 0 0 / 7px 6px;
+  mask: radial-gradient(closest-side, transparent 62%, #000 76%, transparent 100%);
+}
+
+.medidor > span {
+  transform-origin: bottom;
+}
+
+/* ------------------------------------ motion ------------------------------------ */
+
+/*
+  Strokes draw with pathLength="1": a dash of 1 and a slightly longer gap, so the hidden state sits
+  inside the gap and round caps leave no dot at the start of each stroke.
+*/
+@keyframes desenhar {
+  from {
+    stroke-dashoffset: 1.05;
+  }
   to {
-    translate: -50% 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Sticker slapped on: comes in big and turned, overshoots, settles. */
+@keyframes colar {
+  from {
+    opacity: 0;
+    scale: 1.6;
+    rotate: 18deg;
+  }
+  55% {
+    opacity: 1;
+    scale: 0.92;
+    rotate: -3deg;
+  }
+  80% {
+    scale: 1.03;
+  }
+  to {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+@keyframes flutuar {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes chacoalhar {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: -5deg;
+  }
+  60% {
+    rotate: 4deg;
+  }
+  85% {
+    rotate: -1.5deg;
+  }
+}
+
+@keyframes escorrer {
+  from {
+    scale: 1 0;
+  }
+  45% {
+    scale: 1 0.55;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes spray-revelar {
+  from {
+    clip-path: inset(-40% 100% -40% -5%);
+  }
+  to {
+    clip-path: inset(-40% -5% -40% -5%);
+  }
+}
+
+@keyframes nevoa {
+  from {
+    translate: -100% 0;
+    opacity: 0.9;
+  }
+  to {
+    translate: 0 0;
+    opacity: 0;
+  }
+}
+
+@keyframes balancar {
+  0% {
+    rotate: var(--rotacao, 0deg);
+  }
+  30% {
+    rotate: 1.8deg;
+  }
+  60% {
+    rotate: -1.2deg;
+  }
+  85% {
+    rotate: 0.5deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+@keyframes vu {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+  35% {
+    scale: 1 0.4;
+  }
+  65% {
+    scale: 1 0.85;
+  }
+}
+
+@keyframes estourar {
+  from {
+    opacity: 0.95;
+    scale: 0.82;
+  }
+  to {
+    opacity: 0;
+    scale: 1.15;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  [data-animacoes='sutil'] .faixa-trilho {
-    animation: rolar var(--duracao, 32s) linear infinite;
+  /* Hero, at load (CSS only): tag and crown draw, drips run, stickers slap on, then float. */
+  [data-animacoes='sutil'] :is(.monograma-hero, .nome-coroa) .desenha {
+    stroke-dasharray: 1 1.1;
+    animation: desenhar 1s cubic-bezier(0.6, 0.1, 0.3, 1) calc(0.7s + var(--j, 0) * 0.12s) backwards;
+  }
+
+  [data-animacoes='sutil'] .pingo-nome {
+    animation: escorrer 3.6s cubic-bezier(0.3, 0.6, 0.4, 1) calc(1.1s + var(--i, 0) * 0.45s) backwards;
+  }
+
+  [data-animacoes='sutil'] .adesivo-hero .adesivo-colar {
+    animation: colar 650ms cubic-bezier(0.3, 1.4, 0.5, 1) calc(0.9s + var(--i, 0) * 0.2s) backwards;
+  }
+
+  [data-animacoes='sutil'] .adesivo-hero {
+    animation: flutuar 7s ease-in-out calc(var(--i, 0) * -2.3s) infinite;
+  }
+
+  [data-animacoes='sutil'] .a-luz-rec {
+    animation: piscar 1.6s steps(1, end) infinite;
+  }
+
+  /* On scroll (Revelar.astro adds .anima, then .anima-visto; titles get .revelar / .revelado). */
+  :is(.anima, .revelar) .desenha {
+    stroke-dasharray: 1 1.1;
+    transition: stroke-dashoffset 1s cubic-bezier(0.6, 0.1, 0.3, 1) calc(0.25s + var(--j, 0) * 0.09s);
+  }
+
+  :is(.anima:not(.anima-visto), .revelar:not(.revelado)) .desenha {
+    stroke-dashoffset: 1.05;
+  }
+
+  .anima :is(.tu-brilho, .tu-faisca) {
+    transition: opacity 400ms 1.6s;
+  }
+
+  .anima:not(.anima-visto) :is(.tu-brilho, .tu-faisca) {
+    opacity: 0;
+  }
+
+  .anima:not(.anima-visto) .adesivo-colar {
+    opacity: 0;
+  }
+
+  .anima-visto .adesivo-colar {
+    animation: colar 650ms cubic-bezier(0.3, 1.4, 0.5, 1) calc(var(--i, 0) * 0.15s) backwards;
+  }
+
+  .anima:not(.anima-visto) .pingo {
+    scale: 1 0;
+  }
+
+  .anima-visto .pingo {
+    animation: escorrer 3.4s cubic-bezier(0.3, 0.6, 0.4, 1) calc(0.5s + var(--i, 0) * 0.35s) backwards;
+  }
+
+  /* Section titles are sprayed on from the left, with a puff of overspray at the nozzle. */
+  .titulo-secao.revelado {
+    position: relative;
+    animation: spray-revelar 900ms cubic-bezier(0.55, 0.1, 0.35, 1) backwards;
+  }
+
+  .titulo-secao.revelado::after {
+    content: '';
+    position: absolute;
+    inset: -25% 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--cor-spray) 50%, transparent), transparent) right center / 4rem 100% no-repeat;
+    animation: nevoa 900ms cubic-bezier(0.55, 0.1, 0.35, 1);
+  }
+
+  [data-animacoes='sutil'] .lambe-lambe:focus-within {
+    translate: 0 -4px;
+  }
+
+  [data-animacoes='sutil'] [data-play]:focus-visible .medidor > span {
+    animation: vu 0.7s ease-in-out var(--d, 0s) infinite;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .adesivo {
+    transition:
+      translate 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      scale 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  [data-animacoes='sutil'] .adesivo:hover {
+    translate: 0 -6px;
+    scale: 1.06;
+    animation: chacoalhar 480ms ease-in-out;
+  }
+
+  [data-animacoes='sutil'] .lambe-lambe:hover {
+    translate: 0 -4px;
+    animation: balancar 650ms ease-out;
+  }
+
+  [data-animacoes='sutil'] [data-play]:hover .medidor > span {
+    animation: vu 0.7s ease-in-out var(--d, 0s) infinite;
+  }
+
+  [data-animacoes='sutil'] :is(.botao-primario, .botao-secundario):hover::after {
+    animation: estourar 520ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lambe-lambe {
+    transition: none;
   }
 }

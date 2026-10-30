@@ -47,8 +47,8 @@ const barras = Array.from({ length: 48 }, (_, i) => {
       {
         soundcloud && (
           <span class="medidor flex h-14 items-end gap-[3px]" aria-hidden="true">
-            {barras.map((h) => (
-              <span class="w-full" style={`height:${Math.round(h * 100)}%`} />
+            {barras.map((h, i) => (
+              <span class="w-full" style={`height:${Math.round(h * 100)}%;--d:${((i * 7) % 11) * -0.09}s`} />
             ))}
           </span>
         )
