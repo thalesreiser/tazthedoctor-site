@@ -39,15 +39,16 @@
     "cor_creme_texto_suave": "#524E49",
     "cor_creme_primaria": "#6A4D25",
     "cor_spray": "#FF6A1A",
+    "cor_adesivo_rosa": "#FF3D8B",
+    "cor_adesivo_azul": "#1F47D6",
+    "cor_adesivo_lima": "#B4F03C",
     "fonte_titulo": "Anton, Impact, \"Arial Narrow\", sans-serif",
     "fonte_texto": "Manrope, system-ui, sans-serif",
-    "fonte_tag": "\"Sedgwick Ave Display\", \"Segoe Print\", cursive",
     "fonte_tinta": "\"Rubik Wet Paint\", Anton, Impact, sans-serif",
     "fonte_mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace",
     "fontes": [
       { "familia": "Anton", "pesos": [400] },
       { "familia": "Manrope", "pesos": [400, 700] },
-      { "familia": "Sedgwick Ave Display", "pesos": [400] },
       { "familia": "Rubik Wet Paint", "pesos": [400] }
     ],
     "animacoes": "sutil"
@@ -81,13 +82,18 @@
       },
       "acao_principal": { "texto": "Chamar para um trabalho", "href": "#contato" },
       "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" },
-      "faixa": ["Produção", "Mixagem", "Guitarra", "Baixo", "Vila Nova", "POA"]
+      "adesivos": [
+        { "modelo": "ninja", "texto": "ninja dos beats" },
+        { "modelo": "palheta", "texto": "TTD" },
+        { "modelo": "rec", "texto": "REC" }
+      ]
     },
     {
       "tipo": "servicos",
       "id": "trabalhos",
       "menu": "Trabalhos",
       "titulo": "No estúdio e no palco",
+      "adesivos": [{ "modelo": "etiqueta", "texto": "feito no estúdio" }],
       "subtitulo": "O foco é o estúdio: trabalhar a faixa de outros artistas, da produção à última camada de guitarra ou baixo.",
       "itens": [
         { "icone": "onda", "titulo": "Produção musical", "descricao": "Beats e produção de faixas para outros artistas, construindo o som junto com você." },
@@ -100,6 +106,7 @@
       "tipo": "musica",
       "menu": "Música",
       "titulo": "Do estúdio",
+      "adesivos": [{ "modelo": "fita", "texto": "lado A" }],
       "subtitulo": "Tem muita coisa gravada e pouca coisa lançada, por enquanto. O que já está no ar: uma faixa no SoundCloud e os vídeos curtos no YouTube.",
       "aviso_players": "Os players do SoundCloud e do YouTube só carregam quando você aperta o play.",
       "itens": [
@@ -140,6 +147,7 @@
       "tipo": "sobre",
       "menu": "Sobre",
       "titulo": "Quem é o Taz",
+      "adesivos": [{ "modelo": "placa", "texto": "Vila Nova · POA" }],
       "paragrafos": [
         "Sou o TazTheDoctor, Thales Reiser Pedreira no documento e ninja dos beats nas redes. Nasci em 1999 e sou cria da Vila Nova, em Porto Alegre/RS.",
         "Sou guitarrista, baixista e produtor musical, e trabalho com mixagem. Toquei em bandas pequenas e hoje meu lugar é o estúdio.",
@@ -194,6 +202,7 @@
       "tipo": "contato",
       "menu": "Contato",
       "titulo": "Bora gravar?",
+      "adesivos": [{ "modelo": "explosao", "texto": "underground raiz" }],
       "texto": "Produção, mixagem, guitarra ou baixo na sua faixa, ensaio ou show: me conta a ideia, com data e local se já tiver.",
       "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Ensaios e shows"],
       "texto_email": "Mandar e-mail",
@@ -207,8 +216,7 @@
       ],
       "consentimento": "Concordo com o uso dos meus dados para receber o retorno deste contato, conforme a",
       "botao": "Enviar mensagem",
-      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder.",
-      "faixa": "Bora gravar"
+      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder."
     },
     {
       "tipo": "rodape",

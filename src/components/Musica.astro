@@ -2,6 +2,7 @@
 import ACompletar from './ACompletar.astro';
 import Player from './Player.astro';
 import TituloSecao from './TituloSecao.astro';
+import Adesivo from './arte/Adesivo.astro';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
 interface Props {
@@ -17,7 +18,9 @@ const idTitulo = `${ancora}-titulo`;
 ---
 
 <section id={ancora} class="secao" aria-labelledby={idTitulo}>
-  <div class="container-site">
+  <div class="container-site relative">
+    {/* Cassette sticker beside the title (content/site.json, musica.adesivos). */}
+    {secao.adesivos[0] && <Adesivo adesivo={secao.adesivos[0]} class="absolute top-0 right-4 w-28 sm:right-8 sm:w-40" giro={6} />}
     <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.subtitulo} />
     <p class="mt-4 flex items-center gap-2 font-mono text-xs text-texto-suave">
       <span class="led-rec" aria-hidden="true"></span>

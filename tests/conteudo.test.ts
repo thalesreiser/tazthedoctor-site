@@ -149,22 +149,35 @@ test('motion can be turned off', () => {
   assert.equal(valido(dados), false);
 });
 
-test('the street fonts are self-hosted through the tag and paint stacks', () => {
+test('the dripping paint font is self-hosted through its stack, and the old tag font is gone', () => {
   const { tema } = conteudoSchema.parse(original);
   const familias = tema.fontes.map((f) => f.familia);
-  assert.ok(familias.includes('Sedgwick Ave Display') && tema.fonte_tag.includes('Sedgwick Ave Display'));
   assert.ok(familias.includes('Rubik Wet Paint') && tema.fonte_tinta.includes('Rubik Wet Paint'));
+  assert.equal(familias.includes('Sedgwick Ave Display'), false);
+  assert.equal('fonte_tag' in original.tema, false);
   // Dropping the paint stack leaves Rubik Wet Paint unused, which the schema refuses.
   const dados = copia();
   dados.tema.fonte_tinta = 'Anton, Impact, sans-serif';
   assert.equal(valido(dados), false);
 });
 
-test('tickers repeat page text only: hero words and the contact call stay short', () => {
-  const hero = secao(original, 'hero');
-  assert.ok(hero.faixa.length > 0 && hero.faixa.every((palavra: string) => palavra.length <= 20));
-  const contato = secao(original, 'contato');
-  assert.ok(typeof contato.faixa === 'string' && contato.faixa.length <= 30);
-  // The e-mail in the contact ticker comes from contato.email, never from the call itself.
-  assert.equal(contato.faixa.includes('@'), false);
+test('stickers: known models, short texts, at most three per section', () => {
+  const { secoes } = conteudoSchema.parse(original);
+  const adesivos = secoes.flatMap((s) => s.adesivos);
+  assert.ok(adesivos.length >= 5, 'the page is sticker-bombed: at least five stickers');
+  assert.ok(adesivos.every((a) => a.texto.length <= 22));
+  const modelo = copia();
+  secao(modelo, 'hero').adesivos[0].modelo = 'holograma';
+  assert.deepEqual(caminhos(modelo), ['secoes.0.adesivos.0.modelo']);
+  const longo = copia();
+  secao(longo, 'hero').adesivos[0].texto = 'um texto comprido demais para caber';
+  assert.deepEqual(caminhos(longo), ['secoes.0.adesivos.0.texto']);
+  const muitos = copia();
+  secao(muitos, 'hero').adesivos.push({ modelo: 'rec', texto: 'REC' });
+  assert.equal(valido(muitos), false);
+});
+
+test('the tickers are gone: no scrolling strip fields left in the content', () => {
+  assert.equal('faixa' in secao(original, 'hero'), false);
+  assert.equal('faixa' in secao(original, 'contato'), false);
 });

@@ -43,9 +43,10 @@ content/
 └── politica-de-privacidade.md # texto da página /politica-de-privacidade
 src/
 ├── components/   # Hero, Servicos, Musica + Player, Sobre, Equipamento, Plataformas,
-│                 # Contato, Rodape, Revelar, AvisoCookies, ACompletar, ...
+│                 # Contato, Rodape, Rasgo, Revelar, AvisoCookies, ACompletar, ...
+│   └── arte/     # throw-up, tag TTD, rabiscos e adesivos (SVG)
 ├── layouts/Base.astro  # head, tema, aviso "em construção", cabeçalho
-├── lib/          # schema (Zod), SEO e JSON-LD, players, imagem de compartilhamento, contraste
+├── lib/          # schema (Zod), SEO e JSON-LD, players, imagem de compartilhamento, contraste, arte
 ├── assets/site/  # fotos já tratadas (otimizadas de novo no build)
 └── pages/        # index, política de privacidade, 404, og.png e robots.txt
 tests/            # node --test
@@ -61,7 +62,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores (incluindo `cor_spray`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tag`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_adesivo_rosa`, `cor_adesivo_azul` e `cor_adesivo_lima`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |
@@ -69,12 +70,26 @@ falha o build com o caminho do campo.
 
 Tipos de seção: `hero`, `servicos`, `musica`, `sobre`, `equipamento`, `plataformas`,
 `contato` e `rodape`. Todas aceitam `id` (âncora), `menu` (link no cabeçalho), `ativo: false`
-(esconde sem apagar) e `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
-escuros se alternam).
+(esconde sem apagar), `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
+escuros se alternam) e `adesivos`.
 
-As faixas rolantes vêm do JSON: `hero.faixa` (palavras da faixa abaixo do hero) e
-`contato.faixa` (a chamada da faixa que fecha o contato, ao lado de `contato.email`). Elas só
-repetem o que já está na página, então ficam escondidas dos leitores de tela.
+### Adesivos (`adesivos`)
+
+Até três por seção, cada um com `modelo` e `texto` (até 22 caracteres). Cada seção decide onde
+colar os seus (no hero, em volta da foto). São decoração, escondidos dos leitores de tela, então
+só repetem ou enfeitam o que a página já diz. Modelos:
+
+| `modelo` | Adesivo |
+| --- | --- |
+| `ninja` | redondo, laranja spray, máscara de ninja no meio e o texto em anel |
+| `placa` | placa de rua azul com filete creme |
+| `etiqueta` | etiqueta rosa com estrela, texto em duas linhas |
+| `explosao` | explosão verde-limão, texto em duas linhas |
+| `fita` | fita cassete com o texto na etiqueta âmbar |
+| `palheta` | palheta verde-água, texto curto na tinta escorrendo (ex.: "TTD") |
+| `rec` | "REC" com a luz piscando |
+
+Os textos passam pelo mesmo `revisao.termos_vetados` do resto (por isso não há "100%").
 
 ### Lançamentos (`musica.itens`)
 
@@ -117,17 +132,29 @@ A paleta saiu das próprias fotos (cores dominantes extraídas com o sharp): fun
 quase preto `#15110A` e superfície `#272012` (borda escura do sunburst), texto creme `#F0E4D2`
 (luz do estúdio), âmbar `#D1932B` (o sunburst da Les Paul) nos botões, laranja `#F9702F`
 (visor dos pedais Zoom) e verde-água `#ADE3BB` (luz do estúdio) nos destaques, e uma faixa creme
-nas redes, mais um laranja spray `#FF6A1A`, um pouco mais saturado, para a tinta, as faixas e
-os adesivos. Títulos em Anton, texto em Manrope; o nome no hero mistura a pichação da Sedgwick
-Ave Display ("TheDoctor") com a tinta escorrendo da Rubik Wet Paint ("Taz").
+nas redes, mais um laranja spray `#FF6A1A`, um pouco mais saturado, para a tinta, os tags e
+os adesivos. Rosa `#FF3D8B`, azul `#1F47D6` e verde-limão `#B4F03C` aparecem **só nos adesivos**,
+para a paleta da página continuar a mesma. Títulos em Anton, texto em Manrope; o nome (hero,
+logo e rodapé) é todo na tinta escorrendo da Rubik Wet Paint: "Taz" grande em laranja spray com
+pingos extras, "TheDoctor" menor, em creme, com sombra 3D âmbar.
 `tests/contraste.test.ts` confere 4,5:1 (WCAG AA) em todos os pares usados, inclusive sobre o
-brilho âmbar, o grão, a faixa creme e o laranja spray.
+brilho âmbar, o grão, a parede de concreto, a faixa creme e os textos de cada adesivo.
 
-Camada de rua (`global.css`, fim do arquivo): filtro SVG que deixa a borda do nome áspera, grão
-de fotocópia, foto do hero em duotone da paleta com fita crepe, adesivo "ninja dos beats",
-cartazes lambe-lambe levemente tortos nos trabalhos, medidores de LED, adesivos nas redes e
-faixas rolantes. As animações (entrada do hero, revelação "colando o cartaz" ao rolar, glitch
-raro no nome, equalizador, faixas, hover, carimbo nos botões) respeitam
+Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem imagem baixada:
+
+- **Arte** (`src/lib/arte.ts` e `src/components/arte/`): o throw-up "TAZ / THEDOCTOR" do rodapé
+  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "TTD" com
+  coroa no hero, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
+  seta, pingos) e os adesivos recortados com borda branca e canto descolando.
+- **Passagem entre seções** (`Rasgo.astro`): em vez de um corte reto, o papel da seção seguinte
+  rasgado por cima da anterior, às vezes com um cartaz antigo aparecendo por baixo, fita crepe,
+  respingos de spray, pingos escorrendo e, na primeira, a linha de um osciloscópio.
+- **Texturas**: parede de concreto (Sobre e Contato), retícula de fotocópia nas fotos, borda
+  rasgada nos cartazes lambe-lambe, grão de fotocópia, filtro áspero no nome.
+
+As animações (entrada do hero, adesivos colados com tapa e flutuando, tags e rabiscos se
+desenhando, títulos pintados com spray, pingos escorrendo, cartazes balançando no hover, LEDs do
+player reagindo, estouro de spray nos botões, glitch raro no nome) respeitam
 `prefers-reduced-motion` e `animacoes: "nenhuma"`, e todo o conteúdo aparece sem JavaScript.
 
 ### Formulário

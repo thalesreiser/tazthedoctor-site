@@ -28,6 +28,14 @@ const variaveisTema = [
   `--cor-destaque:${tema.cor_destaque}`,
   `--cor-destaque-frio:${tema.cor_destaque_frio}`,
   `--cor-spray:${tema.cor_spray}`,
+  // Paint and sticker colors: fixed, so art keeps its color inside the cream band too.
+  `--tinta-ambar:${tema.cor_primaria}`,
+  `--tinta-menta:${tema.cor_destaque_frio}`,
+  `--tinta-escura:${tema.cor_fundo}`,
+  `--tinta-creme:${tema.cor_creme}`,
+  `--adesivo-rosa:${tema.cor_adesivo_rosa}`,
+  `--adesivo-azul:${tema.cor_adesivo_azul}`,
+  `--adesivo-lima:${tema.cor_adesivo_lima}`,
   // Fixed values for the cream band, which redefines the --cor-* variables inside it.
   `--creme-fundo:${tema.cor_creme}`,
   `--creme-texto:${tema.cor_creme_texto}`,
@@ -35,7 +43,6 @@ const variaveisTema = [
   `--creme-primaria:${tema.cor_creme_primaria}`,
   `--fonte-titulo:${pilhaComFontes(tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-texto:${pilhaComFontes(tema.fonte_texto, tema.fontes, pilhas)}`,
-  `--fonte-tag:${pilhaComFontes(tema.fonte_tag, tema.fontes, pilhas)}`,
   `--fonte-tinta:${pilhaComFontes(tema.fonte_tinta, tema.fontes, pilhas)}`,
   `--fonte-mono:${tema.fonte_mono}`,
 ].join(';');
@@ -117,7 +124,7 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
 
     <header class="sticky top-0 z-40 border-b border-texto/10 bg-fundo/85 backdrop-blur-md">
       <div class="container-site flex h-16 items-center justify-between gap-4">
-        <a href="/" class="flex items-center gap-2.5 font-tag text-2xl">
+        <a href="/" class="flex items-center gap-2.5 font-tinta text-2xl">
           <span class="equalizador text-primaria" aria-hidden="true">
             <span style="--i:0;--h:.5"></span><span style="--i:1;--h:.9"></span><span style="--i:2;--h:.65"></span>
           </span>

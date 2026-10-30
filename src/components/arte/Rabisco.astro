@@ -1,0 +1,17 @@
+---
+import { RABISCOS, type NomeRabisco } from '../../lib/arte.ts';
+
+interface Props {
+  nome: NomeRabisco;
+  class?: string;
+  // Order in a staggered entrance (CSS --i).
+  ordem?: number;
+}
+
+const { nome, class: classe, ordem = 0 } = Astro.props;
+---
+
+{/* Doodle stroked in currentColor; draws itself when scrolled into view (global.css, .desenha). */}
+<svg class:list={['rabisco', classe]} viewBox="0 0 48 48" aria-hidden="true" focusable="false" style={`--i:${ordem}`}>
+  {RABISCOS[nome].map((d, i) => <path class="desenha" d={d} pathLength="1" style={`--j:${i}`} />)}
+</svg>

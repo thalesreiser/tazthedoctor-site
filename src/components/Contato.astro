@@ -1,6 +1,6 @@
 ---
-import Faixa from './Faixa.astro';
 import Icone from './Icone.astro';
+import Adesivo from './arte/Adesivo.astro';
 import TituloSecao from './TituloSecao.astro';
 import { linkEmail } from '../lib/email.ts';
 import { ancoraSecao, type Conteudo, type SecaoDo } from '../lib/schema.ts';
@@ -25,14 +25,14 @@ const destino = {
 // user-invalid only matches after the visitor edits the field or tries to submit.
 const classeCampo =
   'peer mt-2 block w-full rounded-campo border border-texto/25 bg-fundo px-4 py-3 text-base text-texto placeholder:text-texto-suave user-invalid:border-erro user-invalid:ring-1 user-invalid:ring-erro';
-// Ticker closing the section, right above the footer: the contact call and the public e-mail.
-const faixa = secao.faixa ? [secao.faixa, email] : [];
 const erroPadrao = (tipo: string) => (tipo === 'email' ? 'Informe um e-mail válido.' : 'Preencha este campo.');
 ---
 
-<section id={ancora} class:list={['brilho-palco', faixa.length > 0 ? 'pt-20 sm:pt-28' : 'secao']} aria-labelledby={idTitulo}>
-  <div class="container-site grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-    <div>
+<section id={ancora} class="secao brilho-palco parede" aria-labelledby={idTitulo}>
+  <div class="container-site relative grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+    {/* Starburst sticker on the wall, by the title (content/site.json, contato.adesivos). */}
+    {secao.adesivos[0] && <Adesivo adesivo={secao.adesivos[0]} class="absolute -top-12 right-2 w-28 sm:right-6 sm:w-32 lg:right-auto lg:left-[calc(45%-3.5rem)]" giro={-10} />}
+    <div data-revelar-grupo>
       <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.texto} />
       {
         secao.topicos.length > 0 && (
@@ -135,7 +135,6 @@ const erroPadrao = (tipo: string) => (tipo === 'email' ? 'Informe um e-mail vál
       </div>
     </form>
   </div>
-  <Faixa itens={faixa} cor="spray" inclinacao={1.2} destaques={faixa.slice(0, 1)} duracao={40} class="mt-20 sm:mt-24" />
 </section>
 
 <script>

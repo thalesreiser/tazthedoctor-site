@@ -1,0 +1,182 @@
+---
+import { duasLinhas, explosao, RABISCOS, type ModeloAdesivo } from '../../lib/arte.ts';
+
+interface Props {
+  adesivo: { modelo: ModeloAdesivo; texto: string };
+  // Position, size and tilt classes from the section that places it.
+  class?: string;
+  // Tilt in degrees and order in the staggered entrance.
+  giro?: number;
+  ordem?: number;
+  // Above the fold: slapped on by a CSS animation at load, then floats; otherwise when scrolled in.
+  hero?: boolean;
+}
+
+const { adesivo, class: classe, giro = 0, ordem = 0, hero = false } = Astro.props;
+const { modelo, texto } = adesivo;
+const id = `adesivo-${modelo}-${texto.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+// Rough text width (Anton ~0.5 em per capital, Rubik Wet Paint ~0.66 em): long texts are squeezed
+// to fit the shape with textLength, short ones keep their natural spacing.
+const ajuste = (txt: string, tamanho: number, maximo: number, fator = 0.5) =>
+  txt.length * tamanho * fator > maximo ? { textLength: maximo, lengthAdjust: 'spacingAndGlyphs' } : {};
+
+// Rounded rectangle with the bottom-right corner cut off, where the sticker peels.
+function retanguloDescascado(x: number, y: number, w: number, h: number, r: number, c: number) {
+  const X = x + w;
+  const Y = y + h;
+  return `M${x + r} ${y} L${X - r} ${y} Q${X} ${y} ${X} ${y + r} L${X} ${Y - c} L${X - c} ${Y} L${x + r} ${Y} Q${x} ${Y} ${x} ${Y - r} L${x} ${y + r} Q${x} ${y} ${x + r} ${y} Z`;
+}
+
+// The peeled corner folded back over the sticker (white backing), outside the 5-unit die-cut rim.
+function aba(x: number, y: number, w: number, h: number, c: number) {
+  const X = x + w + 3.5;
+  const Y = y + h + 3.5;
+  const k = X + Y - c - 3.5;
+  return `M${X} ${Y - c - 3.5} L${X - c - 3.5} ${Y} L${k - Y} ${k - X} Z`;
+}
+
+const caixas: Record<ModeloAdesivo, [number, number]> = {
+  ninja: [120, 120],
+  placa: [168, 78],
+  etiqueta: [150, 92],
+  explosao: [140, 140],
+  fita: [164, 112],
+  palheta: [100, 112],
+  rec: [124, 60],
+};
+const [largura, altura] = caixas[modelo];
+const linhas = duasLinhas(texto.toUpperCase());
+const anel = `${texto} • ${texto} • `.toUpperCase();
+---
+
+<span
+  class:list={['adesivo-pos', hero ? 'adesivo-hero' : 'adesivo-rolagem', classe]}
+  style={`--giro:${giro}deg;--i:${ordem}`}
+  aria-hidden="true"
+  data-anima={hero ? undefined : ''}
+>
+  <span class="adesivo-colar">
+    <svg class:list={['adesivo', `adesivo-${modelo}`]} viewBox={`0 0 ${largura} ${altura}`} focusable="false">
+      {
+        modelo === 'ninja' && (
+          <>
+            <defs>
+              <path id={id} d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0" />
+            </defs>
+            <circle cx="60" cy="60" r="55" class="a-borda" />
+            <circle cx="60" cy="60" r="55" class="a-spray" />
+            <text class="a-anel">
+              <textPath href={`#${id}`} textLength="255" lengthAdjust="spacing">
+                {anel}
+              </textPath>
+            </text>
+            {/* Ninja head: dark hood, pink headband, cream eye slit with two narrowed eyes. */}
+            <circle cx="60" cy="61" r="29" class="a-escura" />
+            <path d="M32.5 52 Q60 43 87.5 52 L88.6 58.5 Q60 50 31.4 58.5 Z" class="a-rosa" />
+            <rect x="37" y="58" width="46" height="14" rx="7" class="a-creme" />
+            <path d="M43 62 L55 65.2 Q49 70 43 62 Z" class="a-escura" />
+            <path d="M77 62 L65 65.2 Q71 70 77 62 Z" class="a-escura" />
+            <circle cx="50.5" cy="65.6" r="1" class="a-branco" />
+            <circle cx="69.5" cy="65.6" r="1" class="a-branco" />
+          </>
+        )
+      }
+      {
+        modelo === 'placa' && (
+          <>
+            <path d={retanguloDescascado(6, 6, 152, 62, 9, 18)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 152, 62, 9, 18)} class="a-azul" />
+            <path d={retanguloDescascado(12, 12, 140, 50, 4, 14)} class="a-filete" />
+            <text x="80" y="47" text-anchor="middle" class="a-titulo a-txt-creme" font-size="25" {...ajuste(linhas.join(' '), 25, 122)}>
+              {texto.toUpperCase()}
+            </text>
+            <path d={aba(6, 6, 152, 62, 18)} class="a-aba" />
+          </>
+        )
+      }
+      {
+        modelo === 'etiqueta' && (
+          <>
+            <path d={retanguloDescascado(6, 6, 138, 80, 14, 18)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 138, 80, 14, 18)} class="a-rosa" />
+            <g transform="translate(14 13) scale(0.42)">
+              <path d={RABISCOS.estrela[0]} class="a-lima a-traco-escuro" />
+            </g>
+            <text x="78" y={linhas[1] ? 44 : 56} text-anchor="middle" class="a-titulo a-txt-escuro" font-size="25" {...ajuste(linhas[0], 25, 104)}>
+              {linhas[0]}
+            </text>
+            {linhas[1] && (
+              <text x="76" y="71" text-anchor="middle" class="a-titulo a-txt-escuro" font-size="25" {...ajuste(linhas[1], 25, 104)}>
+                {linhas[1]}
+              </text>
+            )}
+            <path d={aba(6, 6, 138, 80, 18)} class="a-aba" />
+          </>
+        )
+      }
+      {
+        modelo === 'explosao' && (
+          <>
+            <path d={explosao(70, 70, 62, 50, 14)} class="a-borda" />
+            <path d={explosao(70, 70, 62, 50, 14)} class="a-lima" />
+            <text x="70" y={linhas[1] ? 68 : 77} text-anchor="middle" class="a-titulo a-txt-escuro" font-size="19" {...ajuste(linhas[0], 19, 84)}>
+              {linhas[0]}
+            </text>
+            {linhas[1] && (
+              <text x="70" y="90" text-anchor="middle" class="a-titulo a-txt-escuro" font-size="19" {...ajuste(linhas[1], 19, 84)}>
+                {linhas[1]}
+              </text>
+            )}
+          </>
+        )
+      }
+      {
+        modelo === 'fita' && (
+          <>
+            {/* Cassette tape: dark shell, amber label with the text, two reels and the tape window. */}
+            <path d={retanguloDescascado(6, 6, 152, 100, 9, 16)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 152, 100, 9, 16)} class="a-escura" />
+            <rect x="16" y="15" width="132" height="44" rx="4" class="a-ambar" />
+            <rect x="16" y="15" width="132" height="8" rx="2" class="a-spray" />
+            <text x="82" y="51" text-anchor="middle" class="a-tinta a-txt-escuro" font-size="22" {...ajuste(texto, 22, 116, 0.66)}>
+              {texto}
+            </text>
+            <rect x="46" y="66" width="72" height="22" rx="11" class="a-janela" />
+            <circle cx="63" cy="77" r="8" class="a-carretel" />
+            <circle cx="101" cy="77" r="8" class="a-carretel" />
+            <circle cx="63" cy="77" r="2.6" class="a-creme" />
+            <circle cx="101" cy="77" r="2.6" class="a-creme" />
+            <path d="M44 106 L52 94 L112 94 L120 106" class="a-linha-creme" />
+            <path d={aba(6, 6, 152, 100, 16)} class="a-aba" />
+          </>
+        )
+      }
+      {
+        modelo === 'palheta' && (
+          <>
+            <path d="M50 106 C29 87 8 60 9 32 C10 9 90 9 91 32 C92 60 71 87 50 106 Z" class="a-borda" />
+            <path d="M50 106 C29 87 8 60 9 32 C10 9 90 9 91 32 C92 60 71 87 50 106 Z" class="a-menta" />
+            <path d="M22 30 C25 22 33 18 42 17" class="a-reflexo" />
+            <text x="50" y="66" text-anchor="middle" class="a-tinta a-txt-escuro" font-size="32" {...ajuste(texto, 32, 70, 0.66)}>
+              {texto}
+            </text>
+          </>
+        )
+      }
+      {
+        modelo === 'rec' && (
+          <>
+            <path d={retanguloDescascado(6, 6, 112, 48, 8, 12)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 112, 48, 8, 12)} class="a-escura" />
+            <circle cx="30" cy="30" r="9" class="a-rosa a-luz-rec" />
+            <text x="47" y="41" class="a-titulo a-txt-creme" font-size="28" {...ajuste(texto, 28, 60)}>
+              {texto.toUpperCase()}
+            </text>
+            <path d={aba(6, 6, 112, 48, 12)} class="a-aba" />
+          </>
+        )
+      }
+    </svg>
+  </span>
+</span>

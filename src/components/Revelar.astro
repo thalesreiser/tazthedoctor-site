@@ -1,5 +1,5 @@
 {/*
-  Scroll reveal (global.css, .revelar). Progressive: content is visible by default and only this
+  Scroll reveal (global.css, .revelar and .anima). Progressive: content is visible by default and only this
   script hides it, skipping the hero, anything already on screen and reduced motion. Children of
   [data-revelar-grupo] enter one after another (--i). Rendered only with tema.animacoes "sutil".
 */}
@@ -17,7 +17,7 @@
     );
     // Read every position first, then write, so the page is laid out only once.
     const alvos = [...document.querySelectorAll<HTMLElement>('main section:not([data-hero]) :is(.container-site, [data-revelar-grupo]) > *')]
-      .filter((el) => !el.hasAttribute('data-revelar-grupo'))
+      .filter((el) => !el.hasAttribute('data-revelar-grupo') && !el.hasAttribute('data-anima'))
       .map((el) => ({ el, topo: el.getBoundingClientRect().top }));
     for (const { el, topo } of alvos) {
       if (topo < innerHeight) continue;
@@ -26,6 +26,24 @@
       el.style.setProperty('--i', String(Math.min(ordem, 5)));
       el.classList.add('revelar');
       observador.observe(el);
+    }
+    // Street art (tags, doodles, stickers, torn edges): drawn, slapped on or dripped once it is in
+    // view. Only below the fold; what is already on screen stays as it is.
+    const arte = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          entrada.target.classList.add('anima-visto');
+          arte.unobserve(entrada.target);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px' },
+    );
+    const pecas = [...document.querySelectorAll<HTMLElement>('[data-anima]')].map((el) => ({ el, topo: el.getBoundingClientRect().top }));
+    for (const { el, topo } of pecas) {
+      if (topo < innerHeight) continue;
+      el.classList.add('anima');
+      arte.observe(el);
     }
   }
 </script>
