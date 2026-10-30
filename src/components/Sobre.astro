@@ -1,0 +1,45 @@
+---
+import ACompletar from './ACompletar.astro';
+import Imagem from './Imagem.astro';
+import Registros from './Registros.astro';
+import TituloSecao from './TituloSecao.astro';
+import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'sobre'>;
+  rotulo: string;
+  emConstrucao: boolean;
+}
+
+const { secao, rotulo, emConstrucao } = Astro.props;
+const ancora = ancoraSecao(secao);
+const idTitulo = `${ancora}-titulo`;
+---
+
+<section id={ancora} class="secao" aria-labelledby={idTitulo}>
+  <div class="container-site grid items-center gap-12 lg:grid-cols-[1fr_24rem] lg:gap-20">
+    <div>
+      <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} />
+      <div class="mt-8 max-w-2xl space-y-5 text-lg text-texto-suave">
+        {secao.paragrafos.map((paragrafo, i) => <p class:list={[i === 0 && 'text-xl text-texto sm:text-2xl']}>{paragrafo}</p>)}
+      </div>
+      <Registros itens={secao.registros} />
+      <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />
+    </div>
+    {
+      secao.foto && (
+        <div class="relative mx-auto w-full max-w-xs lg:max-w-none">
+          <Imagem
+            imagem={secao.foto}
+            sizes="(min-width: 1024px) 24rem, 20rem"
+            larguras={[320, 480, 640, 768]}
+            class="aspect-[4/5] w-full -rotate-2 rounded-[22px] object-cover shadow-2xl shadow-black/50"
+          />
+          <span class="absolute -bottom-4 -left-3 rotate-[-6deg] rounded-full bg-destaque px-4 py-1.5 font-titulo text-lg text-primaria-contraste uppercase" aria-hidden="true">
+            99'
+          </span>
+        </div>
+      )
+    }
+  </div>
+</section>

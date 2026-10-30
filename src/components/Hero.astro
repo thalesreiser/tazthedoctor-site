@@ -1,0 +1,78 @@
+---
+import Imagem from './Imagem.astro';
+import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'hero'>;
+}
+
+const { secao } = Astro.props;
+// "TazTheDoctor" -> Taz / The / Doctor: one line each, poster style. Other names stay whole.
+const partes = secao.titulo.match(/[A-Z][a-z]+/g);
+const linhas = partes && partes.join('') === secao.titulo ? partes : [secao.titulo];
+const externo = (href: string) => /^https?:/.test(href);
+---
+
+<section id={ancoraSecao(secao)} class="brilho-palco relative overflow-hidden" data-hero aria-label={secao.titulo}>
+  <div class="container-site grid items-center gap-12 pt-12 pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pt-20 lg:pb-28">
+    <div class="entrada">
+      {secao.selo && <p class="rotulo-mono" style="--i:0">{secao.selo}</p>}
+      <h1 class="mt-5 leading-[0.86]" style="--i:1">
+        {
+          linhas.map((linha, i) => (
+            <span
+              class:list={[
+                'block',
+                linhas.length === 3 && i === 1
+                  ? 'text-[clamp(2.25rem,7vw,4.5rem)] text-primaria'
+                  : 'text-[clamp(4.25rem,21vw,9.5rem)]',
+              ]}
+            >
+              {linha}
+            </span>
+          ))
+        }
+      </h1>
+      <p class="mt-6 flex items-center gap-3 font-titulo text-2xl text-destaque uppercase sm:text-3xl" style="--i:2">
+        <span class="equalizador" aria-hidden="true">
+          {[0.5, 0.9, 0.35, 0.75, 0.6].map((h, i) => <span style={`--i:${i};--h:${h}`} />)}
+        </span>
+        {secao.apelido}
+      </p>
+      <p class="mt-6 max-w-xl text-lg text-texto-suave sm:text-xl" style="--i:3">{secao.subtitulo}</p>
+      {
+        secao.etiquetas.length > 0 && (
+          <ul class="mt-6 flex flex-wrap gap-2" style="--i:4" aria-label="Áreas">
+            {secao.etiquetas.map((etiqueta) => (
+              <li class="etiqueta">{etiqueta}</li>
+            ))}
+          </ul>
+        )
+      }
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row" style="--i:5">
+        <a href={secao.acao_principal.href} class="botao-primario" {...(externo(secao.acao_principal.href) ? { target: '_blank', rel: 'noopener' } : {})}>
+          {secao.acao_principal.texto}
+        </a>
+        {
+          secao.acao_secundaria && (
+            <a href={secao.acao_secundaria.href} class="botao-secundario" {...(externo(secao.acao_secundaria.href) ? { target: '_blank', rel: 'noopener' } : {})}>
+              {secao.acao_secundaria.texto}
+            </a>
+          )
+        }
+      </div>
+    </div>
+    <div class="relative mx-auto w-full max-w-sm lg:max-w-md">
+      {/* Offset frame and glow behind the photo: decorative. */}
+      <div class="absolute -inset-3 translate-x-4 translate-y-4 rounded-[28px] border-2 border-primaria/60" aria-hidden="true"></div>
+      <div class="absolute -inset-10 -z-0 rounded-full bg-primaria/20 blur-3xl" aria-hidden="true"></div>
+      <Imagem
+        imagem={secao.foto}
+        prioridade
+        sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
+        larguras={[360, 540, 720, 828]}
+        class="relative aspect-[3/4] w-full rounded-[24px] object-cover shadow-2xl shadow-black/60"
+      />
+    </div>
+  </div>
+</section>

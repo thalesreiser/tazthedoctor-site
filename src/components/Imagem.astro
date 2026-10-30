@@ -1,0 +1,47 @@
+---
+import { Picture } from 'astro:assets';
+import { largurasImagem, resolverImagem } from '../lib/imagens.ts';
+import type { Imagem } from '../lib/schema.ts';
+
+interface Props {
+  imagem: Imagem;
+  class?: string;
+  // Above the fold: loads eagerly with high priority.
+  prioridade?: boolean;
+  // `sizes` of the rendered image and srcset candidates (CSS px); defaults fit a content column.
+  sizes?: string;
+  larguras?: number[];
+}
+
+const {
+  imagem,
+  class: classe,
+  prioridade = false,
+  sizes = '(min-width: 1024px) 36rem, calc(100vw - 2rem)',
+  larguras = [480, 720, 960, 1280],
+} = Astro.props;
+
+const arquivos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/site/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}');
+const { default: arquivo } = await resolverImagem(arquivos, imagem.src)();
+const srcset = largurasImagem(arquivo.width, larguras);
+// The <img> fallback is the largest srcset width (not the full original), as JPEG unless the source is PNG.
+const largura = Math.max(...srcset);
+const altura = Math.round((largura * arquivo.height) / arquivo.width);
+---
+
+{/* display: contents on <picture> keeps the classes passed for the image working as on a plain <img>. */}
+<Picture
+  src={arquivo}
+  alt={imagem.alt}
+  formats={['avif', 'webp']}
+  fallbackFormat={arquivo.format === 'png' ? 'png' : 'jpg'}
+  widths={srcset}
+  width={largura}
+  height={altura}
+  sizes={sizes}
+  class={classe}
+  loading={prioridade ? 'eager' : 'lazy'}
+  fetchpriority={prioridade ? 'high' : 'auto'}
+  decoding="async"
+  pictureAttributes={{ class: 'contents [&>source]:hidden' }}
+/>

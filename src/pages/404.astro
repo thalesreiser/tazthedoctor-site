@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Rodape from '../components/Rodape.astro';
+import { carregarConteudo } from '../lib/conteudo.ts';
+
+// Built as dist/404.html: Cloudflare Pages serves it with status 404 for unknown paths
+// (without it, Pages answers every path with index.html).
+const conteudo = carregarConteudo();
+const rodape = conteudo.secoes.find((secao) => secao.tipo === 'rodape' && secao.ativo);
+---
+
+<Base conteudo={conteudo} titulo={`Página não encontrada | ${conteudo.site.nome}`} descricao="O endereço aberto não existe neste site.">
+  {!conteudo.em_construcao && <meta slot="head" name="robots" content="noindex" />}
+  <section class="secao brilho-palco">
+    <div class="container-site max-w-3xl">
+      <p class="rotulo-mono">Erro 404</p>
+      <h1 class="mt-4 text-[clamp(3rem,14vw,6rem)] leading-none break-words">Faixa não encontrada</h1>
+      <p class="mt-6 text-lg text-texto-suave">O endereço que você abriu não existe ou mudou de lugar.</p>
+      <a href="/" class="botao-primario mt-8">Voltar para a página inicial</a>
+    </div>
+  </section>
+  <Fragment slot="depois">
+    {rodape?.tipo === 'rodape' && <Rodape secao={rodape} conteudo={conteudo} />}
+  </Fragment>
+</Base>

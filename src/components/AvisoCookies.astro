@@ -1,0 +1,179 @@
+---
+import type { Conteudo } from '../lib/schema.ts';
+
+interface Props {
+  conteudo: Conteudo;
+}
+
+const { google_analytics, meta_pixel, aviso_cookies: aviso } = Astro.props.conteudo.rastreamento;
+---
+
+{/*
+  Non-modal consent banner. Hidden until the script finds no stored choice (or the
+  footer "Preferências de cookies" button reopens it). On phones it sits 6rem above
+  the bottom edge; from `sm` up it is a card in the bottom-left corner.
+*/}
+<div
+  role="region"
+  aria-label="Aviso de cookies"
+  data-aviso-cookies
+  data-ga={google_analytics}
+  data-pixel={meta_pixel}
+  hidden
+  class="aviso-cookies fixed inset-x-4 bottom-4 z-50 rounded-lg bg-texto p-4 text-sm text-fundo shadow-xl sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-md sm:p-5"
+>
+  <p>
+    {aviso.texto}{' '}
+    <a href="/politica-de-privacidade" class="underline">Política de privacidade</a>.
+  </p>
+  <p data-escolha-atual hidden class="mt-2 font-semibold"></p>
+  <div class="mt-4 grid grid-cols-2 gap-3">
+    <button type="button" data-escolha="aceito" class="botao min-h-11 border border-fundo bg-fundo px-4 py-2 text-texto">
+      {aviso.aceitar}
+    </button>
+    <button type="button" data-escolha="recusado" class="botao min-h-11 border border-fundo bg-fundo px-4 py-2 text-texto">
+      {aviso.recusar}
+    </button>
+  </div>
+</div>
+
+<style>
+  /* The global focus ring uses the primary color, which may be faint on the dark banner. */
+  .aviso-cookies :focus-visible {
+    outline-color: var(--cor-fundo);
+  }
+</style>
+
+<script>
+  import {
+    chamadasConversao,
+    ehLinkEmail,
+    gravarEscolha,
+    lerEscolha,
+    mostrarAviso,
+    podeRastrear,
+    type Conversao,
+    type Escolha,
+    type Ferramentas,
+  } from '../lib/consentimento.ts';
+
+  type Fila = ((...argumentos: unknown[]) => void) & Record<string, unknown>;
+
+  declare global {
+    interface Window {
+      dataLayer?: unknown[];
+      gtag?: (...argumentos: unknown[]) => void;
+      fbq?: Fila;
+      _fbq?: Fila;
+    }
+  }
+
+  function carregarScript(src: string): void {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = src;
+    document.head.append(script);
+  }
+
+  // Same calls as Google's gtag.js snippet.
+  function carregarGoogleAnalytics(id: string): void {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      // gtag.js expects the arguments object itself, not an array.
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer!.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', id);
+    carregarScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`);
+  }
+
+  // Same queue as Meta's base pixel snippet.
+  function carregarMetaPixel(id: string): void {
+    if (window.fbq) return;
+    const fila = [] as unknown[];
+    const fbq = function (...argumentos: unknown[]) {
+      const metodo = fbq.callMethod as ((...a: unknown[]) => void) | undefined;
+      if (metodo) metodo.apply(fbq, argumentos);
+      else fila.push(argumentos);
+    } as Fila;
+    Object.assign(fbq, { push: fbq, loaded: true, version: '2.0', queue: fila });
+    window.fbq = fbq;
+    window._fbq = window._fbq || fbq;
+    fbq('init', id);
+    fbq('track', 'PageView');
+    carregarScript('https://connect.facebook.net/en_US/fbevents.js');
+  }
+
+  const aviso = document.querySelector<HTMLElement>('[data-aviso-cookies]');
+  if (aviso) {
+    const ferramentas: Ferramentas = {
+      google_analytics: aviso.dataset.ga || undefined,
+      meta_pixel: aviso.dataset.pixel || undefined,
+    };
+    const armazenamento = () => window.localStorage;
+    const textoEscolha = aviso.querySelector<HTMLElement>('[data-escolha-atual]');
+    let escolha = lerEscolha(armazenamento);
+    let carregado = false;
+    let origem: HTMLElement | null = null;
+
+    const carregar = () => {
+      if (carregado || !podeRastrear(escolha)) return;
+      carregado = true;
+      if (ferramentas.google_analytics) carregarGoogleAnalytics(ferramentas.google_analytics);
+      if (ferramentas.meta_pixel) carregarMetaPixel(ferramentas.meta_pixel);
+    };
+
+    const fechar = () => {
+      aviso.hidden = true;
+      origem?.focus();
+      origem = null;
+    };
+
+    const abrir = (gatilho: HTMLElement) => {
+      origem = gatilho;
+      if (textoEscolha) {
+        textoEscolha.hidden = escolha === null;
+        textoEscolha.textContent =
+          escolha === 'aceito'
+            ? 'Sua escolha atual: cookies aceitos.'
+            : 'Sua escolha atual: cookies recusados.';
+      }
+      aviso.hidden = false;
+      aviso.querySelector<HTMLButtonElement>('[data-escolha]')?.focus();
+    };
+
+    // Conversions are sent only while consent stands and only to the loaded tools.
+    const converter = (conversao: Conversao) => {
+      if (!carregado || !podeRastrear(escolha)) return;
+      for (const chamada of chamadasConversao(conversao, ferramentas)) {
+        if (chamada.ferramenta === 'google_analytics') window.gtag?.(...chamada.argumentos);
+        else window.fbq?.(...chamada.argumentos);
+      }
+    };
+
+    for (const botao of aviso.querySelectorAll<HTMLButtonElement>('[data-escolha]')) {
+      botao.addEventListener('click', () => {
+        escolha = botao.dataset.escolha as Escolha;
+        gravarEscolha(armazenamento, escolha);
+        carregar();
+        fechar();
+      });
+    }
+
+    for (const botao of document.querySelectorAll<HTMLElement>('[data-preferencias-cookies]')) {
+      botao.hidden = false;
+      botao.addEventListener('click', () => abrir(botao));
+    }
+
+    document.addEventListener('click', (evento) => {
+      const link = (evento.target as Element | null)?.closest?.('a[href]');
+      if (link instanceof HTMLAnchorElement && ehLinkEmail(link.href)) converter('email');
+    });
+    // Contato.astro dispatches it after the provider accepted a real submission.
+    document.addEventListener('formulario-enviado', () => converter('formulario'));
+
+    carregar();
+    if (mostrarAviso(escolha)) aviso.hidden = false;
+  }
+</script>

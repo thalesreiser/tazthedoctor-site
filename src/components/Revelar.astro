@@ -1,0 +1,31 @@
+{/*
+  Scroll reveal (global.css, .revelar). Progressive: content is visible by default and only this
+  script hides it, skipping the hero, anything already on screen and reduced motion. Children of
+  [data-revelar-grupo] enter one after another (--i). Rendered only with tema.animacoes "sutil".
+*/}
+<script>
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          entrada.target.classList.add('revelado');
+          observador.unobserve(entrada.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+    // Read every position first, then write, so the page is laid out only once.
+    const alvos = [...document.querySelectorAll<HTMLElement>('main section:not([data-hero]) :is(.container-site, [data-revelar-grupo]) > *')]
+      .filter((el) => !el.hasAttribute('data-revelar-grupo'))
+      .map((el) => ({ el, topo: el.getBoundingClientRect().top }));
+    for (const { el, topo } of alvos) {
+      if (topo < innerHeight) continue;
+      const grupo = el.parentElement!;
+      const ordem = grupo.hasAttribute('data-revelar-grupo') ? [...grupo.children].indexOf(el) : 0;
+      el.style.setProperty('--i', String(Math.min(ordem, 5)));
+      el.classList.add('revelar');
+      observador.observe(el);
+    }
+  }
+</script>

@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Contato from '../components/Contato.astro';
+import Equipamento from '../components/Equipamento.astro';
+import Hero from '../components/Hero.astro';
+import Musica from '../components/Musica.astro';
+import Plataformas from '../components/Plataformas.astro';
+import Rodape from '../components/Rodape.astro';
+import Servicos from '../components/Servicos.astro';
+import Sobre from '../components/Sobre.astro';
+import { carregarConteudo } from '../lib/conteudo.ts';
+import { gerarJsonLd, serializarJsonLd } from '../lib/seo.ts';
+import { fundosDasSecoes } from '../lib/tema.ts';
+
+const conteudo = carregarConteudo();
+const secoes = conteudo.secoes.filter((secao) => secao.ativo);
+// The footer lives outside <main>; everything else keeps the JSON order.
+const blocos = secoes.filter((secao) => secao.tipo !== 'rodape');
+const rodape = secoes.find((secao) => secao.tipo === 'rodape');
+// Backgrounds are set here, not in the components, so the page keeps a regular rhythm.
+const fundos = fundosDasSecoes(blocos);
+const classesFundo = { palco: 'fundo-palco', superficie: 'fundo-superficie', creme: 'fundo-creme' } as const;
+// Kicker above each section title: its position and menu name, e.g. "02 · música".
+const rotulos = blocos.map((secao, i) => `${String(i).padStart(2, '0')} · ${('menu' in secao && secao.menu) || ''}`.replace(/ · $/, ''));
+const { em_construcao: emConstrucao } = conteudo;
+---
+
+<Base conteudo={conteudo}>
+  <script is:inline slot="head" type="application/ld+json" set:html={serializarJsonLd(gerarJsonLd(conteudo))} />
+  {
+    blocos.map((secao, i) => (
+      <div class={classesFundo[fundos[i]!]}>
+        {(() => {
+          const rotulo = rotulos[i]!;
+          switch (secao.tipo) {
+            case 'hero':
+              return <Hero secao={secao} />;
+            case 'servicos':
+              return <Servicos secao={secao} rotulo={rotulo} />;
+            case 'musica':
+              return <Musica secao={secao} rotulo={rotulo} cor={conteudo.tema.cor_primaria} emConstrucao={emConstrucao} />;
+            case 'sobre':
+              return <Sobre secao={secao} rotulo={rotulo} emConstrucao={emConstrucao} />;
+            case 'equipamento':
+              return <Equipamento secao={secao} rotulo={rotulo} emConstrucao={emConstrucao} />;
+            case 'plataformas':
+              return <Plataformas secao={secao} rotulo={rotulo} />;
+            case 'contato':
+              return <Contato secao={secao} conteudo={conteudo} rotulo={rotulo} />;
+          }
+        })()}
+      </div>
+    ))
+  }
+  <Fragment slot="depois">
+    {rodape?.tipo === 'rodape' && <Rodape secao={rodape} conteudo={conteudo} />}
+  </Fragment>
+</Base>

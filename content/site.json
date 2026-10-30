@@ -1,0 +1,212 @@
+{
+  "em_construcao": true,
+  "site": {
+    "nome": "TazTheDoctor",
+    "titulo": "TazTheDoctor | Produção, mixagem, guitarra e baixo em Porto Alegre",
+    "descricao": "TazTheDoctor, o ninja dos beats: produtor musical, mixagem, guitarra e baixo em gravações, ensaios e shows. Cria da Vila Nova, Porto Alegre/RS.",
+    "url": "https://tazthedoctor.pages.dev",
+    "idioma": "pt-BR"
+  },
+  "artista": {
+    "nome_artistico": "TazTheDoctor",
+    "nome": "Thales Reiser Pedreira",
+    "apelido": "ninja dos beats",
+    "bairro": "Vila Nova",
+    "cidade": "Porto Alegre",
+    "uf": "RS",
+    "ano_nascimento": 1999,
+    "generos": ["Eletrônica"],
+    "perfis": [
+      "https://soundcloud.com/tazthedoctor",
+      "https://www.youtube.com/@tazthedoctor",
+      "https://www.tiktok.com/@tazthedoctor",
+      "https://www.instagram.com/tazthedoctor/",
+      "https://www.threads.com/@tazthedoctor",
+      "https://linktr.ee/TazTheDoctor"
+    ]
+  },
+  "tema": {
+    "cor_fundo": "#15110A",
+    "cor_superficie": "#272012",
+    "cor_texto": "#F0E4D2",
+    "cor_texto_suave": "#C3B7A2",
+    "cor_primaria": "#D1932B",
+    "cor_primaria_contraste": "#15110A",
+    "cor_destaque": "#F9702F",
+    "cor_destaque_frio": "#ADE3BB",
+    "cor_creme": "#F0E4D2",
+    "cor_creme_texto": "#15110A",
+    "cor_creme_texto_suave": "#524E49",
+    "cor_creme_primaria": "#6A4D25",
+    "fonte_titulo": "Anton, Impact, \"Arial Narrow\", sans-serif",
+    "fonte_texto": "Manrope, system-ui, sans-serif",
+    "fonte_mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace",
+    "fontes": [
+      { "familia": "Anton", "pesos": [400] },
+      { "familia": "Manrope", "pesos": [400, 700] }
+    ],
+    "animacoes": "sutil"
+  },
+  "contato": {
+    "email": "tazthedoctor@gmail.com",
+    "assunto_email": "Trabalho com o TazTheDoctor"
+  },
+  "revisao": {
+    "termos_vetados": [
+      "o melhor", "a melhor", "os melhores", "as melhores", "o maior", "a maior", "número 1", "nº 1",
+      "garantido", "garantida", "100%", "revolucionário", "revolucionária", "inovador", "inovadora",
+      "incrível", "imbatível", "sem igual", "lendário", "lendária", "fenômeno", "sucesso absoluto",
+      "hit", "viral", "milhões", "milhares", "mil seguidores", "streams", "plays", "visualizações",
+      "esgotado", "esgotou", "turnê", "premiado", "premiada", "parceria com", "assinado com", "gravadora",
+      "discografia", "álbum", "spotify", "deezer",
+      "grátis", "gratuito", "promoção", "desconto", "preço", "R$"
+    ]
+  },
+  "secoes": [
+    {
+      "tipo": "hero",
+      "titulo": "TazTheDoctor",
+      "apelido": "ninja dos beats",
+      "selo": "Vila Nova · Porto Alegre/RS · 99'",
+      "subtitulo": "Produtor musical, guitarrista e baixista. Faço produção e mixagem para outros artistas e toco em gravações, ensaios e shows, com o estúdio como base.",
+      "etiquetas": ["produção", "mixagem", "guitarra", "baixo", "underground"],
+      "foto": {
+        "src": "taz-guitarra-estudio.jpg",
+        "alt": "TazTheDoctor em pé num estúdio de paredes claras, tocando uma guitarra Les Paul sunburst, com o cabelo comprido caindo no rosto e um violão encostado ao fundo"
+      },
+      "acao_principal": { "texto": "Chamar para um trabalho", "href": "#contato" },
+      "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" }
+    },
+    {
+      "tipo": "servicos",
+      "id": "trabalhos",
+      "menu": "Trabalhos",
+      "titulo": "No estúdio e no palco",
+      "subtitulo": "O foco é o estúdio: trabalhar a faixa de outros artistas, da produção à última camada de guitarra ou baixo.",
+      "itens": [
+        { "icone": "onda", "titulo": "Produção musical", "descricao": "Beats e produção de faixas para outros artistas, construindo o som junto com você." },
+        { "icone": "faders", "titulo": "Mixagem", "descricao": "Mixagem das suas faixas, equilibrando cada elemento a partir das referências que você trouxer." },
+        { "icone": "guitarra", "titulo": "Guitarra e baixo em gravações", "descricao": "Gravo guitarra e baixo como músico de sessão, no estúdio, para a sua faixa." },
+        { "icone": "microfone", "titulo": "Ensaios e shows", "descricao": "Guitarra ou baixo de apoio para ensaios e apresentações ao vivo." }
+      ]
+    },
+    {
+      "tipo": "musica",
+      "menu": "Música",
+      "titulo": "Do estúdio",
+      "subtitulo": "Tem muita coisa gravada e pouca coisa lançada, por enquanto. O que já está no ar: uma faixa no SoundCloud e os vídeos curtos no YouTube.",
+      "aviso_players": "Os players do SoundCloud e do YouTube só carregam quando você aperta o play.",
+      "itens": [
+        {
+          "plataforma": "soundcloud",
+          "titulo": "raveDoPicaPau.mp3",
+          "formato": "Faixa · versão remasterizada",
+          "data": "2025-06-28",
+          "descricao": "A primeira versão, raveDoPicaPau2.0 (original mix), saiu em 10 de junho de 2025 e também está no perfil.",
+          "url": "https://soundcloud.com/tazthedoctor/ravedopicapauremastered",
+          "faixa_id": "2120921334"
+        },
+        {
+          "plataforma": "youtube",
+          "titulo": "Lançamento…",
+          "formato": "Vídeo curto",
+          "data": "2025-07-16",
+          "url": "https://www.youtube.com/shorts/E9EoFOH0T6w",
+          "video_id": "E9EoFOH0T6w",
+          "vertical": true
+        },
+        {
+          "plataforma": "youtube",
+          "titulo": "Nova música disponível no meu SoundCloud…",
+          "formato": "Vídeo curto",
+          "data": "2025-07-10",
+          "url": "https://www.youtube.com/shorts/03agx6km87A",
+          "video_id": "03agx6km87A",
+          "vertical": true
+        }
+      ],
+      "nota": "Os próximos lançamentos saem primeiro no SoundCloud.",
+      "a_completar": [
+        "Próximos lançamentos: título, data e link de cada faixa ou vídeo que for ao ar"
+      ]
+    },
+    {
+      "tipo": "sobre",
+      "menu": "Sobre",
+      "titulo": "Quem é o Taz",
+      "paragrafos": [
+        "Sou o TazTheDoctor, Thales Reiser Pedreira no documento e ninja dos beats nas redes. Nasci em 1999 e sou cria da Vila Nova, em Porto Alegre/RS.",
+        "Sou guitarrista, baixista e produtor musical, e trabalho com mixagem. Toquei em bandas pequenas e hoje meu lugar é o estúdio.",
+        "Quero somar no trabalho de outros artistas: produzindo e mixando faixas, ou tocando guitarra e baixo em gravações, ensaios e shows. Artista underground, com o foco no que acontece dentro do estúdio."
+      ],
+      "foto": {
+        "src": "taz-retrato-noite.jpg",
+        "alt": "TazTheDoctor sentado, de camisa estampada, erguendo uma taça; a mão tatuada cobre parte do rosto"
+      },
+      "registros": [
+        { "rotulo": "de onde", "valor": "Vila Nova, Porto Alegre/RS" },
+        { "rotulo": "geração", "valor": "99'" },
+        { "rotulo": "instrumentos", "valor": "Guitarra e baixo" }
+      ]
+    },
+    {
+      "tipo": "equipamento",
+      "id": "estudio",
+      "menu": "Estúdio",
+      "titulo": "Equipamento",
+      "texto": "Uma Les Paul sunburst e os pedais Zoom: o lado guitarra do TazTheDoctor.",
+      "foto": {
+        "src": "guitarra-pedais.jpg",
+        "alt": "Close de uma guitarra Les Paul sunburst com captador de capa cromada e frisos creme, apoiada ao lado de dois pedais Zoom de LEDs azuis e visor laranja"
+      },
+      "itens": [
+        { "rotulo": "guitarra", "valor": "Les Paul sunburst" },
+        { "rotulo": "pedais", "valor": "Zoom" }
+      ]
+    },
+    {
+      "tipo": "plataformas",
+      "id": "redes",
+      "menu": "Redes",
+      "titulo": "Onde ouvir e seguir",
+      "subtitulo": "Mesmo nome em todas: @tazthedoctor.",
+      "fundo": "creme",
+      "itens": [
+        { "nome": "SoundCloud", "icone": "soundcloud", "usuario": "tazthedoctor", "descricao": "A faixa completa", "href": "https://soundcloud.com/tazthedoctor" },
+        { "nome": "YouTube", "icone": "youtube", "usuario": "@tazthedoctor", "descricao": "Vídeos curtos", "href": "https://www.youtube.com/@tazthedoctor" },
+        { "nome": "TikTok", "icone": "tiktok", "usuario": "@tazthedoctor", "href": "https://www.tiktok.com/@tazthedoctor" },
+        { "nome": "Instagram", "icone": "instagram", "usuario": "@tazthedoctor", "href": "https://www.instagram.com/tazthedoctor/" },
+        { "nome": "Threads", "icone": "threads", "usuario": "@tazthedoctor", "href": "https://www.threads.com/@tazthedoctor" },
+        { "nome": "Linktree", "icone": "linktree", "usuario": "TazTheDoctor", "descricao": "Todos os links", "href": "https://linktr.ee/TazTheDoctor" }
+      ],
+      "fotos": [
+        { "src": "taz-flash.jpg", "alt": "TazTheDoctor de camiseta preta, fotografado com flash numa festa, segurando um copo" },
+        { "src": "taz-praia.jpg", "alt": "Selfie desfocada de TazTheDoctor de óculos escuros num mirante, com o mar e morros ao fundo" }
+      ]
+    },
+    {
+      "tipo": "contato",
+      "menu": "Contato",
+      "titulo": "Bora gravar?",
+      "texto": "Produção, mixagem, guitarra ou baixo na sua faixa, ensaio ou show: me conta a ideia, com data e local se já tiver.",
+      "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Ensaios e shows"],
+      "texto_email": "Mandar e-mail",
+      "provedor": "web3forms",
+      "chave": "",
+      "campos": [
+        { "nome": "nome", "rotulo": "Nome ou nome artístico", "tipo": "text", "autocomplete": "name" },
+        { "nome": "email", "rotulo": "E-mail", "tipo": "email", "autocomplete": "email" },
+        { "nome": "assunto", "rotulo": "Assunto", "tipo": "select", "opcoes": ["Produção musical", "Mixagem", "Gravação de guitarra ou baixo", "Ensaio ou show", "Outro"], "erro": "Escolha uma opção." },
+        { "nome": "mensagem", "rotulo": "Conta a ideia", "tipo": "textarea", "ajuda": "O que você precisa, prazo e, se tiver, links de referência." }
+      ],
+      "consentimento": "Concordo com o uso dos meus dados para receber o retorno deste contato, conforme a",
+      "botao": "Enviar mensagem",
+      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder."
+    },
+    {
+      "tipo": "rodape",
+      "texto": "Ninja dos beats. Real cria da VN.",
+      "link_dev": { "texto": "Também sou dev", "href": "https://thales-dev.pages.dev" }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+---
+import Icone from './Icone.astro';
+import { temRastreamento } from '../lib/consentimento.ts';
+import { linkEmail } from '../lib/email.ts';
+import type { Conteudo, SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'rodape'>;
+  conteudo: Conteudo;
+}
+
+const { secao, conteudo } = Astro.props;
+const { email, assunto_email } = conteudo.contato;
+const { artista } = conteudo;
+const ano = new Date().getFullYear();
+const redes = conteudo.secoes.flatMap((s) => (s.tipo === 'plataformas' && s.ativo ? s.itens : []));
+const lugar = [artista.bairro, `${artista.cidade}/${artista.uf}`].filter(Boolean).join(', ');
+---
+
+<footer class="border-t border-texto/10 bg-superficie pt-16 pb-10">
+  <div class="container-site">
+    <p class="font-titulo text-[clamp(3rem,12vw,7rem)] leading-none text-texto uppercase">{conteudo.site.nome}</p>
+    {secao.texto && <p class="mt-3 text-lg text-texto-suave">{secao.texto}</p>}
+    <div class="mt-12 grid gap-10 md:grid-cols-3">
+      <address class="text-sm not-italic text-texto-suave">
+        <p>{lugar}</p>
+        <p class="mt-2"><a href={linkEmail(email, assunto_email)} class="break-all text-texto underline underline-offset-4">{email}</a></p>
+      </address>
+      {
+        redes.length > 0 && (
+          <nav aria-label="Redes">
+            <ul class="flex flex-wrap gap-2">
+              {redes.map((rede) => (
+                <li>
+                  <a
+                    href={rede.href}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={`${rede.nome} (abre em nova aba)`}
+                    title={rede.nome}
+                    class="inline-flex size-11 items-center justify-center rounded-full border border-texto/20 text-texto hover:border-primaria hover:text-primaria"
+                  >
+                    <Icone nome={rede.icone} class="size-5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+      <nav aria-label="Rodapé">
+        <ul class="space-y-2 text-sm">
+          <li><a href="/politica-de-privacidade" class="text-texto-suave underline hover:text-texto">Política de privacidade</a></li>
+          {
+            secao.link_dev && (
+              <li>
+                <a href={secao.link_dev.href} target="_blank" rel="noopener" class="text-texto-suave underline hover:text-texto">
+                  {secao.link_dev.texto}
+                </a>
+              </li>
+            )
+          }
+          {
+            temRastreamento(conteudo.rastreamento) && (
+              <li>
+                {/* AvisoCookies.astro unhides it and reopens the banner on click. */}
+                <button type="button" data-preferencias-cookies hidden class="cursor-pointer text-texto-suave underline hover:text-texto">
+                  Preferências de cookies
+                </button>
+              </li>
+            )
+          }
+        </ul>
+      </nav>
+    </div>
+    <p class="mt-12 text-xs text-texto-suave">© {ano} {artista.nome_artistico} · {artista.nome}.</p>
+  </div>
+</footer>

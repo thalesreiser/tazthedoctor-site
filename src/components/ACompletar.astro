@@ -1,0 +1,20 @@
+---
+interface Props {
+  itens: string[];
+  emConstrucao: boolean;
+}
+
+const { itens, emConstrucao } = Astro.props;
+---
+
+{/* Notes for Thales: only while the site is "em construção" (the schema blocks publishing with notes left). */}
+{
+  emConstrucao && itens.length > 0 && (
+    <aside aria-label="Conteúdo a completar" class="mt-10 rounded-cartao border-2 border-dashed border-texto/35 p-5 text-sm">
+      <p class="font-mono text-xs font-semibold tracking-[0.15em] text-texto uppercase">A completar</p>
+      <ul class="mt-3 list-disc space-y-1 pl-5 text-texto-suave">
+        {itens.map((item) => <li>{item}</li>)}
+      </ul>
+    </aside>
+  )
+}

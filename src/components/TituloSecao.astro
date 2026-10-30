@@ -1,0 +1,17 @@
+---
+interface Props {
+  id: string;
+  // Short kicker above the title, e.g. "02 · música".
+  rotulo: string;
+  titulo: string;
+  subtitulo?: string | undefined;
+}
+
+const { id, rotulo, titulo, subtitulo } = Astro.props;
+---
+
+<p class="rotulo-mono flex items-center gap-3" aria-hidden="true">
+  <span class="h-px w-8 bg-current"></span>{rotulo}
+</p>
+<h2 id={id} class="titulo-secao mt-4">{titulo}</h2>
+{subtitulo && <p class="mt-6 max-w-2xl text-lg text-texto-suave">{subtitulo}</p>}

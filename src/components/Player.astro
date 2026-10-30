@@ -1,0 +1,113 @@
+---
+import Icone from './Icone.astro';
+import { dataLancamento, urlEmbedSoundCloud, urlEmbedYouTube } from '../lib/embeds.ts';
+import type { Lancamento } from '../lib/schema.ts';
+
+interface Props {
+  item: Lancamento;
+  // Accent passed to the SoundCloud widget.
+  cor: string;
+}
+
+const { item, cor } = Astro.props;
+const soundcloud = item.plataforma === 'soundcloud';
+const vertical = item.plataforma === 'youtube' && item.vertical;
+const plataforma = soundcloud ? 'SoundCloud' : 'YouTube';
+const embed = item.plataforma === 'soundcloud' ? urlEmbedSoundCloud(item.faixa_id, cor) : urlEmbedYouTube(item.video_id);
+// Decorative waveform on the generated cover: fixed pseudo-random heights from the title.
+const barras = Array.from({ length: 48 }, (_, i) => {
+  const c = item.titulo.charCodeAt(i % item.titulo.length);
+  return 0.2 + (((c * (i + 7)) % 17) / 17) * 0.8;
+});
+---
+
+{/*
+  Click-to-load facade: without JS it is a plain link to the platform. Player.astro's script turns
+  the click into an in-page iframe, so no third-party request happens before the visitor asks.
+*/}
+<article class:list={['cartao cartao-interativo flex flex-col overflow-hidden', soundcloud && 'col-span-2']}>
+  <div
+    class:list={['player relative', vertical ? 'aspect-[9/16]' : 'min-h-[200px] flex-1']}
+    data-player
+    data-embed={embed}
+    data-titulo={`Player do ${plataforma}: ${item.titulo}`}
+    data-altura={soundcloud ? '166' : undefined}
+  >
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noopener"
+      data-play
+      class="capa-player group absolute inset-0 flex flex-col justify-between p-5 text-texto sm:p-6"
+    >
+      <span class="flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.15em] uppercase">
+        <Icone nome={soundcloud ? 'soundcloud' : 'youtube'} class="size-5" />
+        {plataforma}
+      </span>
+      {
+        soundcloud && (
+          <span class="flex h-14 items-end gap-[3px]" aria-hidden="true">
+            {barras.map((h) => (
+              <span class="w-full rounded-full bg-texto/45" style={`height:${Math.round(h * 100)}%`} />
+            ))}
+          </span>
+        )
+      }
+      <span class:list={['flex gap-4', vertical ? 'flex-col items-start gap-3' : 'items-center']}>
+        <span class="botao-play inline-flex size-14 shrink-0 items-center justify-center rounded-full bg-primaria text-primaria-contraste">
+          <Icone nome="play" class="size-6 translate-x-0.5 fill-current" />
+        </span>
+        <span class:list={['min-w-0 font-titulo leading-tight uppercase break-words', vertical ? 'text-lg sm:text-xl' : 'text-2xl sm:text-3xl']}>
+          <span data-rotulo-play class="sr-only">Ouvir no {plataforma} (abre em nova aba): </span>
+          {item.titulo}
+        </span>
+      </span>
+    </a>
+  </div>
+  <div class="flex flex-1 flex-col gap-2 p-5 sm:p-6">
+    <p class="font-mono text-xs text-texto-suave uppercase">
+      {item.formato} · <time datetime={item.data}>{dataLancamento(item.data)}</time>
+    </p>
+    {item.descricao && <p class="text-texto-suave">{item.descricao}</p>}
+    <a href={item.url} target="_blank" rel="noopener" class="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-primaria underline underline-offset-4">
+      Abrir no {plataforma}
+      <Icone nome="externo" class="size-4" />
+      <span class="sr-only">(abre em nova aba)</span>
+    </a>
+  </div>
+</article>
+
+<script>
+  for (const player of document.querySelectorAll<HTMLElement>('[data-player]')) {
+    const link = player.querySelector<HTMLAnchorElement>('[data-play]');
+    if (!link) continue;
+    const rotulo = link.querySelector<HTMLElement>('[data-rotulo-play]');
+    if (rotulo) rotulo.textContent = 'Tocar aqui na página: ';
+    link.removeAttribute('target');
+    link.setAttribute('role', 'button');
+    link.addEventListener('click', (evento) => {
+      // Ctrl/Cmd/Shift/middle click keep the normal "open the platform" behavior.
+      if (evento.ctrlKey || evento.metaKey || evento.shiftKey || evento.button !== 0) return;
+      evento.preventDefault();
+      const iframe = document.createElement('iframe');
+      iframe.src = player.dataset.embed!;
+      iframe.title = player.dataset.titulo ?? 'Player';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.className = 'absolute inset-0 h-full w-full border-0';
+      if (player.dataset.altura) {
+        player.style.minHeight = `${player.dataset.altura}px`;
+        player.style.height = `${player.dataset.altura}px`;
+      }
+      link.replaceWith(iframe);
+      iframe.focus();
+    });
+    // role="button" also answers to the space bar, like a real button.
+    link.addEventListener('keydown', (evento) => {
+      if (evento.key === ' ') {
+        evento.preventDefault();
+        link.click();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,35 @@
+---
+import Icone from './Icone.astro';
+import TituloSecao from './TituloSecao.astro';
+import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'servicos'>;
+  rotulo: string;
+}
+
+const { secao, rotulo } = Astro.props;
+const ancora = ancoraSecao(secao);
+const idTitulo = `${ancora}-titulo`;
+---
+
+<section id={ancora} class="secao" aria-labelledby={idTitulo}>
+  <div class="container-site">
+    <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.subtitulo} />
+    <ul class="mt-14 grid gap-4 sm:grid-cols-2 sm:gap-6" data-revelar-grupo>
+      {
+        secao.itens.map((item, i) => (
+          <li class="cartao cartao-interativo relative overflow-hidden p-7 sm:p-8">
+            {/* Big faint number drawn by CSS (::before), so it stays decoration, not text. */}
+            <span class="numero-fantasma absolute top-6 right-7 font-titulo text-5xl text-texto/10" data-numero={String(i + 1).padStart(2, '0')} aria-hidden="true" />
+            <span class="inline-flex size-12 items-center justify-center rounded-full bg-primaria/15 text-primaria">
+              <Icone nome={item.icone} class="size-6" />
+            </span>
+            <h3 class="mt-6 text-3xl leading-none">{item.titulo}</h3>
+            <p class="mt-3 text-texto-suave">{item.descricao}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

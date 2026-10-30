@@ -1,0 +1,61 @@
+---
+import Icone from './Icone.astro';
+import Imagem from './Imagem.astro';
+import TituloSecao from './TituloSecao.astro';
+import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'plataformas'>;
+  rotulo: string;
+}
+
+const { secao, rotulo } = Astro.props;
+const ancora = ancoraSecao(secao);
+const idTitulo = `${ancora}-titulo`;
+const [primeiraFoto, segundaFoto] = secao.fotos;
+---
+
+<section id={ancora} class="secao" aria-labelledby={idTitulo}>
+  <div class="container-site">
+    <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.subtitulo} />
+    <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4" data-revelar-grupo>
+      {
+        primeiraFoto && (
+          <li class="azulejo overflow-hidden rounded-cartao">
+            <Imagem imagem={primeiraFoto} sizes="(min-width: 768px) 16rem, 50vw" larguras={[240, 360, 540, 741]} class="foto-azulejo aspect-square h-full w-full object-cover" />
+          </li>
+        )
+      }
+      {
+        secao.itens.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener"
+              class="cartao cartao-interativo flex h-full min-h-40 flex-col justify-between gap-6 p-5 sm:p-6"
+            >
+              <span class="flex items-start justify-between">
+                <Icone nome={item.icone} class="size-8" />
+                <Icone nome="externo" class="size-4 text-texto-suave" />
+              </span>
+              <span>
+                <span class="block font-titulo text-2xl leading-none uppercase sm:text-3xl">{item.nome}</span>
+                <span class="mt-2 block font-mono text-xs break-all text-texto-suave sm:text-sm">{item.usuario}</span>
+                {item.descricao && <span class="mt-1 block text-sm text-texto-suave">{item.descricao}</span>}
+                <span class="sr-only">(abre em nova aba)</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+      {
+        segundaFoto && (
+          <li class="azulejo overflow-hidden rounded-cartao">
+            <Imagem imagem={segundaFoto} sizes="(min-width: 768px) 16rem, 50vw" larguras={[240, 360, 540, 800]} class="foto-azulejo aspect-square h-full w-full object-cover" />
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</section>

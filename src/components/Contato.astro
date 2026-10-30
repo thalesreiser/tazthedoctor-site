@@ -1,0 +1,174 @@
+---
+import Icone from './Icone.astro';
+import TituloSecao from './TituloSecao.astro';
+import { linkEmail } from '../lib/email.ts';
+import { ancoraSecao, type Conteudo, type SecaoDo } from '../lib/schema.ts';
+
+interface Props {
+  secao: SecaoDo<'contato'>;
+  conteudo: Conteudo;
+  rotulo: string;
+}
+
+const { secao, conteudo, rotulo } = Astro.props;
+const ancora = ancoraSecao(secao);
+const idTitulo = `${ancora}-titulo`;
+const demo = secao.chave === '';
+const { email, assunto_email } = conteudo.contato;
+
+const destino = {
+  formspree: `https://formspree.io/f/${secao.chave}`,
+  web3forms: 'https://api.web3forms.com/submit',
+}[secao.provedor];
+
+// user-invalid only matches after the visitor edits the field or tries to submit.
+const classeCampo =
+  'peer mt-2 block w-full rounded-campo border border-texto/25 bg-fundo px-4 py-3 text-base text-texto placeholder:text-texto-suave user-invalid:border-erro user-invalid:ring-1 user-invalid:ring-erro';
+const erroPadrao = (tipo: string) => (tipo === 'email' ? 'Informe um e-mail válido.' : 'Preencha este campo.');
+---
+
+<section id={ancora} class="secao brilho-palco" aria-labelledby={idTitulo}>
+  <div class="container-site grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+    <div>
+      <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.texto} />
+      {
+        secao.topicos.length > 0 && (
+          <ul class="mt-8 space-y-3">
+            {secao.topicos.map((topico) => (
+              <li class="flex items-center gap-3 text-lg font-bold">
+                <span class="h-0.5 w-5 bg-primaria" aria-hidden="true" />
+                {topico}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <a href={linkEmail(email, assunto_email)} class="botao-primario mt-10 w-full sm:w-auto">
+        <Icone nome="email" class="size-5 shrink-0" />
+        {secao.texto_email}
+      </a>
+      <p class="mt-4 font-mono text-sm break-all text-texto-suave">{email}</p>
+    </div>
+
+    <form
+      class="formulario-contato cartao grid gap-6 p-6 sm:grid-cols-2 sm:p-8"
+      method="POST"
+      action={demo ? '#' : destino}
+      data-demo={demo ? 'true' : undefined}
+      data-sucesso={secao.mensagem_sucesso}
+      aria-label="Formulário de contato"
+    >
+      {secao.provedor === 'web3forms' && !demo && <input type="hidden" name="access_key" value={secao.chave} />}
+      {/* Honeypot: real users never see or fill it. */}
+      <input type="checkbox" name={secao.provedor === 'formspree' ? '_gotcha' : 'botcheck'} class="hidden" tabindex="-1" autocomplete="off" />
+
+      {
+        secao.campos.map((campo) => {
+          const id = `${ancora}-${campo.nome}`;
+          const idAjuda = `${id}-ajuda`;
+          const largo = campo.tipo === 'textarea' || campo.tipo === 'select' ? 'sm:col-span-2' : '';
+          const comuns = {
+            id,
+            name: campo.nome,
+            required: campo.obrigatorio,
+            'aria-describedby': campo.ajuda ? idAjuda : undefined,
+            class: classeCampo,
+          };
+          return (
+            <div class={largo}>
+              <label for={id} class="font-bold">
+                {campo.rotulo}
+                {!campo.obrigatorio && <span class="font-normal text-texto-suave"> (opcional)</span>}
+              </label>
+              {campo.ajuda && (
+                <p id={idAjuda} class="mt-1 text-sm text-texto-suave">
+                  {campo.ajuda}
+                </p>
+              )}
+              {campo.tipo === 'textarea' ? (
+                <textarea {...comuns} rows="5" placeholder={campo.placeholder} />
+              ) : campo.tipo === 'select' ? (
+                <select {...comuns}>
+                  <option value="">Selecione</option>
+                  {campo.opcoes?.map((opcao) => (
+                    <option value={opcao}>{opcao}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  {...comuns}
+                  type={campo.tipo}
+                  inputmode={campo.tipo === 'tel' ? 'tel' : undefined}
+                  autocomplete={campo.autocomplete}
+                  placeholder={campo.placeholder}
+                />
+              )}
+              <p class="mt-1 hidden text-sm font-bold text-erro peer-user-invalid:block">{campo.erro ?? erroPadrao(campo.tipo)}</p>
+            </div>
+          );
+        })
+      }
+
+      {/* The whole row is the label, so it is easy to tap; shrink-0 keeps the box at full size. */}
+      <label class="flex min-h-11 cursor-pointer items-start gap-3 text-texto-suave sm:col-span-2">
+        <input id={`${ancora}-consentimento`} name="consentimento" type="checkbox" required class="mt-0.5 size-5 shrink-0 accent-primaria" />
+        <span>
+          {secao.consentimento}{' '}
+          <a href="/politica-de-privacidade" class="text-primaria underline">Política de privacidade</a>.
+        </span>
+      </label>
+
+      <div class="sm:col-span-2">
+        <button type="submit" class="botao-primario w-full sm:w-auto">{secao.botao}</button>
+        <p class="status-formulario mt-4 font-bold" role="status" aria-live="polite"></p>
+        {
+          demo && (
+            <p class="mt-2 text-sm text-texto-suave">
+              Formulário ainda não configurado: nada é enviado por aqui. Por enquanto, use o e-mail{' '}
+              <a href={linkEmail(email, assunto_email)} class="text-primaria underline">{email}</a>.
+            </p>
+          )
+        }
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Sends the form with fetch so the visitor stays on the page; without JS the
+  // browser posts it to the provider normally.
+  for (const form of document.querySelectorAll<HTMLFormElement>('.formulario-contato')) {
+    form.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const status = form.querySelector<HTMLElement>('.status-formulario');
+      const botao = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (!status || !botao) return;
+      const sucesso = form.dataset.sucesso ?? 'Mensagem enviada.';
+
+      if (form.dataset.demo) {
+        status.textContent = `${sucesso} (formulário não configurado: nada foi enviado)`;
+        form.reset();
+        return;
+      }
+
+      botao.disabled = true;
+      status.textContent = 'Enviando...';
+      try {
+        const resposta = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!resposta.ok) throw new Error(String(resposta.status));
+        status.textContent = sucesso;
+        form.reset();
+        // Conversion hook for AvisoCookies.astro; demo mode never reaches this line.
+        form.dispatchEvent(new CustomEvent('formulario-enviado', { bubbles: true }));
+      } catch {
+        status.textContent = 'Não foi possível enviar agora. Tente de novo ou mande um e-mail.';
+      } finally {
+        botao.disabled = false;
+      }
+    });
+  }
+</script>
