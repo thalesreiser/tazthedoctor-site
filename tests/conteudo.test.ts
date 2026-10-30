@@ -148,3 +148,23 @@ test('motion can be turned off', () => {
   dados.tema.animacoes = 'muita';
   assert.equal(valido(dados), false);
 });
+
+test('the street fonts are self-hosted through the tag and paint stacks', () => {
+  const { tema } = conteudoSchema.parse(original);
+  const familias = tema.fontes.map((f) => f.familia);
+  assert.ok(familias.includes('Sedgwick Ave Display') && tema.fonte_tag.includes('Sedgwick Ave Display'));
+  assert.ok(familias.includes('Rubik Wet Paint') && tema.fonte_tinta.includes('Rubik Wet Paint'));
+  // Dropping the paint stack leaves Rubik Wet Paint unused, which the schema refuses.
+  const dados = copia();
+  dados.tema.fonte_tinta = 'Anton, Impact, sans-serif';
+  assert.equal(valido(dados), false);
+});
+
+test('tickers repeat page text only: hero words and the contact call stay short', () => {
+  const hero = secao(original, 'hero');
+  assert.ok(hero.faixa.length > 0 && hero.faixa.every((palavra: string) => palavra.length <= 20));
+  const contato = secao(original, 'contato');
+  assert.ok(typeof contato.faixa === 'string' && contato.faixa.length <= 30);
+  // The e-mail in the contact ticker comes from contato.email, never from the call itself.
+  assert.equal(contato.faixa.includes('@'), false);
+});

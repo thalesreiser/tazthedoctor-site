@@ -6,6 +6,7 @@
   --color-primaria-contraste: var(--cor-primaria-contraste);
   --color-destaque: var(--cor-destaque);
   --color-destaque-frio: var(--cor-destaque-frio);
+  --color-spray: var(--cor-spray);
   --color-fundo: var(--cor-fundo);
   --color-superficie: var(--cor-superficie);
   --color-texto: var(--cor-texto);
@@ -14,8 +15,10 @@
   --font-titulo: var(--fonte-titulo);
   --font-texto: var(--fonte-texto);
   --font-mono: var(--fonte-mono);
-  --radius-cartao: 18px;
-  --radius-botao: 9999px;
+  --font-tag: var(--fonte-tag);
+  --font-tinta: var(--fonte-tinta);
+  --radius-cartao: 10px;
+  --radius-botao: 6px;
   --radius-campo: 10px;
 }
 
@@ -44,6 +47,11 @@
 
   body {
     @apply bg-fundo font-texto text-texto antialiased;
+  }
+
+  /* Tape, stickers and tilted posters may poke past the screen edge; never scroll sideways. */
+  main {
+    overflow-x: clip;
   }
 
   h1,
@@ -112,33 +120,41 @@
 }
 
 /*
-  Buttons lift by 1px with a warm glow on hover and press in on click (tema.animacoes "sutil",
-  pointer devices only, never with reduced motion). translate/scale never move the layout.
+  Buttons are rubber stamps: an offset ink shadow at rest, a small lift on hover and a hard press
+  into the paper on click (tema.animacoes "sutil", never with reduced motion). translate/scale
+  never move the layout.
 */
 @utility botao {
   @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-botao px-6 py-3 text-base font-bold;
   transition-property: color, background-color, border-color, box-shadow, translate, scale;
-  transition-duration: 200ms;
+  transition-duration: 160ms;
   transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     :where([data-animacoes='sutil']) &:hover {
-      translate: 0 -1px;
-      box-shadow: 0 12px 28px -14px color-mix(in srgb, var(--cor-primaria) 75%, transparent);
+      translate: -1px -1px;
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
     :where([data-animacoes='sutil']) &:active {
-      translate: 0 0;
-      scale: 0.98;
+      translate: 3px 3px;
+      scale: 0.97;
       box-shadow: none;
+      transition-duration: 60ms;
     }
   }
 }
 
 @utility botao-primario {
   @apply botao bg-primaria text-primaria-contraste;
+  box-shadow: 3px 3px 0 var(--cor-destaque);
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 4px 4px 0 var(--cor-destaque);
+    }
+  }
 }
 
 @utility botao-secundario {
@@ -189,7 +205,10 @@
     radial-gradient(45% 40% at 95% 0%, color-mix(in srgb, var(--cor-destaque-frio) 10%, transparent), transparent 70%);
 }
 
-/* Film grain over the whole page: a tiny inline SVG noise tile, far below any text contrast. */
+/*
+  Photocopy grain over the whole page: a tiny inline SVG noise tile pushed to high contrast (toner
+  specks rather than soft film grain), far below any text contrast. One fixed layer, no repaint.
+*/
 .grao::after {
   content: '';
   position: fixed;
@@ -197,10 +216,20 @@
   z-index: 60;
   pointer-events: none;
   opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 .6 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Equalizer next to the nickname: five bars, animated only with motion allowed. */
+/*
+  Equalizer next to the nickname and in the header: studio LED meters. Each bar is a column of
+  lit segments (mint, then amber, then orange at the peak); the level clips it from the top so the
+  segments never stretch. Animated only with motion allowed.
+*/
+@property --nivel {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.6;
+}
+
 .equalizador {
   display: inline-flex;
   align-items: flex-end;
@@ -208,22 +237,32 @@
   height: 1em;
 }
 
-.equalizador span {
-  width: 4px;
+.equalizador span,
+.medidor > span {
+  --nivel: var(--h, 0.6);
+  width: 5px;
   height: 100%;
-  border-radius: 2px;
-  background: currentColor;
-  transform-origin: bottom;
-  scale: 1 var(--h, 0.6);
+  background: linear-gradient(to top, var(--cor-destaque-frio) 0 50%, var(--cor-primaria) 50% 78%, var(--cor-destaque) 78%);
+  mask: repeating-linear-gradient(to top, #000 0 3px, transparent 3px 4px);
+  clip-path: inset(calc((1 - var(--nivel)) * 100%) 0 0 0);
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--cor-primaria) 45%, transparent));
+}
+
+/* The waveform on the player cover: same LED segments, fixed heights, a bit dimmer. */
+.medidor > span {
+  --nivel: 1;
+  width: 100%;
+  opacity: 0.8;
+  filter: none;
 }
 
 @keyframes equalizar {
   0%,
   100% {
-    scale: 1 0.25;
+    --nivel: 0.25;
   }
   50% {
-    scale: 1 1;
+    --nivel: 1;
   }
 }
 
@@ -231,6 +270,29 @@
   [data-animacoes='sutil'] .equalizador span {
     animation: equalizar 1.1s ease-in-out infinite;
     animation-delay: calc(var(--i, 0) * -0.23s);
+  }
+}
+
+/* Recording LED (music section notice): a lit orange dot that blinks slowly. */
+.led-rec {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--cor-destaque);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--cor-destaque) 70%, transparent);
+}
+
+@keyframes piscar {
+  50% {
+    opacity: 0.35;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .led-rec {
+    animation: piscar 1.6s steps(1, end) infinite;
   }
 }
 
@@ -252,14 +314,26 @@
 }
 
 /*
-  Scroll reveal (Revelar.astro adds .revelar, then .revelado when the element scrolls in). The
-  animation fills backwards only, so hover and focus transitions work as usual afterwards.
-  Focus inside a hidden block shows it at once.
+  Scroll reveal (Revelar.astro adds .revelar, then .revelado when the element scrolls in), as a
+  poster pasted on a wall: it comes in a little tilted and large, overshoots and settles at its own
+  rotation (--rotacao, set on the poster cards). Fills backwards only, so hover and focus
+  transitions work as usual afterwards. Focus inside a hidden block shows it at once.
 */
 @keyframes revelar {
   from {
     opacity: 0;
     translate: 0 1.25rem;
+    scale: 1.03;
+    rotate: calc(var(--rotacao, 0deg) - 2.5deg);
+  }
+  65% {
+    opacity: 1;
+    translate: 0 -2px;
+    scale: 0.995;
+    rotate: calc(var(--rotacao, 0deg) + 0.6deg);
+  }
+  to {
+    rotate: var(--rotacao, 0deg);
   }
 }
 
@@ -278,7 +352,8 @@
     opacity: 1 !important;
   }
 
-  .grao::after {
+  .grao::after,
+  .faixa-moldura {
     display: none;
   }
 }
@@ -318,4 +393,439 @@
 
 .numero-fantasma::before {
   content: attr(data-numero);
+}
+
+/* ---------------------------------------------------------------------------------------------
+  Street layer: hand tag and paint on the hero name, tape, posters, stickers and tickers.
+  Everything here is decoration over the existing layout and degrades to a static page.
+--------------------------------------------------------------------------------------------- */
+
+/* Rough spray/stamp edge (filter defined once in Base.astro). */
+.aspero {
+  filter: url(#aspero);
+}
+
+/*
+  Hero name: "Taz" in dripping paint (spray orange), "TheDoctor" as a hand tag (cream). Mixed
+  case on purpose, like a signature; the roughen filter frays both outlines.
+*/
+.nome-hero {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.nome-tinta,
+.nome-tag {
+  position: relative;
+  filter: url(#aspero);
+}
+
+.nome-tinta {
+  font-family: var(--fonte-tinta);
+  font-size: clamp(5rem, 29vw, 10rem);
+  line-height: 0.82;
+  color: var(--cor-spray);
+}
+
+.nome-tag {
+  font-family: var(--fonte-tag);
+  font-size: clamp(3.4rem, 20vw, 7.25rem);
+  line-height: 1;
+  margin-top: 0.06em;
+  color: var(--cor-texto);
+  rotate: -2deg;
+  transform-origin: left center;
+}
+
+/*
+  Rare glitch: once every 8 s, for about 0.3 s, two misregistered copies (orange and mint) jump a
+  few pixels and slice the name. The copies come from data-texto and the parent is aria-hidden.
+*/
+.glitch::before,
+.glitch::after {
+  content: attr(data-texto);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: var(--cor-destaque);
+}
+
+.glitch::after {
+  color: var(--cor-destaque-frio);
+}
+
+@keyframes glitch-a {
+  0%,
+  91%,
+  95.5%,
+  100% {
+    opacity: 0;
+    translate: 0;
+    clip-path: inset(0);
+  }
+  92% {
+    opacity: 0.75;
+    translate: -4px 1px;
+    clip-path: inset(12% 0 58% 0);
+  }
+  93.5% {
+    opacity: 0.75;
+    translate: 3px -1px;
+    clip-path: inset(55% 0 18% 0);
+  }
+  95% {
+    opacity: 0.6;
+    translate: -2px 0;
+    clip-path: inset(30% 0 40% 0);
+  }
+}
+
+@keyframes glitch-b {
+  0%,
+  91%,
+  95.5%,
+  100% {
+    opacity: 0;
+    translate: 0;
+    clip-path: inset(0);
+  }
+  92% {
+    opacity: 0.7;
+    translate: 4px -1px;
+    clip-path: inset(62% 0 8% 0);
+  }
+  93.5% {
+    opacity: 0.7;
+    translate: -3px 2px;
+    clip-path: inset(8% 0 70% 0);
+  }
+  95% {
+    opacity: 0.7;
+    translate: 2px 0;
+    clip-path: inset(45% 0 30% 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .glitch::before {
+    animation: glitch-a 8s steps(1, end) 2.5s infinite;
+  }
+
+  [data-animacoes='sutil'] .glitch::after {
+    animation: glitch-b 8s steps(1, end) 2.5s infinite;
+  }
+}
+
+/*
+  Hero photo as a photocopied poster: grayscale with extra contrast, then the palette on top
+  (amber light, dark brown shadows). Decorative layers only; the photo keeps its alt text.
+*/
+.foto-poster img {
+  filter: grayscale(1) contrast(1.3) brightness(1.05);
+}
+
+.foto-poster::before,
+.foto-poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.foto-poster::before {
+  background: linear-gradient(165deg, var(--cor-primaria), var(--cor-destaque) 85%);
+  mix-blend-mode: multiply;
+}
+
+.foto-poster::after {
+  background: var(--cor-fundo);
+  mix-blend-mode: lighten;
+}
+
+/*
+  Tape on the two top corners (hero photo, player covers): translucent cream strips with torn ends
+  (zigzag clip-path). Drawn by ::before/::after, so the element itself must not clip overflow.
+*/
+.fita-cantos {
+  position: relative;
+}
+
+.fita-cantos::before,
+.fita-cantos::after,
+.lambe-lambe::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  width: 4.5rem;
+  height: 1.35rem;
+  background: color-mix(in srgb, var(--creme-fundo) 70%, transparent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  clip-path: polygon(0 8%, 6% 0, 12% 10%, 18% 0, 82% 0, 88% 10%, 94% 0, 100% 8%, 100% 92%, 94% 100%, 88% 90%, 82% 100%, 18% 100%, 12% 90%, 6% 100%, 0 92%);
+  pointer-events: none;
+}
+
+.fita-cantos::before {
+  top: 0.35rem;
+  left: -1.35rem;
+  rotate: -40deg;
+}
+
+.fita-cantos::after {
+  top: 0.35rem;
+  right: -1.35rem;
+  rotate: 40deg;
+}
+
+/* Smaller tape on the player covers, so neighbouring cards do not collide. */
+.cartao.fita-cantos::before,
+.cartao.fita-cantos::after {
+  width: 3.25rem;
+  height: 1.05rem;
+  top: 0.15rem;
+}
+
+.cartao.fita-cantos::before {
+  left: -0.95rem;
+}
+
+.cartao.fita-cantos::after {
+  right: -0.95rem;
+}
+
+/* "Ninja dos beats" sticker on the hero photo: vinyl circle, slightly tilted. */
+.adesivo {
+  z-index: 4;
+  rotate: 12deg;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.45));
+}
+
+.adesivo-borda {
+  fill: var(--cor-texto);
+}
+
+.adesivo-fundo {
+  fill: var(--cor-spray);
+}
+
+.adesivo-miolo {
+  fill: var(--cor-fundo);
+}
+
+.adesivo-anel {
+  font-family: var(--fonte-titulo);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  fill: var(--cor-fundo);
+}
+
+.adesivo-eq rect {
+  fill: var(--cor-destaque-frio);
+}
+
+.adesivo-eq rect:nth-child(2n) {
+  fill: var(--cor-primaria);
+}
+
+/*
+  Lambe-lambe posters (services): paper-flat corners, a strip of tape on top and a slight tilt that
+  alternates card to card. Hover or focus inside straightens and lifts them. No tilt on phones.
+*/
+.lambe-lambe {
+  border-radius: 3px;
+  box-shadow: 0 10px 24px -18px rgb(0 0 0 / 0.8);
+  transition:
+    rotate 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 250ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 250ms,
+    border-color 250ms;
+}
+
+.lambe-lambe::after {
+  top: -0.7rem;
+  left: 1.5rem;
+  rotate: -4deg;
+}
+
+.lambe-lambe:nth-child(2n)::after {
+  left: auto;
+  right: 1.5rem;
+  rotate: 5deg;
+}
+
+@media (min-width: 640px) {
+  .lambe-lambe {
+    --rotacao: -1.6deg;
+    rotate: var(--rotacao);
+  }
+
+  .lambe-lambe:nth-child(2) {
+    --rotacao: 1.4deg;
+  }
+
+  .lambe-lambe:nth-child(3) {
+    --rotacao: 0.9deg;
+  }
+
+  .lambe-lambe:nth-child(4) {
+    --rotacao: -1.1deg;
+  }
+}
+
+.lambe-lambe:hover,
+.lambe-lambe:focus-within {
+  --rotacao: 0deg;
+  rotate: 0deg;
+  border-color: color-mix(in oklab, var(--cor-primaria) 70%, transparent);
+  box-shadow: 0 22px 40px -22px rgb(0 0 0 / 0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .lambe-lambe:hover,
+  [data-animacoes='sutil'] .lambe-lambe:focus-within {
+    translate: 0 -4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lambe-lambe {
+    transition: none;
+  }
+}
+
+/*
+  Platform stickers: each icon is a sticker with a rim, tilted one way or the other. It hops when
+  its card is hovered or focused.
+*/
+.adesivo-rede {
+  display: inline-flex;
+  width: 3.25rem;
+  height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-contraste);
+  /* Vinyl rim and a hard drop, like a sticker slapped on the wall. */
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--creme-fundo) 55%, #fff),
+    2px 4px 0 3px rgb(0 0 0 / 0.2);
+  rotate: -8deg;
+}
+
+li:nth-child(2n) > .rede .adesivo-rede {
+  rotate: 7deg;
+  border-radius: 14px;
+  background: var(--cor-spray);
+  color: var(--creme-texto);
+}
+
+li:nth-child(3n) > .rede .adesivo-rede {
+  rotate: -3deg;
+}
+
+@keyframes pular {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  40% {
+    translate: 0 -7px;
+    rotate: 0deg;
+  }
+  70% {
+    translate: 0 1px;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .rede:hover .adesivo-rede {
+    animation: pular 450ms cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .rede:focus-visible .adesivo-rede {
+    animation: pular 450ms cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+}
+
+/*
+  Ticker strips: a tilted band wider than the screen, with the text track moving left forever
+  (two identical halves, translate -50%). The frame clips the tilt so the page never scrolls
+  sideways. Static with reduced motion or tema.animacoes "nenhuma".
+*/
+.faixa-moldura {
+  overflow: hidden;
+  padding-block: 1.25rem;
+}
+
+.faixa {
+  width: 110%;
+  margin-left: -5%;
+  rotate: var(--inclinacao, 0deg);
+  border-block: 3px solid var(--cor-fundo);
+  overflow: hidden;
+}
+
+.faixa-primaria {
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-contraste);
+}
+
+.faixa-spray {
+  background: var(--cor-spray);
+  color: var(--cor-fundo);
+}
+
+.faixa-trilho {
+  display: flex;
+  width: max-content;
+}
+
+.faixa-metade {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.faixa-item {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 0.55rem;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.faixa-item::after {
+  content: '·';
+  padding-inline: 0.8em;
+  opacity: 0.7;
+}
+
+/* The contact call in dripping paint. */
+.faixa-tinta {
+  font-family: var(--fonte-tinta);
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+@keyframes rolar {
+  to {
+    translate: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .faixa-trilho {
+    animation: rolar var(--duracao, 32s) linear infinite;
+  }
 }

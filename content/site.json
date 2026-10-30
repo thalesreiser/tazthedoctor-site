@@ -38,12 +38,17 @@
     "cor_creme_texto": "#15110A",
     "cor_creme_texto_suave": "#524E49",
     "cor_creme_primaria": "#6A4D25",
+    "cor_spray": "#FF6A1A",
     "fonte_titulo": "Anton, Impact, \"Arial Narrow\", sans-serif",
     "fonte_texto": "Manrope, system-ui, sans-serif",
+    "fonte_tag": "\"Sedgwick Ave Display\", \"Segoe Print\", cursive",
+    "fonte_tinta": "\"Rubik Wet Paint\", Anton, Impact, sans-serif",
     "fonte_mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace",
     "fontes": [
       { "familia": "Anton", "pesos": [400] },
-      { "familia": "Manrope", "pesos": [400, 700] }
+      { "familia": "Manrope", "pesos": [400, 700] },
+      { "familia": "Sedgwick Ave Display", "pesos": [400] },
+      { "familia": "Rubik Wet Paint", "pesos": [400] }
     ],
     "animacoes": "sutil"
   },
@@ -75,7 +80,8 @@
         "alt": "TazTheDoctor em pé num estúdio de paredes claras, tocando uma guitarra Les Paul sunburst, com o cabelo comprido caindo no rosto e um violão encostado ao fundo"
       },
       "acao_principal": { "texto": "Chamar para um trabalho", "href": "#contato" },
-      "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" }
+      "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" },
+      "faixa": ["Produção", "Mixagem", "Guitarra", "Baixo", "Vila Nova", "POA"]
     },
     {
       "tipo": "servicos",
@@ -201,7 +207,8 @@
       ],
       "consentimento": "Concordo com o uso dos meus dados para receber o retorno deste contato, conforme a",
       "botao": "Enviar mensagem",
-      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder."
+      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder.",
+      "faixa": "Bora gravar"
     },
     {
       "tipo": "rodape",

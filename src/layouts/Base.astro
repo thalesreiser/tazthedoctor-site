@@ -5,7 +5,7 @@ import AvisoCookies from '../components/AvisoCookies.astro';
 import Revelar from '../components/Revelar.astro';
 import { temRastreamento } from '../lib/consentimento.ts';
 import { pilhaComFontes, variavelFonte } from '../lib/fontes.ts';
-import { ancoraSecao, type Conteudo } from '../lib/schema.ts';
+import { ancoraSecao, pilhasDoTema, type Conteudo } from '../lib/schema.ts';
 import { ALTURA_OG, CAMINHO_OG, chamadaPrincipal, LARGURA_OG, localeOg, urlAbsoluta } from '../lib/seo.ts';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 const { conteudo, titulo = conteudo.site.titulo, descricao = conteudo.site.descricao } = Astro.props;
 const { tema, rastreamento } = conteudo;
 
-const pilhas = [tema.fonte_titulo, tema.fonte_texto];
+const pilhas = pilhasDoTema(tema);
 const variaveisTema = [
   `--cor-fundo:${tema.cor_fundo}`,
   `--cor-superficie:${tema.cor_superficie}`,
@@ -27,6 +27,7 @@ const variaveisTema = [
   `--cor-primaria-contraste:${tema.cor_primaria_contraste}`,
   `--cor-destaque:${tema.cor_destaque}`,
   `--cor-destaque-frio:${tema.cor_destaque_frio}`,
+  `--cor-spray:${tema.cor_spray}`,
   // Fixed values for the cream band, which redefines the --cor-* variables inside it.
   `--creme-fundo:${tema.cor_creme}`,
   `--creme-texto:${tema.cor_creme_texto}`,
@@ -34,6 +35,8 @@ const variaveisTema = [
   `--creme-primaria:${tema.cor_creme_primaria}`,
   `--fonte-titulo:${pilhaComFontes(tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-texto:${pilhaComFontes(tema.fonte_texto, tema.fontes, pilhas)}`,
+  `--fonte-tag:${pilhaComFontes(tema.fonte_tag, tema.fontes, pilhas)}`,
+  `--fonte-tinta:${pilhaComFontes(tema.fonte_tinta, tema.fontes, pilhas)}`,
   `--fonte-mono:${tema.fonte_mono}`,
 ].join(';');
 
@@ -83,6 +86,16 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
     <slot name="head" />
   </head>
   <body class="grao">
+    {/*
+      "Roughen" filter for spray and stamp edges (global.css, .aspero): low-frequency noise nudges
+      the glyph outlines a couple of pixels. Static, so it is rendered once.
+    */}
+    <svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+      <filter id="aspero" x="-5%" y="-10%" width="110%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.09" numOctaves="2" seed="7" result="ruido" />
+        <feDisplacementMap in="SourceGraphic" in2="ruido" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
     <a
       href="#conteudo"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:rounded focus:bg-fundo focus:px-4 focus:py-2"
@@ -104,7 +117,7 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
 
     <header class="sticky top-0 z-40 border-b border-texto/10 bg-fundo/85 backdrop-blur-md">
       <div class="container-site flex h-16 items-center justify-between gap-4">
-        <a href="/" class="flex items-center gap-2 font-titulo text-xl tracking-wide uppercase">
+        <a href="/" class="flex items-center gap-2.5 font-tag text-2xl">
           <span class="equalizador text-primaria" aria-hidden="true">
             <span style="--i:0;--h:.5"></span><span style="--i:1;--h:.9"></span><span style="--i:2;--h:.65"></span>
           </span>
