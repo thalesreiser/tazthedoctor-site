@@ -1,0 +1,41 @@
+---
+interface Props {
+  itens: string[];
+  // Color of the strip: amber (primary) or spray orange.
+  cor?: 'primaria' | 'spray';
+  // Tilt in degrees; the strip is wider than the screen so the ends never show.
+  inclinacao?: number;
+  // Words drawn in the dripping paint font instead of Anton (e.g. the contact call).
+  destaques?: string[];
+  // Seconds for one full loop; longer strips should run longer so the speed feels the same.
+  duracao?: number;
+  class?: string;
+}
+
+const { itens, cor = 'primaria', inclinacao = 0, destaques = [], duracao = 32, class: classe } = Astro.props;
+// Repeated so one half of the track is wider than a large screen; the loop moves it by -50%.
+const repeticoes = Math.max(2, Math.ceil(12 / Math.max(itens.length, 1)));
+const sequencia = Array.from({ length: repeticoes }, () => itens).flat();
+---
+
+{/*
+  Ticker strip (global.css, .faixa): decorative repetition of text that is already on the page,
+  so the whole strip is hidden from screen readers. Static with reduced motion.
+*/}
+{
+  itens.length > 0 && (
+    <div class:list={['faixa-moldura', classe]} aria-hidden="true">
+      <div class:list={['faixa', `faixa-${cor}`]} style={`--inclinacao:${inclinacao}deg;--duracao:${duracao}s`}>
+        <div class="faixa-trilho">
+          {[0, 1].map(() => (
+            <span class="faixa-metade">
+              {sequencia.map((item) => (
+                <span class:list={['faixa-item', destaques.includes(item) && 'faixa-tinta']}>{item}</span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

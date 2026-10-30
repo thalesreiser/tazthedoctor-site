@@ -1,4 +1,5 @@
 ---
+import Faixa from './Faixa.astro';
 import Imagem from './Imagem.astro';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
@@ -7,31 +8,26 @@ interface Props {
 }
 
 const { secao } = Astro.props;
-// "TazTheDoctor" -> Taz / The / Doctor: one line each, poster style. Other names stay whole.
+// "TazTheDoctor" -> "Taz" in dripping paint over "TheDoctor" as a hand tag. Names that do not
+// split into capitalized words stay whole, all tag.
 const partes = secao.titulo.match(/[A-Z][a-z]+/g);
-const linhas = partes && partes.join('') === secao.titulo ? partes : [secao.titulo];
+const [tinta, tag] = partes && partes.length > 1 && partes.join('') === secao.titulo ? [partes[0]!, partes.slice(1).join('')] : ['', secao.titulo];
+// Sticker ring: the nickname twice around the circle.
+const anel = `${secao.apelido} • ${secao.apelido} • `.toUpperCase();
 const externo = (href: string) => /^https?:/.test(href);
 ---
 
 <section id={ancoraSecao(secao)} class="brilho-palco relative overflow-hidden" data-hero aria-label={secao.titulo}>
-  <div class="container-site grid items-center gap-12 pt-12 pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pt-20 lg:pb-28">
+  <div class="container-site grid items-center gap-14 pt-12 pb-10 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pt-20 lg:pb-14">
     <div class="entrada">
       {secao.selo && <p class="rotulo-mono" style="--i:0">{secao.selo}</p>}
-      <h1 class="mt-5 leading-[0.86]" style="--i:1">
-        {
-          linhas.map((linha, i) => (
-            <span
-              class:list={[
-                'block',
-                linhas.length === 3 && i === 1
-                  ? 'text-[clamp(2.25rem,7vw,4.5rem)] text-primaria'
-                  : 'text-[clamp(4.25rem,21vw,9.5rem)]',
-              ]}
-            >
-              {linha}
-            </span>
-          ))
-        }
+      {/* The visual name is split in two fonts; screen readers get the name once, whole. */}
+      <h1 class="nome-hero mt-6" style="--i:1">
+        <span class="sr-only">{secao.titulo}</span>
+        <span aria-hidden="true" class="block">
+          {tinta && <span class="nome-tinta glitch block" data-texto={tinta}>{tinta}</span>}
+          <span class="nome-tag glitch block" data-texto={tag}>{tag}</span>
+        </span>
       </h1>
       <p class="mt-6 flex items-center gap-3 font-titulo text-2xl text-destaque uppercase sm:text-3xl" style="--i:2">
         <span class="equalizador" aria-hidden="true">
@@ -64,15 +60,34 @@ const externo = (href: string) => /^https?:/.test(href);
     </div>
     <div class="relative mx-auto w-full max-w-sm lg:max-w-md">
       {/* Offset frame and glow behind the photo: decorative. */}
-      <div class="absolute -inset-3 translate-x-4 translate-y-4 rounded-[28px] border-2 border-primaria/60" aria-hidden="true"></div>
+      <div class="absolute -inset-3 translate-x-4 translate-y-4 rounded-[6px] border-2 border-primaria/60" aria-hidden="true"></div>
       <div class="absolute -inset-10 -z-0 rounded-full bg-primaria/20 blur-3xl" aria-hidden="true"></div>
-      <Imagem
-        imagem={secao.foto}
-        prioridade
-        sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
-        larguras={[360, 540, 720, 828]}
-        class="relative aspect-[3/4] w-full rounded-[24px] object-cover shadow-2xl shadow-black/60"
-      />
+      {/* Photocopied poster: duotone in the palette (global.css, .foto-poster), taped at the top. */}
+      <div class="fita-cantos rotate-[1.5deg]">
+        <div class="foto-poster relative">
+        <Imagem
+          imagem={secao.foto}
+          prioridade
+          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
+          larguras={[360, 540, 720, 828]}
+          class="relative aspect-[3/4] w-full rounded-[4px] object-cover shadow-2xl shadow-black/60"
+        />
+        </div>
+      </div>
+      {/* "Ninja dos beats" sticker: repeats the nickname above, so it is decoration only. */}
+      <svg class="adesivo absolute -top-8 -right-1 size-28 sm:-right-8 sm:size-36" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+        <defs>
+          <path id="adesivo-anel" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0" />
+        </defs>
+        <circle cx="60" cy="60" r="57" class="adesivo-borda" />
+        <circle cx="60" cy="60" r="52" class="adesivo-fundo" />
+        <circle cx="60" cy="60" r="31" class="adesivo-miolo" />
+        <text class="adesivo-anel"><textPath href="#adesivo-anel" textLength="255" lengthAdjust="spacing">{anel}</textPath></text>
+        <g class="adesivo-eq">
+          {[0.55, 0.95, 0.4, 0.8, 0.65].map((h, i) => <rect x={45 + i * 6.5} y={74 - 26 * h} width="4" height={26 * h} rx="1" />)}
+        </g>
+      </svg>
     </div>
   </div>
+  <Faixa itens={secao.faixa} inclinacao={-1.6} />
 </section>

@@ -61,7 +61,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores, fontes (Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tag`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |
@@ -71,6 +71,10 @@ Tipos de seção: `hero`, `servicos`, `musica`, `sobre`, `equipamento`, `platafo
 `contato` e `rodape`. Todas aceitam `id` (âncora), `menu` (link no cabeçalho), `ativo: false`
 (esconde sem apagar) e `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
 escuros se alternam).
+
+As faixas rolantes vêm do JSON: `hero.faixa` (palavras da faixa abaixo do hero) e
+`contato.faixa` (a chamada da faixa que fecha o contato, ao lado de `contato.email`). Elas só
+repetem o que já está na página, então ficam escondidas dos leitores de tela.
 
 ### Lançamentos (`musica.itens`)
 
@@ -113,11 +117,18 @@ A paleta saiu das próprias fotos (cores dominantes extraídas com o sharp): fun
 quase preto `#15110A` e superfície `#272012` (borda escura do sunburst), texto creme `#F0E4D2`
 (luz do estúdio), âmbar `#D1932B` (o sunburst da Les Paul) nos botões, laranja `#F9702F`
 (visor dos pedais Zoom) e verde-água `#ADE3BB` (luz do estúdio) nos destaques, e uma faixa creme
-nas redes. Títulos em Anton, texto em Manrope. `tests/contraste.test.ts` confere 4,5:1 (WCAG AA)
-em todos os pares usados, inclusive sobre o brilho âmbar, o grão e a faixa creme.
+nas redes, mais um laranja spray `#FF6A1A`, um pouco mais saturado, para a tinta, as faixas e
+os adesivos. Títulos em Anton, texto em Manrope; o nome no hero mistura a pichação da Sedgwick
+Ave Display ("TheDoctor") com a tinta escorrendo da Rubik Wet Paint ("Taz").
+`tests/contraste.test.ts` confere 4,5:1 (WCAG AA) em todos os pares usados, inclusive sobre o
+brilho âmbar, o grão, a faixa creme e o laranja spray.
 
-As animações (entrada do hero, revelação ao rolar, equalizador, hover) respeitam
-`prefers-reduced-motion`, e todo o conteúdo aparece sem JavaScript.
+Camada de rua (`global.css`, fim do arquivo): filtro SVG que deixa a borda do nome áspera, grão
+de fotocópia, foto do hero em duotone da paleta com fita crepe, adesivo "ninja dos beats",
+cartazes lambe-lambe levemente tortos nos trabalhos, medidores de LED, adesivos nas redes e
+faixas rolantes. As animações (entrada do hero, revelação "colando o cartaz" ao rolar, glitch
+raro no nome, equalizador, faixas, hover, carimbo nos botões) respeitam
+`prefers-reduced-motion` e `animacoes: "nenhuma"`, e todo o conteúdo aparece sem JavaScript.
 
 ### Formulário
 

@@ -15,7 +15,7 @@ const site = dados.site?.url;
 // tema.fontes is downloaded at build time and served from the site (Astro Fonts API).
 /** @type {import('./src/lib/fontes.ts').FonteSite[]} */
 const fontes = Array.isArray(dados.tema?.fontes) ? dados.tema.fontes : [];
-const pilhas = [dados.tema?.fonte_titulo ?? '', dados.tema?.fonte_texto ?? ''];
+const pilhas = ['fonte_titulo', 'fonte_texto', 'fonte_tag', 'fonte_tinta'].map((chave) => dados.tema?.[chave] ?? '');
 const fonts = fontes.map((fonte) => {
   const reservas = reservasDaFonte(fonte.familia, pilhas);
   return {

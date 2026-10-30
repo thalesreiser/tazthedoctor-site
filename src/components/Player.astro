@@ -25,9 +25,9 @@ const barras = Array.from({ length: 48 }, (_, i) => {
   Click-to-load facade: without JS it is a plain link to the platform. Player.astro's script turns
   the click into an in-page iframe, so no third-party request happens before the visitor asks.
 */}
-<article class:list={['cartao cartao-interativo flex flex-col overflow-hidden', soundcloud && 'col-span-2']}>
+<article class:list={['cartao cartao-interativo fita-cantos flex flex-col', soundcloud && 'col-span-2']}>
   <div
-    class:list={['player relative', vertical ? 'aspect-[9/16]' : 'min-h-[200px] flex-1']}
+    class:list={['player relative overflow-hidden rounded-t-[inherit]', vertical ? 'aspect-[9/16]' : 'min-h-[200px] flex-1']}
     data-player
     data-embed={embed}
     data-titulo={`Player do ${plataforma}: ${item.titulo}`}
@@ -46,9 +46,9 @@ const barras = Array.from({ length: 48 }, (_, i) => {
       </span>
       {
         soundcloud && (
-          <span class="flex h-14 items-end gap-[3px]" aria-hidden="true">
+          <span class="medidor flex h-14 items-end gap-[3px]" aria-hidden="true">
             {barras.map((h) => (
-              <span class="w-full rounded-full bg-texto/45" style={`height:${Math.round(h * 100)}%`} />
+              <span class="w-full" style={`height:${Math.round(h * 100)}%`} />
             ))}
           </span>
         )

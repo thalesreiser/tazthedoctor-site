@@ -20,10 +20,10 @@ const idTitulo = `${ancora}-titulo`;
   <div class="container-site">
     <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.subtitulo} />
     <p class="mt-4 flex items-center gap-2 font-mono text-xs text-texto-suave">
-      <span class="size-2 rounded-full bg-destaque" aria-hidden="true"></span>
+      <span class="led-rec" aria-hidden="true"></span>
       {secao.aviso_players}
     </p>
-    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4" data-revelar-grupo>
+    <div class="mt-12 grid grid-cols-2 gap-5 sm:gap-7 lg:grid-cols-4" data-revelar-grupo>
       {secao.itens.map((item) => <Player item={item} cor={cor} />)}
     </div>
     {secao.nota && <p class="mt-10 font-titulo text-2xl text-texto uppercase sm:text-3xl">{secao.nota}</p>}

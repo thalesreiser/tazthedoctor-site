@@ -33,10 +33,12 @@ const [primeiraFoto, segundaFoto] = secao.fotos;
               href={item.href}
               target="_blank"
               rel="noopener"
-              class="cartao cartao-interativo flex h-full min-h-40 flex-col justify-between gap-6 p-5 sm:p-6"
+              class="cartao cartao-interativo rede flex h-full min-h-40 flex-col justify-between gap-6 p-5 sm:p-6"
             >
               <span class="flex items-start justify-between">
-                <Icone nome={item.icone} class="size-8" />
+                <span class="adesivo-rede">
+                  <Icone nome={item.icone} class="size-7" />
+                </span>
                 <Icone nome="externo" class="size-4 text-texto-suave" />
               </span>
               <span>

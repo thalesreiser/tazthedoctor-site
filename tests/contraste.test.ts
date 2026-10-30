@@ -44,10 +44,17 @@ test('every color pair used by the components passes WCAG AA', () => {
       [`primária sobre ${nome}`, t.cor_primaria, fundo],
       [`destaque sobre ${nome}`, t.cor_destaque, fundo],
       [`destaque frio sobre ${nome}`, t.cor_destaque_frio, fundo],
+      // "Taz" in dripping paint on the hero (and its spray orange elsewhere on dark).
+      [`spray sobre ${nome}`, t.cor_spray, fundo],
       [`erro de formulário sobre ${nome}`, COR_ERRO, fundo],
     ]),
     // Primary buttons, construction notice, play buttons and text selection.
     ['botão primário', t.cor_primaria_contraste, t.cor_primaria],
+    // Hero ticker (amber strip) is the primary button pair above; contact ticker and the
+    // "ninja dos beats" sticker ring draw the stage color on spray orange.
+    ['faixa e adesivo sobre spray', t.cor_fundo, t.cor_spray],
+    // Platform stickers on the cream band: dark icon on spray.
+    ['creme: adesivo spray', t.cor_creme_texto, t.cor_spray],
     // "99'" sticker on the about photo.
     ['selo sobre destaque', t.cor_primaria_contraste, t.cor_destaque],
     // Player cover title over its strongest warm spot.

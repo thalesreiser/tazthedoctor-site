@@ -49,6 +49,8 @@ const hero = z.object({
   foto: imagem,
   acao_principal: acao,
   acao_secundaria: acao.optional(),
+  // Words of the ticker strip under the hero (decorative, hidden from screen readers).
+  faixa: z.array(z.string().min(1)).default([]),
 });
 
 // A release or video. Only what the platform page shows: title, date and the artist's own description.
@@ -173,6 +175,8 @@ const contato = z.object({
   consentimento: z.string(),
   botao: z.string(),
   mensagem_sucesso: z.string(),
+  // Call shown in the ticker strip between the contact and the footer, next to contato.email.
+  faixa: z.string().optional(),
 });
 
 const rodape = z.object({
@@ -229,8 +233,13 @@ export const conteudoSchema = z
       cor_creme_texto: cor,
       cor_creme_texto_suave: cor,
       cor_creme_primaria: cor,
+      // Spray paint: a more saturated orange for the dripping accent, the tickers and stickers.
+      cor_spray: cor,
       fonte_titulo: z.string(),
       fonte_texto: z.string(),
+      // Hand-style tag (artist name, stickers) and the dripping paint accent (one or two words).
+      fonte_tag: z.string(),
+      fonte_tinta: z.string(),
       // Monospace stack for labels; system fonts only, nothing is downloaded.
       fonte_mono: z.string().default('ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'),
       fontes: z.array(fonte).default([]),
@@ -269,10 +278,10 @@ export const conteudoSchema = z
     if (repetidos.length > 0) {
       ctx.addIssue({ code: 'custom', path: ['secoes'], message: `ids de seção repetidos: ${[...new Set(repetidos)].join(', ')}` });
     }
-    const pilhas = [conteudo.tema.fonte_titulo, conteudo.tema.fonte_texto].flatMap(separarPilha).map((nome) => nome.toLowerCase());
+    const pilhas = pilhasDoTema(conteudo.tema).flatMap(separarPilha).map((nome) => nome.toLowerCase());
     conteudo.tema.fontes.forEach((f, i) => {
       if (!pilhas.includes(f.familia.toLowerCase())) {
-        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo nem em fonte_texto` });
+        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo, fonte_texto, fonte_tag nem fonte_tinta` });
       }
     });
     conteudo.secoes.forEach((s, i) => {
@@ -301,6 +310,11 @@ export type Secao = Conteudo['secoes'][number];
 export type SecaoDo<T extends Secao['tipo']> = Extract<Secao, { tipo: T }>;
 export type Imagem = z.output<typeof imagem>;
 export type Lancamento = z.output<typeof lancamento>;
+
+/** Font stacks that may use the self-hosted families, in fallback lookup order. */
+export function pilhasDoTema(tema: Pick<Conteudo['tema'], 'fonte_titulo' | 'fonte_texto' | 'fonte_tag' | 'fonte_tinta'>): string[] {
+  return [tema.fonte_titulo, tema.fonte_texto, tema.fonte_tag, tema.fonte_tinta];
+}
 
 /** Anchor id of a section: its `id`, or its type in kebab-case. */
 export function ancoraSecao(secao: { id?: string | undefined; tipo: string }): string {
