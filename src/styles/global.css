@@ -23,7 +23,7 @@
 
 /* Fixed error color for form fields, checked on both dark backgrounds in tests/contraste.test.ts. */
 @theme {
-  --color-erro: #ff9c8a;
+  --color-erro: #ff8a80;
 }
 
 @layer base {
@@ -445,7 +445,7 @@
   color: var(--cor-texto);
   rotate: 2.5deg;
   transform-origin: left center;
-  text-shadow: 0.045em 0.055em 0 var(--tinta-ambar);
+  text-shadow: 0.045em 0.055em 0 var(--tinta-lima);
 }
 
 /* Basquiat-style crown over the T, amber over the orange. */
@@ -454,7 +454,7 @@
   top: -0.3em;
   left: -0.04em;
   width: 0.4em;
-  color: var(--tinta-ambar);
+  color: var(--tinta-lima);
   rotate: -16deg;
   filter: none;
 }
@@ -740,7 +740,7 @@ li:nth-child(3n) > .rede .adesivo-rede {
   z-index: 2;
   border-radius: inherit;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgb(21 17 10 / 0.7) 0.75px, transparent 1.35px);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--tinta-escura) 70%, transparent) 0.75px, transparent 1.35px);
   background-size: 4px 4px;
   mix-blend-mode: multiply;
   opacity: 0.5;
@@ -851,8 +851,8 @@ li:nth-child(2n) > .lambe-lambe::after {
   rotate: -0.4deg;
 }
 
-.rasgo-cartaz-ambar path {
-  fill: var(--tinta-ambar);
+.rasgo-cartaz-lima path {
+  fill: var(--tinta-lima);
 }
 
 .rasgo-cartaz-menta path {
@@ -958,7 +958,7 @@ li:nth-child(2n) > .lambe-lambe::after {
 
 /* Throw-up: the same letter strokes stacked into bubble letters (ThrowUp.astro). */
 .tu-bloco path {
-  stroke: var(--tinta-ambar);
+  stroke: var(--tinta-lima);
   stroke-width: 6.2;
 }
 
@@ -1039,8 +1039,8 @@ li:nth-child(2n) > .lambe-lambe::after {
 }
 
 .a-borda {
-  fill: #fffaf2;
-  stroke: #fffaf2;
+  fill: var(--tinta-creme);
+  stroke: var(--tinta-creme);
   stroke-width: 10;
   stroke-linejoin: round;
 }
@@ -1057,24 +1057,24 @@ li:nth-child(2n) > .lambe-lambe::after {
   fill: var(--tinta-creme);
 }
 
-.a-ambar {
-  fill: var(--tinta-ambar);
+.a-lima {
+  fill: var(--tinta-lima);
 }
 
 .a-menta {
   fill: var(--tinta-menta);
 }
 
-.a-rosa {
-  fill: var(--adesivo-rosa);
+.a-vermelho {
+  fill: var(--seda-vermelho);
 }
 
-.a-azul {
-  fill: var(--adesivo-azul);
+.a-piteira {
+  fill: var(--piteira);
 }
 
-.a-lima {
-  fill: var(--adesivo-lima);
+.a-caramelo {
+  fill: var(--seda-caramelo);
 }
 
 .a-branco {
@@ -1083,7 +1083,7 @@ li:nth-child(2n) > .lambe-lambe::after {
 
 .a-filete {
   fill: none;
-  stroke: var(--tinta-creme);
+  stroke: var(--tinta-escura);
   stroke-width: 2;
 }
 
@@ -1094,7 +1094,7 @@ li:nth-child(2n) > .lambe-lambe::after {
 }
 
 .a-aba {
-  fill: #e8dfd0;
+  fill: color-mix(in srgb, var(--tinta-creme) 88%, var(--tinta-escura));
   filter: drop-shadow(-1px -1px 1.5px rgb(0 0 0 / 0.35));
 }
 
@@ -1123,7 +1123,7 @@ li:nth-child(2n) > .lambe-lambe::after {
 }
 
 .a-janela {
-  fill: #3a2f1e;
+  fill: color-mix(in srgb, var(--tinta-escura) 88%, var(--tinta-creme));
 }
 
 .a-carretel {
