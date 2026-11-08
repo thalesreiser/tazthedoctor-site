@@ -34,3 +34,6 @@ export const OPACIDADE_FOTO_FUNDO = 0.12;
 
 // Opacity of the huge faded "Taz" on the hero wall (global.css, .taz-fantasma).
 export const OPACIDADE_TAZ_FANTASMA = 0.07;
+
+// Opacity of the music watermark on the light band (global.css, .fundo-creme::before).
+export const OPACIDADE_MARCA_DAGUA = 0.6;
