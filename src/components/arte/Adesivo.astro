@@ -73,7 +73,7 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
             </text>
             {/* Ninja head: dark hood, pink headband, cream eye slit with two narrowed eyes. */}
             <circle cx="60" cy="61" r="29" class="a-escura" />
-            <path d="M32.5 52 Q60 43 87.5 52 L88.6 58.5 Q60 50 31.4 58.5 Z" class="a-rosa" />
+            <path d="M32.5 52 Q60 43 87.5 52 L88.6 58.5 Q60 50 31.4 58.5 Z" class="a-vermelho" />
             <rect x="37" y="58" width="46" height="14" rx="7" class="a-creme" />
             <path d="M43 62 L55 65.2 Q49 70 43 62 Z" class="a-escura" />
             <path d="M77 62 L65 65.2 Q71 70 77 62 Z" class="a-escura" />
@@ -86,9 +86,9 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
         modelo === 'placa' && (
           <>
             <path d={retanguloDescascado(6, 6, 152, 62, 9, 18)} class="a-borda" />
-            <path d={retanguloDescascado(6, 6, 152, 62, 9, 18)} class="a-azul" />
+            <path d={retanguloDescascado(6, 6, 152, 62, 9, 18)} class="a-piteira" />
             <path d={retanguloDescascado(12, 12, 140, 50, 4, 14)} class="a-filete" />
-            <text x="80" y="47" text-anchor="middle" class="a-titulo a-txt-creme" font-size="25" {...ajuste(linhas.join(' '), 25, 122)}>
+            <text x="80" y="47" text-anchor="middle" class="a-titulo a-txt-escuro" font-size="25" {...ajuste(linhas.join(' '), 25, 122)}>
               {texto.toUpperCase()}
             </text>
             <path d={aba(6, 6, 152, 62, 18)} class="a-aba" />
@@ -99,15 +99,15 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
         modelo === 'etiqueta' && (
           <>
             <path d={retanguloDescascado(6, 6, 138, 80, 14, 18)} class="a-borda" />
-            <path d={retanguloDescascado(6, 6, 138, 80, 14, 18)} class="a-rosa" />
+            <path d={retanguloDescascado(6, 6, 138, 80, 14, 18)} class="a-vermelho" />
             <g transform="translate(14 13) scale(0.42)">
-              <path d={RABISCOS.estrela[0]} class="a-lima a-traco-escuro" />
+              <path d={RABISCOS.estrela[0]} class="a-spray a-traco-escuro" />
             </g>
-            <text x="78" y={linhas[1] ? 44 : 56} text-anchor="middle" class="a-titulo a-txt-escuro" font-size="25" {...ajuste(linhas[0], 25, 104)}>
+            <text x="78" y={linhas[1] ? 44 : 56} text-anchor="middle" class="a-titulo a-txt-creme" font-size="25" {...ajuste(linhas[0], 25, 104)}>
               {linhas[0]}
             </text>
             {linhas[1] && (
-              <text x="76" y="71" text-anchor="middle" class="a-titulo a-txt-escuro" font-size="25" {...ajuste(linhas[1], 25, 104)}>
+              <text x="76" y="71" text-anchor="middle" class="a-titulo a-txt-creme" font-size="25" {...ajuste(linhas[1], 25, 104)}>
                 {linhas[1]}
               </text>
             )}
@@ -119,7 +119,7 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
         modelo === 'explosao' && (
           <>
             <path d={explosao(70, 70, 62, 50, 14)} class="a-borda" />
-            <path d={explosao(70, 70, 62, 50, 14)} class="a-lima" />
+            <path d={explosao(70, 70, 62, 50, 14)} class="a-caramelo" />
             <text x="70" y={linhas[1] ? 68 : 77} text-anchor="middle" class="a-titulo a-txt-escuro" font-size="19" {...ajuste(linhas[0], 19, 84)}>
               {linhas[0]}
             </text>
@@ -137,7 +137,7 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
             {/* Cassette tape: dark shell, amber label with the text, two reels and the tape window. */}
             <path d={retanguloDescascado(6, 6, 152, 100, 9, 16)} class="a-borda" />
             <path d={retanguloDescascado(6, 6, 152, 100, 9, 16)} class="a-escura" />
-            <rect x="16" y="15" width="132" height="44" rx="4" class="a-ambar" />
+            <rect x="16" y="15" width="132" height="44" rx="4" class="a-lima" />
             <rect x="16" y="15" width="132" height="8" rx="2" class="a-spray" />
             <text x="82" y="51" text-anchor="middle" class="a-tinta a-txt-escuro" font-size="22" {...ajuste(texto, 22, 116, 0.66)}>
               {texto}

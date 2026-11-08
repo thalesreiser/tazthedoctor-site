@@ -7,7 +7,7 @@ import { OPACIDADE_BRILHO, OPACIDADE_PAREDE } from '../src/lib/tema.ts';
 
 const AA = 4.5;
 // Fixed color of form field errors (--color-erro in global.css).
-const COR_ERRO = '#FF9C8A';
+const COR_ERRO = '#FF8A80';
 // Generated player cover: the primary color at 45% over the stage color (.capa-player).
 const OPACIDADE_CAPA = 0.45;
 // Film grain over the page (.grao::after): worst case, white noise at 5%.
@@ -48,21 +48,22 @@ test('every color pair used by the components passes WCAG AA', () => {
       [`primária sobre ${nome}`, t.cor_primaria, fundo],
       [`destaque sobre ${nome}`, t.cor_destaque, fundo],
       [`destaque frio sobre ${nome}`, t.cor_destaque_frio, fundo],
-      // "Taz" in dripping paint on the hero (and its spray orange elsewhere on dark).
+      // "Taz" in dripping paint on the hero (and its warning-yellow spray elsewhere on dark).
       [`spray sobre ${nome}`, t.cor_spray, fundo],
       [`erro de formulário sobre ${nome}`, COR_ERRO, fundo],
     ]),
     // Primary buttons, construction notice, play buttons and text selection.
     ['botão primário', t.cor_primaria_contraste, t.cor_primaria],
-    // Sticker texts (Adesivo.astro): the "ninja" ring on spray, the street sign in cream on blue,
-    // dark text on the pink label, the lime starburst and the mint pick, the cassette label on
-    // amber and "REC" in cream on the dark sticker.
+    // Sticker texts (Adesivo.astro): the "ninja" ring on spray, the street sign in dark on
+    // filter-tip yellow, light text on the rolling-paper red label, the caramel starburst, the
+    // medicine-green pick, the cassette label on lime and "REC" in light on the dark sticker.
+    // Red is only ever a background: as text over the dark stage it would fail AA.
     ['adesivo ninja: anel sobre spray', t.cor_fundo, t.cor_spray],
-    ['adesivo placa: creme sobre azul', t.cor_creme, t.cor_adesivo_azul],
-    ['adesivo etiqueta: escuro sobre rosa', t.cor_fundo, t.cor_adesivo_rosa],
-    ['adesivo explosão: escuro sobre lima', t.cor_fundo, t.cor_adesivo_lima],
-    ['adesivo palheta: escuro sobre menta', t.cor_fundo, t.cor_destaque_frio],
-    ['adesivo fita: escuro sobre âmbar', t.cor_fundo, t.cor_primaria],
+    ['adesivo placa: escuro sobre piteira', t.cor_fundo, t.cor_piteira],
+    ['adesivo etiqueta: claro sobre vermelho', t.cor_creme, t.cor_seda_vermelho],
+    ['adesivo explosão: escuro sobre caramelo', t.cor_fundo, t.cor_seda_caramelo],
+    ['adesivo palheta: escuro sobre verde farmácia', t.cor_fundo, t.cor_destaque_frio],
+    ['adesivo fita: escuro sobre lima', t.cor_fundo, t.cor_primaria],
     ['adesivo rec: creme sobre escuro', t.cor_creme, t.cor_fundo],
     // Platform stickers on the cream band: dark icon on spray.
     ['creme: adesivo spray', t.cor_creme_texto, t.cor_spray],
@@ -72,7 +73,7 @@ test('every color pair used by the components passes WCAG AA', () => {
     ['capa do player', t.cor_texto, misturar(t.cor_primaria, t.cor_fundo, OPACIDADE_CAPA)],
     // Cookie banner: stage color on the text color.
     ['aviso de cookies', t.cor_fundo, t.cor_texto],
-    // Cream band (fundo: "creme"): text, muted text, links/kickers and its buttons.
+    // Light band (fundo: "creme", leaflet white): text, muted text, links/kickers and its buttons.
     ['creme: texto', t.cor_creme_texto, t.cor_creme],
     ['creme: texto suave', t.cor_creme_texto_suave, t.cor_creme],
     ['creme: primária', t.cor_creme_primaria, t.cor_creme],

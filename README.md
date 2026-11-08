@@ -62,7 +62,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_adesivo_rosa`, `cor_adesivo_azul` e `cor_adesivo_lima`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |
@@ -81,12 +81,12 @@ só repetem ou enfeitam o que a página já diz. Modelos:
 
 | `modelo` | Adesivo |
 | --- | --- |
-| `ninja` | redondo, laranja spray, máscara de ninja no meio e o texto em anel |
-| `placa` | placa de rua azul com filete creme |
-| `etiqueta` | etiqueta rosa com estrela, texto em duas linhas |
-| `explosao` | explosão verde-limão, texto em duas linhas |
-| `fita` | fita cassete com o texto na etiqueta âmbar |
-| `palheta` | palheta verde-água, texto curto na tinta escorrendo (ex.: "TTD") |
+| `ninja` | redondo, amarelo spray, máscara de ninja no meio e o texto em anel |
+| `placa` | placa de rua amarelo piteira com filete escuro |
+| `etiqueta` | etiqueta vermelho seda com estrela amarela, texto claro em duas linhas |
+| `explosao` | explosão caramelo de seda, texto em duas linhas |
+| `fita` | fita cassete com o texto na etiqueta lima |
+| `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "TTD") |
 | `rec` | "REC" com a luz piscando |
 
 Os textos passam pelo mesmo `revisao.termos_vetados` do resto (por isso não há "100%").
@@ -128,17 +128,18 @@ convertidos para JPEG antes (o sharp desta máquina não lê HEIC).
 
 ### Identidade visual
 
-A paleta saiu das próprias fotos (cores dominantes extraídas com o sharp): fundo de palco
-quase preto `#15110A` e superfície `#272012` (borda escura do sunburst), texto creme `#F0E4D2`
-(luz do estúdio), âmbar `#D1932B` (o sunburst da Les Paul) nos botões, laranja `#F9702F`
-(visor dos pedais Zoom) e verde-água `#ADE3BB` (luz do estúdio) nos destaques, e uma faixa creme
-nas redes, mais um laranja spray `#FF6A1A`, um pouco mais saturado, para a tinta, os tags e
-os adesivos. Rosa `#FF3D8B`, azul `#1F47D6` e verde-limão `#B4F03C` aparecem **só nos adesivos**,
-para a paleta da página continuar a mesma. Títulos em Anton, texto em Manrope; o nome (hero,
-logo e rodapé) é todo na tinta escorrendo da Rubik Wet Paint: "Taz" grande em laranja spray com
-pingos extras, "TheDoctor" menor, em creme, com sombra 3D âmbar.
+A paleta mistura tabacaria e farmácia: preto  e superfície , texto branco
+ e cinza ; verde-limão de isqueiro  nos botões, links e no brilho do
+hero; amarelo das advertências de maço  nos destaques e no spray (tags, "Taz",
+respingos); verde de embalagem de remédio  como acento frio; e uma faixa clara branca de
+bula nas redes, com links em verde-escuro . Vermelho  e caramelo  da
+seda e o amarelo de piteira  aparecem **só nos adesivos**; o vermelho é sempre fundo,
+nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo ou
+embalagem real. Títulos em Anton, texto em Manrope; o nome (hero, logo e rodapé) é todo na tinta
+escorrendo da Rubik Wet Paint: "Taz" grande em amarelo spray com pingos extras, "TheDoctor"
+menor, em branco, com sombra 3D lima.
 `tests/contraste.test.ts` confere 4,5:1 (WCAG AA) em todos os pares usados, inclusive sobre o
-brilho âmbar, o grão, a parede de concreto, a faixa creme e os textos de cada adesivo.
+brilho lima, o grão, a parede de concreto, a faixa clara e os textos de cada adesivo.
 
 Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem imagem baixada:
 

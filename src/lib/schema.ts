@@ -6,7 +6,7 @@ import { NOMES_ICONES } from './icones.ts';
 import { EXTENSOES_IMAGEM, PADRAO_SRC_IMAGEM } from './imagens.ts';
 import { ANIMACOES, FUNDOS } from './tema.ts';
 
-const cor = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'use uma cor hexadecimal, ex.: #D1932B');
+const cor = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'use uma cor hexadecimal, ex.: #B6E12A');
 const https = z.url({ protocol: /^https$/ });
 
 // Google Fonts family self-hosted at build time (see src/lib/fontes.ts).
@@ -228,24 +228,24 @@ export const conteudoSchema = z
       cor_superficie: cor,
       cor_texto: cor,
       cor_texto_suave: cor,
-      // Buttons and links (sunburst amber), with the text drawn on them.
+      // Buttons and links (lighter lime), with the text drawn on them.
       cor_primaria: cor,
       cor_primaria_contraste: cor,
-      // Kickers and small highlights: warm (pedal LED) and cool (studio light).
+      // Kickers and small highlights: warm (tobacco warning yellow) and cool (medicine-box green).
       cor_destaque: cor,
       cor_destaque_frio: cor,
-      // Cream band (fundo: "creme"): background, text, muted text and link/button color.
+      // Light band (fundo: "creme", leaflet white): background, text, muted text and link/button color.
       cor_creme: cor,
       cor_creme_texto: cor,
       cor_creme_texto_suave: cor,
       cor_creme_primaria: cor,
-      // Spray paint: a more saturated orange for the dripping accent, the tags and stickers.
+      // Spray paint: the dripping accent, the tags and stickers.
       cor_spray: cor,
-      // Sticker-only accents (hot pink, electric blue, lime): never used outside the stickers,
-      // so the page palette stays the same.
-      cor_adesivo_rosa: cor,
-      cor_adesivo_azul: cor,
-      cor_adesivo_lima: cor,
+      // Sticker-only accents (rolling-paper red and caramel, filter-tip yellow): never used as text
+      // on the page, so red never has to pass AA as text over the dark stage.
+      cor_seda_vermelho: cor,
+      cor_piteira: cor,
+      cor_seda_caramelo: cor,
       fonte_titulo: z.string(),
       fonte_texto: z.string(),
       // Dripping paint (artist name, logo, footer): one or two words at a time.
