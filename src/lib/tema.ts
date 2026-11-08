@@ -31,3 +31,6 @@ export function fundosDasSecoes(secoes: { fundo?: Fundo | undefined }[]): Fundo[
 // Opacity of the gear photo behind the studio section (global.css, .fundo-estudio): grayscale,
 // so its lightest pixel is white at this opacity over the section background.
 export const OPACIDADE_FOTO_FUNDO = 0.12;
+
+// Opacity of the huge faded "Taz" on the hero wall (global.css, .taz-fantasma).
+export const OPACIDADE_TAZ_FANTASMA = 0.07;

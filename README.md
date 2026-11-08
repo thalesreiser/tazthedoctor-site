@@ -44,7 +44,7 @@ content/
 src/
 ├── components/   # Hero, Servicos, Musica + Player, Sobre, Equipamento, Plataformas,
 │                 # Contato, Rodape, Rasgo, Revelar, AvisoCookies, ACompletar, ...
-│   └── arte/     # throw-up, tag TTD, rabiscos e adesivos (SVG)
+│   └── arte/     # throw-up, tag "Ninja", rabiscos e adesivos (SVG)
 ├── layouts/Base.astro  # head, tema, aviso "em construção", cabeçalho
 ├── lib/          # schema (Zod), SEO e JSON-LD, players, imagem de compartilhamento, contraste, arte
 ├── assets/site/  # fotos já tratadas (otimizadas de novo no build)
@@ -91,7 +91,7 @@ só repetem ou enfeitam o que a página já diz. Modelos:
 | `etiqueta` | etiqueta vermelho seda com estrela amarela, texto claro em duas linhas |
 | `explosao` | explosão caramelo de seda, texto em duas linhas |
 | `fita` | fita cassete com o texto na etiqueta lima |
-| `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "TTD") |
+| `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "Taz") |
 | `rec` | "REC" com a luz piscando |
 
 Os textos passam pelo mesmo `revisao.termos_vetados` do resto (por isso não há "100%").
@@ -133,24 +133,30 @@ convertidos para JPEG antes (o sharp desta máquina não lê HEIC).
 
 ### Identidade visual
 
-A paleta mistura tabacaria e farmácia: preto  e superfície , texto branco
- e cinza ; verde-limão de isqueiro  nos botões, links e no brilho do
-hero; amarelo das advertências de maço  nos destaques e no spray (tags, "Taz",
-respingos); verde de embalagem de remédio  como acento frio; e uma faixa clara branca de
-bula nas redes, com links em verde-escuro . Vermelho  e caramelo  da
-seda e o amarelo de piteira  aparecem **só nos adesivos**; o vermelho é sempre fundo,
-nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo ou
-embalagem real. Títulos em Anton, texto em Manrope; o nome (hero, logo e rodapé) é todo na tinta
-escorrendo da Rubik Wet Paint: "Taz" grande em amarelo spray com pingos extras, "TheDoctor"
-menor, em branco, com sombra 3D lima.
+A paleta mistura tabacaria e farmácia: preto `#0B0C0A` e superfície `#1A1C17`, texto branco
+`#F5F5EF` e cinza `#B4B8AC`; verde-limão de isqueiro `#B6E12A` nos botões, links e no brilho do
+hero; amarelo das advertências de maço `#FFD31A` nos destaques e no spray (tags, "Taz",
+respingos); verde de embalagem de remédio `#BFE6C8` como acento frio; e uma faixa clara branca de
+bula nas redes, com links em verde-escuro `#2C5A36`. Vermelho `#C42127` e caramelo `#C98E4E` da
+seda e o amarelo de piteira `#E3B25A` aparecem **só nos adesivos e colagens**; o vermelho é sempre
+fundo, nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo
+ou embalagem real. Títulos em Anton, texto em Manrope, anotações à mão em Permanent Marker; o nome
+(hero, logo e rodapé) é todo na tinta escorrendo da Rubik Wet Paint.
+
+O hero é uma colagem lambe-lambe: "Taz" grande em amarelo spray com uma cópia lima fora de
+registro e pingos extras, "TheDoctor" numa tira de papel branco rasgado, uma pauta musical
+rabiscada atrás do nome e um "Taz" gigante e apagado na parede. A foto vem recortada à mão, com
+sombra amarela, camadas de papel de seda caramelo e vermelho, a `tarja` de remédio colada no
+canto, uma fita cassete se desenrolando e até duas `anotacoes` de marcador (todos em
+`content/site.json`, seção `hero`). Tudo isso é decoração, escondida dos leitores de tela.
 `tests/contraste.test.ts` confere 4,5:1 (WCAG AA) em todos os pares usados, inclusive sobre o
 brilho lima, o grão, a parede de concreto, a faixa clara e os textos de cada adesivo.
 
 Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem imagem baixada:
 
 - **Arte** (`src/lib/arte.ts` e `src/components/arte/`): o throw-up "TAZ / THEDOCTOR" do rodapé
-  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "TTD" com
-  coroa no hero, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
+  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "Ninja" com
+  coroa na seção Sobre, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
   seta, pingos) e os adesivos recortados com borda branca e canto descolando.
 - **Passagem entre seções** (`Rasgo.astro`): em vez de um corte reto, o papel da seção seguinte
   rasgado por cima da anterior, às vezes com um cartaz antigo aparecendo por baixo, fita crepe,
