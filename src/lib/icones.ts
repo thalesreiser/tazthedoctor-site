@@ -15,6 +15,8 @@ export const ICONES = {
   play: ['M7 4.5v15l12.5-7.5Z'],
   // Mixing console faders.
   faders: ['M5 3v18', 'M12 3v18', 'M19 3v18', 'M3 14h4', 'M10 7h4', 'M17 16h4'],
+  // Pad controller (AKAI / MPC style): beats and MIDI.
+  midi: ['M3 3h18v18H3Z', 'M6 6h3.5v3.5H6Z', 'M10.25 6h3.5v3.5h-3.5Z', 'M14.5 6H18v3.5h-3.5Z', 'M6 10.75h3.5v3.5H6Z', 'M10.25 10.75h3.5v3.5h-3.5Z', 'M14.5 10.75H18v3.5h-3.5Z', 'M6 17.5h12'],
   // Waveform: production.
   onda: ['M2 12h2', 'M6 8v8', 'M10 4v16', 'M14 7v10', 'M18 10v4', 'M22 12h-2'],
   guitarra: [

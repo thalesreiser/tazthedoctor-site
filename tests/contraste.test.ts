@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { misturar, razaoContraste } from '../src/lib/contraste.ts';
 import { conteudoSchema } from '../src/lib/schema.ts';
-import { OPACIDADE_BRILHO, OPACIDADE_PAREDE } from '../src/lib/tema.ts';
+import { OPACIDADE_BRILHO, OPACIDADE_FOTO_FUNDO, OPACIDADE_PAREDE } from '../src/lib/tema.ts';
 
 const AA = 4.5;
 // Fixed color of form field errors (--color-erro in global.css).
@@ -37,6 +37,9 @@ test('every color pair used by the components passes WCAG AA', () => {
     // Concrete wall (Sobre, Contato) at its lightest blotch, alone and over the stage glow.
     ['parede sobre palco', misturar(t.cor_creme, t.cor_fundo, OPACIDADE_PAREDE)],
     ['parede sobre superfície', misturar(t.cor_creme, t.cor_superficie, OPACIDADE_PAREDE)],
+    // Studio section: the gear photo's lightest pixel behind the text.
+    ['foto de fundo sobre palco', misturar('#FFFFFF', t.cor_fundo, OPACIDADE_FOTO_FUNDO)],
+    ['foto de fundo sobre superfície', misturar('#FFFFFF', t.cor_superficie, OPACIDADE_FOTO_FUNDO)],
     ['parede sobre brilho', misturar(t.cor_creme, misturar(t.cor_primaria, t.cor_fundo, OPACIDADE_BRILHO), OPACIDADE_PAREDE)],
   ];
   const pares: [string, string, string][] = [

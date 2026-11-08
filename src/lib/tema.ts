@@ -27,3 +27,7 @@ export function fundosDasSecoes(secoes: { fundo?: Fundo | undefined }[]): Fundo[
     return escolhido;
   });
 }
+
+// Opacity of the gear photo behind the studio section (global.css, .fundo-estudio): grayscale,
+// so its lightest pixel is white at this opacity over the section background.
+export const OPACIDADE_FOTO_FUNDO = 0.12;

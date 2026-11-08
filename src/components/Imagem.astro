@@ -11,6 +11,8 @@ interface Props {
   // `sizes` of the rendered image and srcset candidates (CSS px); defaults fit a content column.
   sizes?: string;
   larguras?: number[];
+  // Pure decoration (e.g. a stylized background): empty alt so screen readers skip it.
+  decorativa?: boolean;
 }
 
 const {
@@ -19,6 +21,7 @@ const {
   prioridade = false,
   sizes = '(min-width: 1024px) 36rem, calc(100vw - 2rem)',
   larguras = [480, 720, 960, 1280],
+  decorativa = false,
 } = Astro.props;
 
 const arquivos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/site/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}');
@@ -32,7 +35,7 @@ const altura = Math.round((largura * arquivo.height) / arquivo.width);
 {/* display: contents on <picture> keeps the classes passed for the image working as on a plain <img>. */}
 <Picture
   src={arquivo}
-  alt={imagem.alt}
+  alt={decorativa ? '' : imagem.alt}
   formats={['avif', 'webp']}
   fallbackFormat={arquivo.format === 'png' ? 'png' : 'jpg'}
   widths={srcset}
