@@ -4,6 +4,7 @@ import Icone from './Icone.astro';
 import Imagem from './Imagem.astro';
 import Registros from './Registros.astro';
 import TituloSecao from './TituloSecao.astro';
+import Adesivo from './arte/Adesivo.astro';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
 interface Props {
@@ -26,6 +27,7 @@ const idTitulo = `${ancora}-titulo`;
     <Imagem imagem={secao.foto} decorativa sizes="100vw" larguras={[640, 960, 1280, 1600]} class="h-full w-full object-cover" />
   </div>
   <div class="container-site relative">
+    {secao.adesivos[0] && <Adesivo adesivo={secao.adesivos[0]} class="absolute -top-4 right-4 w-32 sm:right-6 sm:w-40" giro={6} />}
     <div class="max-w-3xl" data-revelar-grupo>
       <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.texto} />
     </div>

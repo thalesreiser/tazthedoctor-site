@@ -1,0 +1,22 @@
+---
+import type { Advertencia } from '../lib/schema.ts';
+
+interface Props {
+  advertencia: Advertencia;
+}
+
+const { advertencia } = Astro.props;
+---
+
+{/*
+  Warning box in the style of the notices printed on tobacco packs, as the artist's own parody
+  (never the official images or layout): thick frame, condensed caps. "preta" is white on black;
+  "amarela" is black on warning yellow inside a hazard-tape frame (global.css, .advertencia).
+  Real text, read by screen readers like any note.
+*/}
+<div class="container-site relative pb-16 sm:pb-20">
+  <aside class:list={['advertencia', `advertencia-${advertencia.variante}`]} aria-label={advertencia.titulo}>
+    <p class="advertencia-titulo">{advertencia.titulo}</p>
+    {advertencia.texto && <p class="advertencia-texto">{advertencia.texto}</p>}
+  </aside>
+</div>
