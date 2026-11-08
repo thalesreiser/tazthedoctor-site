@@ -414,11 +414,13 @@
 }
 
 /*
-  Hero name, all in dripping paint (Rubik Wet Paint): "Taz" big in spray orange with extra drips
-  running from it, "TheDoctor" smaller in cream, tilted the other way, with a hard amber 3D shadow
-  instead of drips. Mixed case on purpose, like a signature; the roughen filter frays both.
+  Hero name, all in dripping paint (Rubik Wet Paint): "Taz" big in spray yellow with extra drips
+  and a misregistered lime copy behind it, "TheDoctor" smaller, dark on a strip of torn white
+  paper pasted at an angle. Mixed case on purpose, like a signature; the roughen filter frays both.
 */
 .nome-hero {
+  position: relative;
+  isolation: isolate;
   text-transform: none;
   letter-spacing: 0;
 }
@@ -432,20 +434,38 @@
 
 .nome-tinta {
   display: inline-block;
+  isolation: isolate;
   font-size: clamp(5rem, 29vw, 10rem);
   line-height: 0.82;
   color: var(--cor-spray);
   rotate: -1.5deg;
 }
 
-.nome-tag {
-  font-size: clamp(2.6rem, 13.6vw, 5.6rem);
+.nome-tag-linha {
+  margin-top: 0.18em;
+  font-size: clamp(2.4rem, 12.4vw, 5rem);
   line-height: 1;
-  margin-top: 0.12em;
-  color: var(--cor-texto);
-  rotate: 2.5deg;
+}
+
+.nome-tag {
+  display: inline-block;
+  padding: 0.04em 0.24em 0.12em;
+  color: var(--tinta-escura);
+  background: var(--tinta-creme);
+  rotate: -2deg;
   transform-origin: left center;
-  text-shadow: 0.045em 0.055em 0 var(--tinta-lima);
+  clip-path: polygon(0 5%, 8% 0, 22% 6%, 38% 0, 54% 5%, 70% 0, 86% 6%, 100% 1%, 99% 95%, 84% 100%, 66% 94%, 48% 100%, 30% 95%, 14% 100%, 1% 96%);
+  box-shadow: 0.06em 0.06em 0 var(--tinta-lima);
+}
+
+/* Misregistered print: a lime copy of "Taz" a hair off, under the yellow one. */
+.nome-registro {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--tinta-lima);
+  translate: 0.035em 0.03em;
+  opacity: 0.9;
 }
 
 /* Basquiat-style crown over the T, amber over the orange. */
@@ -915,7 +935,7 @@ li:nth-child(2n) > .lambe-lambe::after {
   background: inherit;
 }
 
-/* Doodles, the "TTD" tag and the throw-up: round marker strokes. */
+/* Doodles, the "Ninja" tag and the throw-up: round marker strokes. */
 .rabisco,
 .monograma,
 .throw-up {
@@ -1300,8 +1320,8 @@ li:nth-child(2n) > .lambe-lambe::after {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Hero, at load (CSS only): tag and crown draw, drips run, stickers slap on, then float. */
-  [data-animacoes='sutil'] :is(.monograma-hero, .nome-coroa) .desenha {
+  /* Hero, at load (CSS only): crown draws, drips run, stickers slap on, then float. */
+  [data-animacoes='sutil'] .nome-coroa .desenha {
     stroke-dasharray: 1 1.1;
     animation: desenhar 1s cubic-bezier(0.6, 0.1, 0.3, 1) calc(0.7s + var(--j, 0) * 0.12s) backwards;
   }
@@ -1446,4 +1466,243 @@ li:nth-child(2n) > .lambe-lambe::after {
   border-top: 4px solid var(--cor-primaria);
   border-radius: 4px;
   backdrop-filter: blur(2px);
+}
+
+/*
+  Hero collage (lambe-lambe): everything below is decoration around the real name, text and photo.
+  A huge faded "Taz" on the wall, a hand-drawn staff behind the name, torn rolling paper layers and
+  a yellow offset shadow behind a hand-cut photo, a medicine-box warning strip on the corner, a
+  cassette tape unspooling and marker notes. Text over the faded "Taz" is checked in
+  tests/contraste.test.ts (OPACIDADE_TAZ_FANTASMA in src/lib/tema.ts).
+*/
+.taz-fantasma {
+  display: none;
+  position: absolute;
+  top: -6%;
+  right: -6%;
+  font-family: var(--fonte-tinta);
+  font-size: clamp(16rem, 32vw, 30rem);
+  line-height: 1;
+  color: var(--cor-spray);
+  opacity: 0.07;
+  rotate: -8deg;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (min-width: 1024px) {
+  .taz-fantasma {
+    display: block;
+  }
+}
+
+.pauta-hero {
+  position: absolute;
+  z-index: -1;
+  top: 18%;
+  left: -0.5rem;
+  width: min(44rem, 115%);
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pauta-linhas path {
+  fill: none;
+  stroke: var(--cor-texto);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.28;
+}
+
+.pauta-notas {
+  fill: var(--tinta-lima);
+  stroke: var(--tinta-lima);
+  stroke-width: 2;
+  opacity: 0.75;
+}
+
+.pauta-notas path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.colagem-hero {
+  isolation: isolate;
+}
+
+/* Torn rolling paper: translucent, with fine fibres, ragged on every side. */
+.seda {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(97deg, color-mix(in srgb, var(--tinta-creme) 14%, transparent) 0 1px, transparent 1px 6px);
+  clip-path: polygon(0 6%, 9% 0, 18% 7%, 30% 1%, 41% 8%, 55% 2%, 68% 9%, 80% 3%, 92% 8%, 100% 2%, 100% 92%, 90% 100%, 77% 93%, 63% 99%, 49% 92%, 35% 99%, 21% 93%, 9% 99%, 0 94%);
+}
+
+.seda-caramelo {
+  top: -5%;
+  left: -28%;
+  width: 125%;
+  height: 52%;
+  background-color: color-mix(in srgb, var(--seda-caramelo) 58%, transparent);
+  rotate: -9deg;
+}
+
+.seda-vermelha {
+  right: -16%;
+  bottom: 10%;
+  width: 70%;
+  height: 26%;
+  background-color: color-mix(in srgb, var(--seda-vermelho) 85%, transparent);
+  rotate: 12deg;
+}
+
+/*
+  Hand-cut edges, shared by the photo layers and its yellow shadow. Clipped layer by layer (not on
+  the poster box): clipping the box that holds the blended layers made Chromium skip the photo.
+*/
+.foto-recortada img,
+.foto-recortada::before,
+.foto-recortada::after,
+.foto-recortada .reticula-camada,
+.sombra-recorte {
+  clip-path: polygon(0 2%, 6% 0, 15% 3%, 27% 0, 40% 2%, 55% 0, 70% 3%, 84% 0, 100% 2%, 99% 30%, 100% 62%, 98% 100%, 82% 98%, 64% 100%, 46% 97%, 28% 100%, 10% 98%, 0 100%, 2% 66%, 0 33%);
+}
+
+.foto-recortada::before,
+.foto-recortada::after,
+.foto-recortada .reticula-camada {
+  border-radius: 0;
+}
+
+.sombra-recorte {
+  position: absolute;
+  inset: 0;
+  translate: 10px 9px;
+  background: var(--cor-spray);
+}
+
+.fita-cassete {
+  display: none;
+  position: absolute;
+  right: -5.5rem;
+  bottom: -7rem;
+  width: 8.5rem;
+  overflow: visible;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .fita-cassete {
+    display: block;
+  }
+}
+
+.fita-cassete path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.fita-cassete-corpo {
+  stroke: color-mix(in srgb, var(--tinta-escura) 85%, var(--tinta-creme));
+  stroke-width: 7;
+}
+
+.fita-cassete-brilho {
+  stroke: var(--seda-caramelo);
+  stroke-width: 2;
+  opacity: 0.7;
+}
+
+/* Medicine-box warning strip pasted on the bottom-left corner of the photo. */
+.tarja-hero {
+  position: absolute;
+  bottom: -1.4rem;
+  left: 0.25rem;
+  max-width: 58%;
+  display: flex;
+  flex-direction: column;
+  rotate: -9deg;
+  box-shadow: 3px 4px 0 rgb(0 0 0 / 0.5);
+  pointer-events: none;
+}
+
+.tarja-titulo {
+  padding: 0.3rem 0.8rem;
+  font-family: var(--fonte-titulo);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--seda-vermelho);
+}
+
+.tarja-texto {
+  padding: 0.25rem 0.8rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-escura);
+  background: var(--tinta-creme);
+}
+
+@media (min-width: 640px) {
+  .tarja-hero {
+    left: -1.2rem;
+    max-width: none;
+  }
+
+  .tarja-texto {
+    font-size: 0.68rem;
+  }
+}
+
+/* Marker notes. */
+.anotacao {
+  display: none;
+  position: absolute;
+  font-family: var(--fonte-marcador);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--cor-texto);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.anotacao-baixo {
+  right: -7.5rem;
+  bottom: 24%;
+  rotate: -8deg;
+}
+
+.anotacao-lado {
+  top: 38%;
+  left: -6.5rem;
+  font-size: 1.2rem;
+  rotate: -12deg;
+}
+
+@media (min-width: 1280px) {
+  .anotacao-baixo {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .anotacao-lado {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-animacoes='sutil'] .fita-cassete .desenha {
+    stroke-dasharray: 1 1.1;
+    animation: desenhar 1.6s cubic-bezier(0.6, 0.1, 0.3, 1) 1.2s backwards;
+  }
+
+  [data-animacoes='sutil'] .tarja-hero {
+    animation: colar 650ms cubic-bezier(0.3, 1.4, 0.5, 1) 1.5s backwards;
+  }
 }

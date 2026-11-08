@@ -173,8 +173,22 @@ test('stickers: known models, short texts, at most three per section', () => {
   secao(longo, 'hero').adesivos[0].texto = 'um texto comprido demais para caber';
   assert.deepEqual(caminhos(longo), ['secoes.0.adesivos.0.texto']);
   const muitos = copia();
-  secao(muitos, 'hero').adesivos.push({ modelo: 'rec', texto: 'REC' });
+  while (secao(muitos, 'hero').adesivos.length <= 3) secao(muitos, 'hero').adesivos.push({ modelo: 'rec', texto: 'REC' });
   assert.equal(valido(muitos), false);
+});
+
+// Thales dropped the "TTD" acronym (2026-11-08): the short marks are Taz, Ninja or TheDoctor.
+test('the "TTD" acronym appears nowhere in the content', () => {
+  assert.equal(/\bTTD\b/i.test(JSON.stringify(original)), false);
+});
+
+test('hero collage: short warning strip and at most two marker notes', () => {
+  const longa = copia();
+  secao(longa, 'hero').tarja = { titulo: 'Tarja vermelha', texto: 'um texto de tarja comprido demais para caber na faixa' };
+  assert.deepEqual(caminhos(longa), ['secoes.0.tarja.texto']);
+  const muitas = copia();
+  secao(muitas, 'hero').anotacoes = ['um', 'dois', 'três'];
+  assert.deepEqual(caminhos(muitas), ['secoes.0.anotacoes']);
 });
 
 test('the tickers are gone: no scrolling strip fields left in the content', () => {

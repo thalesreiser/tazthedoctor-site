@@ -45,11 +45,13 @@
     "fonte_titulo": "Anton, Impact, \"Arial Narrow\", sans-serif",
     "fonte_texto": "Manrope, system-ui, sans-serif",
     "fonte_tinta": "\"Rubik Wet Paint\", Anton, Impact, sans-serif",
+    "fonte_marcador": "\"Permanent Marker\", \"Marker Felt\", cursive",
     "fonte_mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace",
     "fontes": [
       { "familia": "Anton", "pesos": [400] },
       { "familia": "Manrope", "pesos": [400, 700] },
-      { "familia": "Rubik Wet Paint", "pesos": [400] }
+      { "familia": "Rubik Wet Paint", "pesos": [400] },
+      { "familia": "Permanent Marker", "pesos": [400] }
     ],
     "animacoes": "sutil"
   },
@@ -82,9 +84,10 @@
       },
       "acao_principal": { "texto": "Chamar para um trabalho", "href": "#contato" },
       "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" },
+      "tarja": { "titulo": "Tarja vermelha", "texto": "Venda sob prescrição do Doctor" },
+      "anotacoes": ["volume no talo", "grava aí"],
       "adesivos": [
         { "modelo": "ninja", "texto": "ninja dos beats" },
-        { "modelo": "palheta", "texto": "Taz" },
         { "modelo": "rec", "texto": "REC" }
       ]
     },

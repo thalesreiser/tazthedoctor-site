@@ -1,7 +1,6 @@
 ---
 import Imagem from './Imagem.astro';
 import Adesivo from './arte/Adesivo.astro';
-import Monograma from './arte/Monograma.astro';
 import Rabisco from './arte/Rabisco.astro';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
@@ -10,15 +9,16 @@ interface Props {
 }
 
 const { secao } = Astro.props;
-// "TazTheDoctor" -> "Taz" over "TheDoctor", both in dripping paint: spray orange with extra drips,
-// then cream with an amber 3D shadow. Names that do not split into capitalized words stay whole.
+// "TazTheDoctor" -> "Taz" over "TheDoctor", both in dripping paint: "Taz" in spray yellow with a
+// misregistered lime copy and extra drips, "TheDoctor" on a strip of torn white paper. Names that
+// do not split into capitalized words stay whole.
 const partes = secao.titulo.match(/[A-Z][a-z]+/g);
 const [tinta, tag] = partes && partes.length > 1 && partes.join('') === secao.titulo ? [partes[0]!, partes.slice(1).join('')] : ['', secao.titulo];
-// Sticker slots around the photo: top-right corner, bottom-left, bottom-right.
+// Sticker slots around the photo: top-right corner, bottom-right, top-left.
 const slots = [
   { class: '-top-9 -right-2 w-28 sm:-right-9 sm:w-36', giro: 12 },
-  { class: '-bottom-7 -left-5 w-16 sm:-left-8 sm:w-20', giro: -16 },
   { class: '-bottom-5 right-4 w-24 sm:w-28', giro: 5 },
+  { class: '-top-6 -left-6 w-16 sm:w-20', giro: -14 },
 ];
 // Extra paint drips under "Taz" (left %, length in em), on top of the font's own.
 const pingosNome = [
@@ -26,20 +26,39 @@ const pingosNome = [
   { x: 54, c: 0.18 },
   { x: 83, c: 0.36 },
 ];
+// Marker notes around the photo: under the bottom-right corner, then beside the top-left one.
+const lugaresAnotacao = ['anotacao-baixo', 'anotacao-lado'];
 const externo = (href: string) => /^https?:/.test(href);
 ---
 
 <section id={ancoraSecao(secao)} class="brilho-palco relative overflow-hidden" data-hero aria-label={secao.titulo}>
-  <div class="container-site grid items-center gap-14 pt-12 pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pt-20 lg:pb-24">
+  {/* Huge faded "Taz" pasted behind the photo side (large screens only). */}
+  {tinta && <span class="taz-fantasma" aria-hidden="true">{tinta}</span>}
+  <div class="container-site relative grid items-center gap-14 pt-12 pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pt-20 lg:pb-24">
     <div class="entrada">
       {secao.selo && <p class="rotulo-mono" style="--i:0">{secao.selo}</p>}
       {/* The visual name is split in two fonts; screen readers get the name once, whole. */}
       <h1 class="nome-hero mt-9" style="--i:1">
         <span class="sr-only">{secao.titulo}</span>
-        <span aria-hidden="true" class="block">
+        <span aria-hidden="true" class="relative block">
+          {/* Hand-drawn music staff behind the name, with three loose notes. */}
+          <svg class="pauta-hero" viewBox="0 0 700 80" focusable="false">
+            <g class="pauta-linhas">
+              {[0, 12, 24, 36, 48].map((y) => <path d={`M0 ${14 + y}c120-6 300 6 420-2s180 4 280 0`} />)}
+            </g>
+            <g class="pauta-notas">
+              <ellipse cx="480" cy="46" rx="6" ry="4.5" transform="rotate(-20 480 46)" />
+              <path d="M485.5 44v-34" />
+              <ellipse cx="520" cy="34" rx="6" ry="4.5" transform="rotate(-20 520 34)" />
+              <path d="M525.5 32v-34l-40 12" />
+              <ellipse cx="600" cy="24" rx="6" ry="4.5" transform="rotate(-20 600 24)" />
+              <path d="M605.5 22v-30c8 4 12 10 8 18" />
+            </g>
+          </svg>
           {
             tinta && (
               <span class="nome-tinta glitch" data-texto={tinta}>
+                <span class="nome-registro">{tinta}</span>
                 {tinta}
                 <Rabisco nome="coroa" class="nome-coroa" />
                 {pingosNome.map((p, i) => (
@@ -48,7 +67,7 @@ const externo = (href: string) => /^https?:/.test(href);
               </span>
             )
           }
-          <span class="nome-tag glitch block" data-texto={tag}>{tag}</span>
+          <span class="nome-tag-linha block"><span class="nome-tag glitch" data-texto={tag}>{tag}</span></span>
         </span>
       </h1>
       <p class="mt-6 flex items-center gap-3 font-titulo text-2xl text-destaque uppercase sm:text-3xl" style="--i:2">
@@ -80,25 +99,39 @@ const externo = (href: string) => /^https?:/.test(href);
         }
       </div>
     </div>
-    <div class="relative mx-auto w-full max-w-sm lg:max-w-md">
-      {/* Offset frame and glow behind the photo: decorative. */}
-      <div class="absolute -inset-3 translate-x-4 translate-y-4 rounded-[6px] border-2 border-primaria/60" aria-hidden="true"></div>
-      <div class="absolute -inset-10 -z-0 rounded-full bg-primaria/20 blur-3xl" aria-hidden="true"></div>
-      {/* Photocopied poster: duotone in the palette (global.css, .foto-poster), taped at the top. */}
-      <div class="fita-cantos rotate-[1.5deg]">
-        <div class="foto-poster relative">
-        <Imagem
-          imagem={secao.foto}
-          prioridade
-          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
-          larguras={[360, 540, 720, 828]}
-          class="relative aspect-[3/4] w-full rounded-[4px] object-cover shadow-2xl shadow-black/60"
-        />
-        <span class="reticula-camada rounded-[4px]" aria-hidden="true"></span>
+    <div class="colagem-hero relative mx-auto w-full max-w-sm lg:max-w-md">
+      {/* Layers of torn rolling paper behind the photo, and its yellow offset shadow: decorative. */}
+      <div class="seda seda-caramelo" aria-hidden="true"></div>
+      <div class="seda seda-vermelha" aria-hidden="true"></div>
+      <div class="absolute -inset-10 rounded-full bg-primaria/20 blur-3xl" aria-hidden="true"></div>
+      {/* Hand-cut photocopied poster: duotone in the palette (global.css, .foto-poster), taped at the top. */}
+      <div class="fita-cantos -rotate-[2deg]">
+        <div class="sombra-recorte" aria-hidden="true"></div>
+        <div class="foto-poster foto-recortada relative">
+          <Imagem
+            imagem={secao.foto}
+            prioridade
+            sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
+            larguras={[360, 540, 720, 828]}
+            class="relative aspect-[3/4] w-full object-cover"
+          />
+          <span class="reticula-camada" aria-hidden="true"></span>
         </div>
       </div>
-      {/* "TTD" tag on the wall between the name and the photo, drawn at load. */}
-      <Monograma class="monograma-hero absolute top-2 -left-40 hidden w-28 -rotate-6 text-destaque-frio xl:block" />
+      {/* Cassette tape unspooling from the bottom-right corner. */}
+      <svg class="fita-cassete" viewBox="0 0 180 200" aria-hidden="true" focusable="false">
+        <path class="fita-cassete-corpo desenha" pathLength="1" d="M6 6c40 20 20 60 60 70s50-40 80-10 0 80 30 120" />
+        <path class="fita-cassete-brilho desenha" pathLength="1" d="M6 6c40 20 20 60 60 70s50-40 80-10 0 80 30 120" />
+      </svg>
+      {
+        secao.tarja && (
+          <div class="tarja-hero" aria-hidden="true">
+            <span class="tarja-titulo">{secao.tarja.titulo}</span>
+            <span class="tarja-texto">{secao.tarja.texto}</span>
+          </div>
+        )
+      }
+      {secao.anotacoes.slice(0, lugaresAnotacao.length).map((anotacao, i) => <p class:list={['anotacao', lugaresAnotacao[i]]} aria-hidden="true">{anotacao}</p>)}
       {/* Stickers slapped around the photo (content/site.json, hero.adesivos): decoration only. */}
       {secao.adesivos.slice(0, slots.length).map((adesivo, i) => <Adesivo adesivo={adesivo} class={`absolute ${slots[i]!.class}`} giro={slots[i]!.giro} ordem={i} hero />)}
     </div>
