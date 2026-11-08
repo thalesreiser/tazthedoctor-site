@@ -126,6 +126,9 @@ const equipamento = z.object({
   tipo: z.literal('equipamento'),
   titulo: z.string(),
   texto: z.string(),
+  // How each part of the setup enters the process (recording/mixing, beats/MIDI, strings).
+  grupos: z.array(z.object({ icone: z.enum(NOMES_ICONES), titulo: z.string(), descricao: z.string() })).min(1),
+  // Shown only as a stylized, decorative background (and used for the share image).
   foto: imagem,
   itens: z.array(registro).default([]),
   a_completar: aCompletar,

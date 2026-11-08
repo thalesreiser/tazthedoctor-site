@@ -3,7 +3,7 @@
   "site": {
     "nome": "TazTheDoctor",
     "titulo": "TazTheDoctor | Produção, mixagem, guitarra e baixo em Porto Alegre",
-    "descricao": "TazTheDoctor, o ninja dos beats: produtor musical, mixagem, guitarra e baixo em gravações, ensaios e shows. Cria da Vila Nova, Porto Alegre/RS.",
+    "descricao": "TazTheDoctor, o ninja dos beats: produção, mixagem, guitarra e baixo em Porto Alegre. Do beat ao riff de nu metal, emocore e hardcore, com o estúdio como base.",
     "url": "https://tazthedoctor.pages.dev",
     "idioma": "pt-BR"
   },
@@ -15,7 +15,7 @@
     "cidade": "Porto Alegre",
     "uf": "RS",
     "ano_nascimento": 1999,
-    "generos": ["Eletrônica"],
+    "generos": ["Nu metal", "Rock alternativo", "Emocore", "Hardcore", "Eletrônica"],
     "perfis": [
       "https://soundcloud.com/tazthedoctor",
       "https://www.youtube.com/@tazthedoctor",
@@ -74,8 +74,8 @@
       "titulo": "TazTheDoctor",
       "apelido": "ninja dos beats",
       "selo": "Vila Nova · Porto Alegre/RS · 99'",
-      "subtitulo": "Produtor musical, guitarrista e baixista. Faço produção e mixagem para outros artistas e toco em gravações, ensaios e shows, com o estúdio como base.",
-      "etiquetas": ["produção", "mixagem", "guitarra", "baixo", "underground"],
+      "subtitulo": "Produtor, guitarrista e baixista. Faço beats, gravo riffs e mixo faixas de outros artistas, do peso do nu metal e do hardcore ao drama do emo dos anos 2000, com o estúdio como QG.",
+      "etiquetas": ["produção", "mixagem", "guitarra", "baixo", "nu metal"],
       "foto": {
         "src": "taz-guitarra-estudio.jpg",
         "alt": "TazTheDoctor em pé num estúdio de paredes claras, tocando uma guitarra Les Paul sunburst, com o cabelo comprido caindo no rosto e um violão encostado ao fundo"
@@ -84,7 +84,7 @@
       "acao_secundaria": { "texto": "Ouvir o som", "href": "#musica" },
       "adesivos": [
         { "modelo": "ninja", "texto": "ninja dos beats" },
-        { "modelo": "palheta", "texto": "TTD" },
+        { "modelo": "palheta", "texto": "Taz" },
         { "modelo": "rec", "texto": "REC" }
       ]
     },
@@ -92,14 +92,14 @@
       "tipo": "servicos",
       "id": "trabalhos",
       "menu": "Trabalhos",
-      "titulo": "No estúdio e no palco",
+      "titulo": "Do beat ao último riff",
       "adesivos": [{ "modelo": "etiqueta", "texto": "feito no estúdio" }],
-      "subtitulo": "O foco é o estúdio: trabalhar a faixa de outros artistas, da produção à última camada de guitarra ou baixo.",
+      "subtitulo": "Meu trabalho mora no estúdio. Entro na sua faixa onde ela precisar: dar cara ao som, colocar peso nas cordas ou deixar cada elemento no lugar certo na mixagem.",
       "itens": [
-        { "icone": "onda", "titulo": "Produção musical", "descricao": "Beats e produção de faixas para outros artistas, construindo o som junto com você." },
-        { "icone": "faders", "titulo": "Mixagem", "descricao": "Mixagem das suas faixas, equilibrando cada elemento a partir das referências que você trouxer." },
-        { "icone": "guitarra", "titulo": "Guitarra e baixo em gravações", "descricao": "Gravo guitarra e baixo como músico de sessão, no estúdio, para a sua faixa." },
-        { "icone": "microfone", "titulo": "Ensaios e shows", "descricao": "Guitarra ou baixo de apoio para ensaios e apresentações ao vivo." }
+        { "icone": "onda", "titulo": "Produção musical", "descricao": "Do esboço gravado no celular à faixa pronta: arranjo, estrutura, programação de bateria e escolha de timbres. Parto das suas referências e trago ideias sem atropelar a identidade do projeto, seja um beat, uma faixa eletrônica ou uma música de banda." },
+        { "icone": "faders", "titulo": "Mixagem", "descricao": "Equilíbrio, espaço e pegada. Mixo com interface e plugins da Universal Audio, com emulações de equipamento analógico, pra guitarra pesada ter corpo, a voz ficar na frente e o grave não embolar. As rodadas de ajuste são combinadas antes de começar." },
+        { "icone": "guitarra", "titulo": "Guitarra e baixo de sessão", "descricao": "Riff em afinação baixa, palm mute no tempo, guitarras dobradas pra abrir o som e linha de baixo que segura o peso ou conversa com a melodia. Nu metal, rock dos anos 2000, emocore e hardcore são a minha casa, mas toco o que a faixa pedir." },
+        { "icone": "microfone", "titulo": "Ensaios e shows", "descricao": "Guitarra ou baixo de apoio pra ensaio e palco. Chego com as músicas tiradas e o timbre ajustado, pronto pra encaixar na banda sem virar mais um problema pra resolver." }
       ]
     },
     {
@@ -107,7 +107,7 @@
       "menu": "Música",
       "titulo": "Do estúdio",
       "adesivos": [{ "modelo": "fita", "texto": "lado A" }],
-      "subtitulo": "Tem muita coisa gravada e pouca coisa lançada, por enquanto. O que já está no ar: uma faixa no SoundCloud e os vídeos curtos no YouTube.",
+      "subtitulo": "Tem muita coisa gravada e pouca lançada, por enquanto: o resto está no HD esperando a hora certa. O que já está no ar mora no SoundCloud e nos vídeos curtos do YouTube.",
       "aviso_players": "Os players do SoundCloud e do YouTube só carregam quando você aperta o play.",
       "itens": [
         {
@@ -150,8 +150,9 @@
       "adesivos": [{ "modelo": "placa", "texto": "Vila Nova · POA" }],
       "paragrafos": [
         "Sou o TazTheDoctor, Thales Reiser Pedreira no documento e ninja dos beats nas redes. Nasci em 1999 e sou cria da Vila Nova, em Porto Alegre/RS.",
-        "Sou guitarrista, baixista e produtor musical, e trabalho com mixagem. Toquei em bandas pequenas e hoje meu lugar é o estúdio.",
-        "Quero somar no trabalho de outros artistas: produzindo e mixando faixas, ou tocando guitarra e baixo em gravações, ensaios e shows. Artista underground, com o foco no que acontece dentro do estúdio."
+        "Cresci com nu metal, rock dos anos 2000, emocore e hardcore no fone, e foi tocando esse som em bandas pequenas que aprendi guitarra e baixo: riff com pegada, afinação baixa, palhetada firme e linha de baixo que segura a parede de guitarra sem embolar.",
+        "Das bandas fui pro estúdio. Hoje produzo beats, gravo e mixo, misturando a escola do palco com a programação no MIDI. Meu som anda entre o peso das guitarras e a eletrônica, e é essa mistura que eu levo pra faixa de quem trabalha comigo.",
+        "Sou underground por escolha: gosto de projeto com personalidade, de artista que sabe o que quer dizer e de faixa que precisa de alguém disposto a ir fundo nos detalhes."
       ],
       "foto": {
         "src": "taz-retrato-noite.jpg",
@@ -160,23 +161,26 @@
       "registros": [
         { "rotulo": "de onde", "valor": "Vila Nova, Porto Alegre/RS" },
         { "rotulo": "geração", "valor": "99'" },
-        { "rotulo": "instrumentos", "valor": "Guitarra e baixo" }
+        { "rotulo": "instrumentos", "valor": "Guitarra, baixo e MIDI" },
+        { "rotulo": "na veia", "valor": "Nu metal, rock 2000, emocore, hardcore" }
       ]
     },
     {
       "tipo": "equipamento",
       "id": "estudio",
       "menu": "Estúdio",
-      "titulo": "Equipamento",
-      "texto": "Uma Les Paul sunburst e os pedais Zoom: o lado guitarra do TazTheDoctor.",
+      "titulo": "O estúdio",
+      "texto": "Um setup enxuto, montado pra gravar com qualidade e criar sem deixar a ideia esfriar. Mais do que a lista de equipamento, importa como cada peça entra no processo.",
+      "grupos": [
+        { "icone": "faders", "titulo": "Gravação e mixagem", "descricao": "Interface da Universal Audio com pré-amplificadores que emulam equipamento clássico já na entrada, e os plugins da UA na mixagem: compressores, equalizadores e saturação de inspiração analógica pra dar corpo sem perder a definição." },
+        { "icone": "midi", "titulo": "Beats e MIDI", "descricao": "Controladoras AKAI e MPC Beats pra programar bateria, picotar samples e tocar sintetizadores na mão. Configuro e mapeio as controladoras pra cada sessão, então a ideia sai do pad direto pra faixa, com groove de gente e não de grade." },
+        { "icone": "guitarra", "titulo": "Guitarra e baixo", "descricao": "Les Paul pras guitarras pesadas e baixo pras linhas graves, com timbres montados entre pedais e plugins. Afinação baixa, guitarras dobradas e camadas de textura quando a faixa pede mais parede." }
+      ],
       "foto": {
         "src": "guitarra-pedais.jpg",
         "alt": "Close de uma guitarra Les Paul sunburst com captador de capa cromada e frisos creme, apoiada ao lado de dois pedais Zoom de LEDs azuis e visor laranja"
       },
-      "itens": [
-        { "rotulo": "guitarra", "valor": "Les Paul sunburst" },
-        { "rotulo": "pedais", "valor": "Zoom" }
-      ]
+      "itens": []
     },
     {
       "tipo": "plataformas",
@@ -203,20 +207,20 @@
       "menu": "Contato",
       "titulo": "Bora gravar?",
       "adesivos": [{ "modelo": "explosao", "texto": "underground raiz" }],
-      "texto": "Produção, mixagem, guitarra ou baixo na sua faixa, ensaio ou show: me conta a ideia, com data e local se já tiver.",
-      "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Ensaios e shows"],
+      "texto": "Tem uma faixa pra produzir, uma mix pra fechar ou precisa de guitarra e baixo na gravação, no ensaio ou no show? Me conta a ideia, manda referências e, se já tiver, data e local. Respondo por e-mail.",
+      "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Beats e programação MIDI", "Ensaios e shows"],
       "texto_email": "Mandar e-mail",
       "provedor": "web3forms",
       "chave": "",
       "campos": [
         { "nome": "nome", "rotulo": "Nome ou nome artístico", "tipo": "text", "autocomplete": "name" },
         { "nome": "email", "rotulo": "E-mail", "tipo": "email", "autocomplete": "email" },
-        { "nome": "assunto", "rotulo": "Assunto", "tipo": "select", "opcoes": ["Produção musical", "Mixagem", "Gravação de guitarra ou baixo", "Ensaio ou show", "Outro"], "erro": "Escolha uma opção." },
+        { "nome": "assunto", "rotulo": "Assunto", "tipo": "select", "opcoes": ["Produção musical", "Mixagem", "Gravação de guitarra ou baixo", "Beats e programação MIDI", "Ensaio ou show", "Outro"], "erro": "Escolha uma opção." },
         { "nome": "mensagem", "rotulo": "Conta a ideia", "tipo": "textarea", "ajuda": "O que você precisa, prazo e, se tiver, links de referência." }
       ],
       "consentimento": "Concordo com o uso dos meus dados para receber o retorno deste contato, conforme a",
       "botao": "Enviar mensagem",
-      "mensagem_sucesso": "Mensagem enviada. Respondo assim que puder."
+      "mensagem_sucesso": "Mensagem enviada. Respondo assim que sair do estúdio."
     },
     {
       "tipo": "rodape",

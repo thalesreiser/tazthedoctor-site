@@ -1,5 +1,6 @@
 ---
 import ACompletar from './ACompletar.astro';
+import Icone from './Icone.astro';
 import Imagem from './Imagem.astro';
 import Registros from './Registros.astro';
 import TituloSecao from './TituloSecao.astro';
@@ -17,17 +18,31 @@ const idTitulo = `${ancora}-titulo`;
 ---
 
 <section id={ancora} class="secao relative overflow-hidden" aria-labelledby={idTitulo}>
-  <div class="container-site grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-    <div class="relative order-2 lg:order-1">
-      <div class="absolute -inset-8 rounded-full bg-destaque/15 blur-3xl" aria-hidden="true"></div>
-      <div class="reticula overflow-hidden rounded-[24px] shadow-2xl shadow-black/50">
-        <Imagem imagem={secao.foto} sizes="(min-width: 1024px) 30rem, calc(100vw - 2rem)" larguras={[360, 540, 720, 960, 1280]} class="aspect-[4/5] w-full object-cover" />
-      </div>
-    </div>
-    <div class="order-1 lg:order-2" data-revelar-grupo>
+  {/*
+    The gear photo is no longer the subject: it sits behind the section as a faded, grayscale
+    halftone print (global.css, .fundo-estudio), fading out toward the text. Decorative only.
+  */}
+  <div class="fundo-estudio" aria-hidden="true">
+    <Imagem imagem={secao.foto} decorativa sizes="100vw" larguras={[640, 960, 1280, 1600]} class="h-full w-full object-cover" />
+  </div>
+  <div class="container-site relative">
+    <div class="max-w-3xl" data-revelar-grupo>
       <TituloSecao id={idTitulo} rotulo={rotulo} titulo={secao.titulo} subtitulo={secao.texto} />
-      <Registros itens={secao.itens} />
-      <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />
     </div>
+    <ul class="mt-14 grid gap-5 md:grid-cols-3 md:gap-6" data-revelar-grupo>
+      {
+        secao.grupos.map((grupo) => (
+          <li class="grupo-estudio relative h-full p-7">
+            <span class="inline-flex size-12 items-center justify-center rounded-full bg-primaria/15 text-primaria">
+              <Icone nome={grupo.icone} class="size-6" />
+            </span>
+            <h3 class="mt-6 text-2xl leading-none">{grupo.titulo}</h3>
+            <p class="mt-3 text-texto-suave">{grupo.descricao}</p>
+          </li>
+        ))
+      }
+    </ul>
+    {secao.itens.length > 0 && <div class="mt-10"><Registros itens={secao.itens} /></div>}
+    <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />
   </div>
 </section>

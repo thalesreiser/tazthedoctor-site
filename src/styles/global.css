@@ -1413,3 +1413,37 @@ li:nth-child(2n) > .lambe-lambe::after {
     transition: none;
   }
 }
+
+/*
+  Studio section: the gear photo as a faded halftone print behind the content, grayscale and
+  tinted toward the stage, fading out on the text side. Opacity matches OPACIDADE_FOTO_FUNDO
+  (src/lib/tema.ts), checked by tests/contraste.test.ts.
+*/
+.fundo-estudio {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  -webkit-mask-image: linear-gradient(100deg, transparent 15%, #000 70%);
+  mask-image: linear-gradient(100deg, transparent 15%, #000 70%);
+}
+
+.fundo-estudio img {
+  filter: grayscale(1) contrast(1.4);
+}
+
+.fundo-estudio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, var(--cor-fundo) 1px, transparent 1.7px) 0 0 / 5px 5px;
+}
+
+/* Studio groups: dark cards with a lime top edge, like a label strip on a rack unit. */
+.grupo-estudio {
+  background: color-mix(in srgb, var(--cor-fundo) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cor-texto) 12%, transparent);
+  border-top: 4px solid var(--cor-primaria);
+  border-radius: 4px;
+  backdrop-filter: blur(2px);
+}

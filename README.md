@@ -73,6 +73,11 @@ Tipos de seção: `hero`, `servicos`, `musica`, `sobre`, `equipamento`, `platafo
 (esconde sem apagar), `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
 escuros se alternam) e `adesivos`.
 
+A seção `equipamento` (menu "Estúdio") traz `grupos` (ícone, título e descrição de como cada parte
+do setup entra no trabalho) e usa a `foto` só como fundo estilizado: cinza, apagada e com retícula,
+sem texto alternativo (é decoração). A mesma foto continua sendo a base da imagem de
+compartilhamento.
+
 ### Adesivos (`adesivos`)
 
 Até três por seção, cada um com `modelo` e `texto` (até 22 caracteres). Cada seção decide onde
@@ -110,7 +115,7 @@ player do SoundCloud ou do YouTube (`youtube-nocookie.com`).
 Os originais ficam em `fotos-originais/`, que **nunca vai para o Git** (está em
 `.git/info/exclude`). Só versões tratadas entram em `src/assets/site/`:
 
-1. aplique a rotação do EXIF e recorte no formato do lugar (hero 3:4, Sobre e Equipamento 4:5,
+1. aplique a rotação do EXIF e recorte no formato do lugar (hero 3:4, Sobre e fundo do Estúdio 4:5,
    redes 1:1);
 2. limite o lado maior a 1600 px e salve em JPEG ou WebP de boa qualidade;
 3. remova **todos** os metadados (EXIF, XMP, IPTC, ICC). Com o sharp, basta não usar
