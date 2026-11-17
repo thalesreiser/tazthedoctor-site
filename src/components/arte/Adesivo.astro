@@ -44,6 +44,9 @@ const caixas: Record<ModeloAdesivo, [number, number]> = {
   fita: [164, 112],
   palheta: [100, 112],
   rec: [124, 60],
+  tarja: [176, 76],
+  isqueiro: [100, 150],
+  piteira: [164, 66],
 };
 const [largura, altura] = caixas[modelo];
 const linhas = duasLinhas(texto.toUpperCase());
@@ -169,11 +172,62 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
           <>
             <path d={retanguloDescascado(6, 6, 112, 48, 8, 12)} class="a-borda" />
             <path d={retanguloDescascado(6, 6, 112, 48, 8, 12)} class="a-escura" />
-            <circle cx="30" cy="30" r="9" class="a-rosa a-luz-rec" />
+            <circle cx="30" cy="30" r="9" class="a-vermelho a-luz-rec" />
             <text x="47" y="41" class="a-titulo a-txt-creme" font-size="28" {...ajuste(texto, 28, 60)}>
               {texto.toUpperCase()}
             </text>
             <path d={aba(6, 6, 112, 48, 12)} class="a-aba" />
+          </>
+        )
+      }
+      {
+        modelo === 'tarja' && (
+          <>
+            {/* Medicine-box warning strip: rolling-paper red band with the text, black stripe under it. */}
+            <path d={retanguloDescascado(6, 6, 164, 64, 4, 14)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 164, 64, 4, 14)} class="a-creme" />
+            <rect x="12" y="12" width="152" height="34" class="a-vermelho" />
+            <rect x="12" y="52" width="152" height="8" class="a-escura" />
+            <text x="88" y="37" text-anchor="middle" class="a-titulo a-txt-branco" font-size="19" {...ajuste(texto.toUpperCase(), 19, 140)}>
+              {texto.toUpperCase()}
+            </text>
+            <path d={aba(6, 6, 164, 64, 14)} class="a-aba" />
+          </>
+        )
+      }
+      {
+        modelo === 'isqueiro' && (
+          <>
+            {/* Lighter: lime body with the text running up it, metal hood and a yellow flame. */}
+            <path d="M50 8 C62 20 66 30 60 40 C57 45 43 45 40 40 C34 30 38 20 50 8 Z" class="a-borda" />
+            <rect x="16" y="40" width="68" height="104" rx="16" class="a-borda" />
+            <path d="M50 10 C61 21 64 30 59 38 C56 43 44 43 41 38 C36 30 39 21 50 10 Z" class="a-spray a-traco-escuro" />
+            <rect x="24" y="44" width="52" height="22" rx="4" class="a-metal a-traco-escuro" />
+            <rect x="20" y="64" width="60" height="76" rx="14" class="a-lima a-traco-escuro" />
+            <text transform="translate(57 132) rotate(-90)" class="a-titulo a-txt-escuro" font-size="20" {...ajuste(texto.toUpperCase(), 20, 60)}>
+              {texto.toUpperCase()}
+            </text>
+          </>
+        )
+      }
+      {
+        modelo === 'piteira' && (
+          <>
+            {/* Filter-tip paper: filter-tip yellow with cork speckles under the text. */}
+            <defs>
+              <pattern id={`${id}-cortica`} width="7" height="7" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.1" class="a-cortica" />
+                <circle cx="5.5" cy="5" r="0.8" class="a-cortica" />
+              </pattern>
+            </defs>
+            <path d={retanguloDescascado(6, 6, 152, 54, 6, 14)} class="a-borda" />
+            <path d={retanguloDescascado(6, 6, 152, 54, 6, 14)} class="a-piteira" />
+            <path d={retanguloDescascado(6, 6, 152, 54, 6, 14)} fill={`url(#${id}-cortica)`} />
+            <rect x="22" y="20" width="120" height="26" rx="3" class="a-piteira" />
+            <text x="82" y="41" text-anchor="middle" class="a-titulo a-txt-escuro" font-size="21" {...ajuste(texto.toUpperCase(), 21, 112)}>
+              {texto.toUpperCase()}
+            </text>
+            <path d={aba(6, 6, 152, 54, 14)} class="a-aba" />
           </>
         )
       }

@@ -1101,6 +1101,20 @@ li:nth-child(2n) > .lambe-lambe::after {
   fill: #fff;
 }
 
+.a-txt-branco {
+  fill: #fff;
+}
+
+/* Lighter hood and the cork speckles on the filter-tip sticker. */
+.a-metal {
+  fill: var(--cor-texto-suave);
+}
+
+.a-cortica {
+  fill: color-mix(in srgb, var(--piteira) 55%, var(--tinta-escura));
+  opacity: 0.55;
+}
+
 .a-filete {
   fill: none;
   stroke: var(--tinta-escura);
@@ -1705,4 +1719,74 @@ li:nth-child(2n) > .lambe-lambe::after {
   [data-animacoes='sutil'] .tarja-hero {
     animation: colar 650ms cubic-bezier(0.3, 1.4, 0.5, 1) 1.5s backwards;
   }
+}
+
+/*
+  Light band (fundo: "creme"): a small repeating watermark like the one printed on rolling papers,
+  mostly music (notes, pick, waveform, cassette, knob, faders) with one discreet pharmacy cross,
+  in medicine-box green. The tile is a mask, so the color stays a token. Its opacity is
+  OPACIDADE_MARCA_DAGUA (src/lib/tema.ts), checked by tests/contraste.test.ts.
+*/
+.fundo-creme {
+  isolation: isolate;
+}
+
+.fundo-creme::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--tinta-menta);
+  opacity: 0.6;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27168%27%20height%3D%27112%27%20viewBox%3D%270%200%20168%20112%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M14%2028V12l10-3v16%27%2F%3E%3Cellipse%20cx%3D%2711%27%20cy%3D%2728%27%20rx%3D%273.4%27%20ry%3D%272.6%27%20fill%3D%27%23000%27%2F%3E%3Cellipse%20cx%3D%2721%27%20cy%3D%2725%27%20rx%3D%273.4%27%20ry%3D%272.6%27%20fill%3D%27%23000%27%2F%3E%3Cpath%20d%3D%27M62%2010c6%200%209%203%208%208-1%205-5%209-8%2011-3-2-7-6-8-11-1-5%202-8%208-8z%27%2F%3E%3Cpath%20d%3D%27M104%2020h4l3-7%204%2014%204-11%203%206%203-2h4%27%2F%3E%3Crect%20x%3D%27140%27%20y%3D%2712%27%20width%3D%2720%27%20height%3D%2713%27%20rx%3D%272%27%2F%3E%3Ccircle%20cx%3D%27146%27%20cy%3D%2719%27%20r%3D%272%27%2F%3E%3Ccircle%20cx%3D%27154%27%20cy%3D%2719%27%20r%3D%272%27%2F%3E%3Cpath%20d%3D%27M40%2070a8%208%200%201%200%20.1%200%27%2F%3E%3Ccircle%20cx%3D%2740%27%20cy%3D%2778%27%20r%3D%271.6%27%20fill%3D%27%23000%27%2F%3E%3Cpath%20d%3D%27M88%2066v16M84%2070h8M94%2062v20M90%2076h8M100%2068v14M96%2072h8%27%2F%3E%3Cpath%20d%3D%27M128%2064h5v5h5v5h-5v5h-5v-5h-5v-5h5z%27%2F%3E%3Cpath%20d%3D%27M4%2098c3-4%206%204%209%200s6%204%209%200%27%2F%3E%3Cpath%20d%3D%27M150%2092V80l8-2v12%27%2F%3E%3Cellipse%20cx%3D%27147.5%27%20cy%3D%2792%27%20rx%3D%272.8%27%20ry%3D%272.1%27%20fill%3D%27%23000%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0 / 168px 112px repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27168%27%20height%3D%27112%27%20viewBox%3D%270%200%20168%20112%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M14%2028V12l10-3v16%27%2F%3E%3Cellipse%20cx%3D%2711%27%20cy%3D%2728%27%20rx%3D%273.4%27%20ry%3D%272.6%27%20fill%3D%27%23000%27%2F%3E%3Cellipse%20cx%3D%2721%27%20cy%3D%2725%27%20rx%3D%273.4%27%20ry%3D%272.6%27%20fill%3D%27%23000%27%2F%3E%3Cpath%20d%3D%27M62%2010c6%200%209%203%208%208-1%205-5%209-8%2011-3-2-7-6-8-11-1-5%202-8%208-8z%27%2F%3E%3Cpath%20d%3D%27M104%2020h4l3-7%204%2014%204-11%203%206%203-2h4%27%2F%3E%3Crect%20x%3D%27140%27%20y%3D%2712%27%20width%3D%2720%27%20height%3D%2713%27%20rx%3D%272%27%2F%3E%3Ccircle%20cx%3D%27146%27%20cy%3D%2719%27%20r%3D%272%27%2F%3E%3Ccircle%20cx%3D%27154%27%20cy%3D%2719%27%20r%3D%272%27%2F%3E%3Cpath%20d%3D%27M40%2070a8%208%200%201%200%20.1%200%27%2F%3E%3Ccircle%20cx%3D%2740%27%20cy%3D%2778%27%20r%3D%271.6%27%20fill%3D%27%23000%27%2F%3E%3Cpath%20d%3D%27M88%2066v16M84%2070h8M94%2062v20M90%2076h8M100%2068v14M96%2072h8%27%2F%3E%3Cpath%20d%3D%27M128%2064h5v5h5v5h-5v5h-5v-5h-5v-5h5z%27%2F%3E%3Cpath%20d%3D%27M4%2098c3-4%206%204%209%200s6%204%209%200%27%2F%3E%3Cpath%20d%3D%27M150%2092V80l8-2v12%27%2F%3E%3Cellipse%20cx%3D%27147.5%27%20cy%3D%2792%27%20rx%3D%272.8%27%20ry%3D%272.1%27%20fill%3D%27%23000%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0 / 168px 112px repeat;
+}
+
+/* Older poster under a tear, as a strip of caramel rolling paper with fine fibres. */
+.rasgo-cartaz-seda path {
+  fill: color-mix(in srgb, var(--seda-caramelo) 80%, transparent);
+}
+
+/*
+  Warning box (Advertencia.astro), after the tobacco-pack notices: thick frame, condensed caps.
+  "amarela" sits inside a black-and-yellow hazard-tape frame.
+*/
+.advertencia {
+  max-width: 46rem;
+  padding: 1.1rem 1.4rem 1.2rem;
+  border: 6px solid var(--cor-texto);
+  background: var(--tinta-escura);
+  rotate: -0.6deg;
+}
+
+.advertencia-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.5rem, 5.4vw, 2.3rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--tinta-creme);
+}
+
+.advertencia-texto {
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.advertencia-amarela {
+  border: 0;
+  background: var(--cor-destaque);
+  border-image: repeating-linear-gradient(-45deg, var(--tinta-escura) 0 12px, var(--cor-destaque) 12px 24px) 10;
+  border-style: solid;
+  border-width: 10px;
+  rotate: 0.8deg;
+}
+
+.advertencia-amarela .advertencia-titulo,
+.advertencia-amarela .advertencia-texto {
+  color: var(--tinta-escura);
 }

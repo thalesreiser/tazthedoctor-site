@@ -96,7 +96,7 @@
       "id": "trabalhos",
       "menu": "Trabalhos",
       "titulo": "Do beat ao último riff",
-      "adesivos": [{ "modelo": "etiqueta", "texto": "feito no estúdio" }],
+      "adesivos": [{ "modelo": "tarja", "texto": "Mixagem · uso contínuo" }],
       "subtitulo": "Meu trabalho mora no estúdio. Entro na sua faixa onde ela precisar: dar cara ao som, colocar peso nas cordas ou deixar cada elemento no lugar certo na mixagem.",
       "itens": [
         { "icone": "onda", "titulo": "Produção musical", "descricao": "Do esboço gravado no celular à faixa pronta: arranjo, estrutura, programação de bateria e escolha de timbres. Parto das suas referências e trago ideias sem atropelar a identidade do projeto, seja um beat, uma faixa eletrônica ou uma música de banda." },
@@ -142,6 +142,7 @@
         }
       ],
       "nota": "Os próximos lançamentos saem primeiro no SoundCloud.",
+      "advertencia": { "titulo": "Advertência: este som causa dependência", "texto": "Produzido na Vila Nova. Ouça com moderação, de preferência no volume máximo.", "variante": "preta" },
       "a_completar": [
         "Próximos lançamentos: título, data e link de cada faixa ou vídeo que for ao ar"
       ]
@@ -173,6 +174,8 @@
       "id": "estudio",
       "menu": "Estúdio",
       "titulo": "O estúdio",
+      "adesivos": [{ "modelo": "piteira", "texto": "filtro de ruído" }],
+      "advertencia": { "titulo": "Atenção: tinta fresca no estúdio", "texto": "Grave com moderação. Mixe sem moderação nenhuma.", "variante": "amarela" },
       "texto": "Um setup enxuto, montado pra gravar com qualidade e criar sem deixar a ideia esfriar. Mais do que a lista de equipamento, importa como cada peça entra no processo.",
       "grupos": [
         { "icone": "faders", "titulo": "Gravação e mixagem", "descricao": "Interface da Universal Audio com pré-amplificadores que emulam equipamento clássico já na entrada, e os plugins da UA na mixagem: compressores, equalizadores e saturação de inspiração analógica pra dar corpo sem perder a definição." },
@@ -209,7 +212,7 @@
       "tipo": "contato",
       "menu": "Contato",
       "titulo": "Bora gravar?",
-      "adesivos": [{ "modelo": "explosao", "texto": "underground raiz" }],
+      "adesivos": [{ "modelo": "isqueiro", "texto": "acende o beat" }],
       "texto": "Tem uma faixa pra produzir, uma mix pra fechar ou precisa de guitarra e baixo na gravação, no ensaio ou no show? Me conta a ideia, manda referências e, se já tiver, data e local. Respondo por e-mail.",
       "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Beats e programação MIDI", "Ensaios e shows"],
       "texto_email": "Mandar e-mail",

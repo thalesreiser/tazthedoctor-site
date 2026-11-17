@@ -178,7 +178,7 @@ export function ondaOsciloscopio(semente: number, largura = 1200, altura = 40): 
   Stickers: the shapes are drawn by Adesivo.astro, the text comes from content/site.json
   (`adesivos` in each section). Short texts only: they have to fit the die-cut shape.
 */
-export const MODELOS_ADESIVO = ['ninja', 'placa', 'etiqueta', 'explosao', 'fita', 'palheta', 'rec'] as const;
+export const MODELOS_ADESIVO = ['ninja', 'placa', 'etiqueta', 'explosao', 'fita', 'palheta', 'rec', 'tarja', 'isqueiro', 'piteira'] as const;
 export type ModeloAdesivo = (typeof MODELOS_ADESIVO)[number];
 
 /** Splits a short text into two lines of similar length, at a space (for two-line stickers). */

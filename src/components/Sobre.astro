@@ -34,8 +34,8 @@ const idTitulo = `${ancora}-titulo`;
           <div class="reticula -rotate-2 overflow-hidden rounded-[22px] shadow-2xl shadow-black/50">
             <Imagem imagem={secao.foto} sizes="(min-width: 1024px) 24rem, 20rem" larguras={[320, 480, 640, 768]} class="aspect-[4/5] w-full object-cover" />
           </div>
-          {/* "Ninja" hand tag on the wall beside the photo (large screens only). */}
-          <Monograma class="absolute top-10 -left-36 hidden w-32 -rotate-6 text-destaque-frio xl:block" />
+          {/* "Ninja" hand tag on the wall above the photo (large screens only). */}
+          <Monograma class="absolute -top-20 left-2 hidden w-28 -rotate-6 text-destaque-frio lg:block" />
           {secao.adesivos[0] && <Adesivo adesivo={secao.adesivos[0]} class="absolute -top-7 -right-3 w-36 sm:-right-10 sm:w-40" giro={8} />}
           <span class="absolute -bottom-4 -left-3 rotate-[-6deg] rounded-full bg-destaque px-4 py-1.5 font-titulo text-lg text-primaria-contraste uppercase" aria-hidden="true">
             99'

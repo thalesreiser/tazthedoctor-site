@@ -37,6 +37,14 @@ const adesivo = z.object({
   texto: z.string().min(1).max(22, 'texto de adesivo: até 22 caracteres'),
 });
 
+// Parody warning box in the style of tobacco-pack notices, shown at the end of a section.
+const advertencia = z.object({
+  titulo: z.string().min(3).max(60),
+  texto: z.string().max(120).optional(),
+  variante: z.enum(['preta', 'amarela']).default('preta'),
+});
+export type Advertencia = z.infer<typeof advertencia>;
+
 const comum = {
   // Up to three stickers slapped on the section; each component decides where they go.
   adesivos: z.array(adesivo).max(3, 'no máximo 3 adesivos por seção').default([]),
@@ -44,6 +52,7 @@ const comum = {
   menu: z.string().optional(),
   ativo: z.boolean().default(true),
   fundo: z.enum(FUNDOS).optional(),
+  advertencia: advertencia.optional(),
 };
 
 const hero = z.object({

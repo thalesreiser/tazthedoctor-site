@@ -71,7 +71,12 @@ falha o build com o caminho do campo.
 Tipos de seção: `hero`, `servicos`, `musica`, `sobre`, `equipamento`, `plataformas`,
 `contato` e `rodape`. Todas aceitam `id` (âncora), `menu` (link no cabeçalho), `ativo: false`
 (esconde sem apagar), `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
-escuros se alternam) e `adesivos`.
+escuros se alternam), `adesivos` e `advertencia`.
+
+`advertencia` põe, no fim da seção, uma caixa de aviso no estilo das advertências de maço, como
+paródia própria (nunca as imagens nem o layout oficiais): `titulo` (até 60 caracteres), `texto`
+opcional (até 120) e `variante` `preta` (branco sobre preto) ou `amarela` (preto sobre amarelo, com
+moldura de fita zebrada). É texto de verdade, lido pelos leitores de tela.
 
 A seção `equipamento` (menu "Estúdio") traz `grupos` (ícone, título e descrição de como cada parte
 do setup entra no trabalho) e usa a `foto` só como fundo estilizado: cinza, apagada e com retícula,
@@ -93,6 +98,9 @@ só repetem ou enfeitam o que a página já diz. Modelos:
 | `fita` | fita cassete com o texto na etiqueta lima |
 | `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "Taz") |
 | `rec` | "REC" com a luz piscando |
+| `tarja` | tarja de remédio: faixa vermelha de seda com o texto em branco e listra preta |
+| `isqueiro` | isqueiro lima com chama amarela, texto subindo pelo corpo (curto) |
+| `piteira` | papel de piteira amarelo com pontinhos de cortiça |
 
 Os textos passam pelo mesmo `revisao.termos_vetados` do resto (por isso não há "100%").
 
@@ -162,7 +170,10 @@ Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem ima
   rasgado por cima da anterior, às vezes com um cartaz antigo aparecendo por baixo, fita crepe,
   respingos de spray, pingos escorrendo e, na primeira, a linha de um osciloscópio.
 - **Texturas**: parede de concreto (Sobre e Contato), retícula de fotocópia nas fotos, borda
-  rasgada nos cartazes lambe-lambe, grão de fotocópia, filtro áspero no nome.
+  rasgada nos cartazes lambe-lambe, grão de fotocópia, filtro áspero no nome, papel de seda
+  caramelo entre os cartazes rasgados e, na faixa clara, uma marca d'água pequena e repetida como a
+  das sedas, com elementos de música (notas, palheta, forma de onda, fita, knob, faders) e uma cruz
+  de farmácia discreta, em verde de remédio.
 
 As animações (entrada do hero, adesivos colados com tapa e flutuando, tags e rabiscos se
 desenhando, títulos pintados com spray, pingos escorrendo, cartazes balançando no hover, LEDs do

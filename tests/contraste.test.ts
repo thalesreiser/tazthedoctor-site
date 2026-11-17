@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { misturar, razaoContraste } from '../src/lib/contraste.ts';
 import { conteudoSchema } from '../src/lib/schema.ts';
-import { OPACIDADE_BRILHO, OPACIDADE_FOTO_FUNDO, OPACIDADE_PAREDE, OPACIDADE_TAZ_FANTASMA } from '../src/lib/tema.ts';
+import { OPACIDADE_BRILHO, OPACIDADE_FOTO_FUNDO, OPACIDADE_MARCA_DAGUA, OPACIDADE_PAREDE, OPACIDADE_TAZ_FANTASMA } from '../src/lib/tema.ts';
 
 const AA = 4.5;
 // Fixed color of form field errors (--color-erro in global.css).
@@ -84,6 +84,18 @@ test('every color pair used by the components passes WCAG AA', () => {
     ['creme: primária', t.cor_creme_primaria, t.cor_creme],
     ['creme: botão', t.cor_creme, t.cor_creme_primaria],
     ['creme: grão', t.cor_creme_texto_suave, misturar('#000000', t.cor_creme, OPACIDADE_GRAO)],
+    // Music watermark on the light band, at a stroke: text, muted text and links over it.
+    ['creme: texto sobre marca d’água', t.cor_creme_texto, misturar(t.cor_destaque_frio, t.cor_creme, OPACIDADE_MARCA_DAGUA)],
+    ['creme: texto suave sobre marca d’água', t.cor_creme_texto_suave, misturar(t.cor_destaque_frio, t.cor_creme, OPACIDADE_MARCA_DAGUA)],
+    ['creme: primária sobre marca d’água', t.cor_creme_primaria, misturar(t.cor_destaque_frio, t.cor_creme, OPACIDADE_MARCA_DAGUA)],
+    // Warning boxes (Advertencia.astro): light on black, muted on black, black on warning yellow.
+    ['advertência preta: título', t.cor_creme, t.cor_fundo],
+    ['advertência preta: texto', t.cor_texto_suave, t.cor_fundo],
+    ['advertência amarela', t.cor_fundo, t.cor_destaque],
+    // New stickers: white on the red tarja, dark on the lime lighter and on the filter tip.
+    ['adesivo tarja: branco sobre vermelho', '#FFFFFF', t.cor_seda_vermelho],
+    ['adesivo isqueiro: escuro sobre lima', t.cor_fundo, t.cor_primaria],
+    ['adesivo piteira: escuro sobre piteira', t.cor_fundo, t.cor_piteira],
   ];
   const reprovados = pares
     .map(([nome, a, b]) => ({ nome, razao: razaoContraste(a, b) }))
