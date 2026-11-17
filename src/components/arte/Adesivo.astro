@@ -60,7 +60,16 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
   data-anima={hero ? undefined : ''}
 >
   <span class="adesivo-colar">
+    {/*
+      The tilt sits on its own static box, and the drop shadow is drawn inside the SVG (a blurred
+      copy of the art, filter in Base.astro) instead of a CSS filter on the SVG. A CSS filter or a
+      tilt on an animated box makes the browser paint the sticker upright into a bitmap and then
+      rotate that bitmap, which blurs it; this way the art is painted already tilted and stays sharp.
+    */}
+    <span class="adesivo-giro">
     <svg class:list={['adesivo', `adesivo-${modelo}`]} viewBox={`0 0 ${largura} ${altura}`} focusable="false">
+      <use href={`#${id}-arte`} class="a-sombra" filter="url(#sombra-adesivo)" />
+      <g id={`${id}-arte`}>
       {
         modelo === 'ninja' && (
           <>
@@ -231,6 +240,8 @@ const anel = `${texto} • ${texto} • `.toUpperCase();
           </>
         )
       }
+      </g>
     </svg>
+    </span>
   </span>
 </span>
