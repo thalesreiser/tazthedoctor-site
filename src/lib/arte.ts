@@ -204,3 +204,116 @@ export function explosao(cx: number, cy: number, externo: number, interno: numbe
   });
   return `M${pontos.join(' L')} Z`;
 }
+
+/*
+  Drawn logo, "gótico afiado" (Logo.astro): blackletter letters built from broad-nib pieces (stems
+  with diamond feet, bars, a few thorns), each letter with its own tilt and height so they dance on
+  the line. Polygons in a 200-unit cap height, baseline at y = 200. Only these letters are drawn, so
+  the logo is used only while the site name is exactly LOGO_NOME; any other name falls back to type.
+*/
+export const LOGO_NOME = 'TazTheDoctor';
+
+export interface LetraLogo {
+  pontos: string[];
+  transform?: string;
+}
+
+export const LOGO_TAZ: LetraLogo[] = [
+  {
+    // T: bar with a hanging spur, stem, foot flick, a thorn on the stem and one off the bar.
+    transform: 'rotate(-4 80 100)',
+    pontos: [
+      '4,22 26,2 146,2 160,18 138,34 24,34',
+      '4,22 18,30 12,64 2,48',
+      '62,22 76,10 90,22 90,188 76,200 62,188',
+      '84,186 112,170 124,180 94,204',
+      '62,104 40,114 62,128',
+      '146,2 168,-14 160,18',
+    ],
+  },
+  {
+    // a: tall right stem, short bowl stem, top bar, two joins and a thorn.
+    transform: 'translate(-4 8) rotate(4 214 140)',
+    pontos: [
+      '225,92 239,80 253,92 253,188 239,200 225,188',
+      '178,104 200,80 240,80 240,100 204,100 190,116',
+      '175,132 189,120 203,132 203,184 189,196 175,184',
+      '190,128 203,118 238,128 238,142 203,136',
+      '190,190 203,200 238,180 238,164',
+      '253,122 274,132 253,144',
+    ],
+  },
+  {
+    // z: top bar with a thorn, diagonal, bottom bar (the arrow leaves from here).
+    transform: 'translate(-8 -6) rotate(-6 314 140)',
+    pontos: [
+      '270,92 284,80 340,80 352,90 340,104 282,104',
+      '330,100 354,100 298,180 274,180',
+      '272,186 286,174 346,174 358,186 344,200 284,200',
+      '300,80 310,56 320,80',
+    ],
+  },
+];
+
+export const LOGO_DOCTOR: LetraLogo[] = [
+  {
+    transform: 'rotate(-3 80 100)',
+    pontos: ['4,22 26,2 146,2 160,18 138,34 24,34', '62,22 76,10 90,22 90,188 76,200 62,188', '84,186 112,170 124,180 94,204'],
+  },
+  {
+    transform: 'rotate(2 210 106)',
+    pontos: [
+      '170,12 184,0 198,12 198,188 184,200 170,188',
+      '196,112 216,88 238,86 252,100 252,118 236,104 198,130',
+      '224,108 238,96 252,108 252,200 238,212 224,200',
+      '170,58 150,68 170,80',
+    ],
+  },
+  {
+    transform: 'translate(0 -4) rotate(-3 296 140)',
+    pontos: [
+      '265,96 279,84 293,96 293,184 279,196 265,184',
+      '288,84 312,80 328,94 324,126 296,140 292,124 306,112 304,100 292,100',
+      '288,186 300,200 332,184 326,170',
+    ],
+  },
+  {
+    transform: 'rotate(3 400 100)',
+    pontos: [
+      '345,12 359,0 373,12 373,188 359,200 345,188',
+      '365,0 420,4 450,30 456,100 450,170 420,196 365,200 365,172 412,168 426,140 428,100 424,56 410,30 365,28',
+      '455,88 476,98 455,112',
+    ],
+  },
+  {
+    transform: 'translate(0 -8)',
+    pontos: [
+      '472,96 486,84 500,96 500,184 486,196 472,184',
+      '518,96 532,84 546,96 546,184 532,196 518,184',
+      '482,92 500,78 532,78 544,90 532,100 492,100',
+      '482,188 494,202 534,202 546,188 532,178 494,178',
+    ],
+  },
+  {
+    transform: 'translate(0 4) rotate(-4 590 140)',
+    pontos: ['560,96 574,84 588,96 588,184 574,196 560,184', '572,92 592,78 618,80 622,102 602,96 586,104', '574,188 586,202 620,192 614,178 588,180'],
+  },
+  {
+    transform: 'rotate(3 650 120)',
+    pontos: ['632,52 646,40 660,52 660,184 646,196 632,184', '620,86 680,86 680,102 620,102', '650,188 662,202 688,190 682,176', '640,44 646,20 652,44'],
+  },
+  {
+    transform: 'translate(0 6)',
+    pontos: [
+      '698,96 712,84 726,96 726,184 712,196 698,184',
+      '744,96 758,84 772,96 772,184 758,196 744,184',
+      '708,92 726,78 758,78 770,90 758,100 718,100',
+      '708,188 720,202 760,202 772,188 758,178 720,178',
+    ],
+  },
+  {
+    // r: the yellow arrow leaves from its flag (Logo.astro, same transform).
+    transform: 'translate(0 -4) rotate(-5 818 140)',
+    pontos: ['786,96 800,84 814,96 814,188 800,200 786,188', '806,94 830,78 852,84 848,106 826,98 812,110'],
+  },
+];

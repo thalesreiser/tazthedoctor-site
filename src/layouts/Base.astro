@@ -3,6 +3,8 @@ import { Font, type CssVariable } from 'astro:assets';
 import '../styles/global.css';
 import AvisoCookies from '../components/AvisoCookies.astro';
 import Revelar from '../components/Revelar.astro';
+import Logo from '../components/arte/Logo.astro';
+import { LOGO_NOME } from '../lib/arte.ts';
 import { temRastreamento } from '../lib/consentimento.ts';
 import { pilhaComFontes, variavelFonte } from '../lib/fontes.ts';
 import { ancoraSecao, pilhasDoTema, type Conteudo } from '../lib/schema.ts';
@@ -45,6 +47,7 @@ const variaveisTema = [
   `--fonte-texto:${pilhaComFontes(tema.fonte_texto, tema.fontes, pilhas)}`,
   `--fonte-tinta:${pilhaComFontes(tema.fonte_tinta, tema.fontes, pilhas)}`,
   `--fonte-marcador:${pilhaComFontes(tema.fonte_marcador ?? tema.fonte_tinta, tema.fontes, pilhas)}`,
+  `--fonte-gotica:${pilhaComFontes(tema.fonte_gotica ?? tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-mono:${tema.fonte_mono}`,
 ].join(';');
 
@@ -145,7 +148,16 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
           <span class="equalizador text-primaria" aria-hidden="true">
             <span style="--i:0;--h:.5"></span><span style="--i:1;--h:.9"></span><span style="--i:2;--h:.65"></span>
           </span>
-          {conteudo.site.nome}
+          {
+            conteudo.site.nome === LOGO_NOME ? (
+              <>
+                <Logo parte="cabecalho" prefixo="cabecalho" class="logo-cabecalho" />
+                <span class="sr-only">{conteudo.site.nome}</span>
+              </>
+            ) : (
+              conteudo.site.nome
+            )
+          }
         </a>
         {
           menu.length > 0 && (

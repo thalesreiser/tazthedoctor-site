@@ -1,0 +1,126 @@
+---
+import { LOGO_DOCTOR, LOGO_TAZ } from '../../lib/arte.ts';
+
+interface Props {
+  // "taz" and "doctor": the two big hero words; "cabecalho": both together, small, for the header.
+  parte: 'taz' | 'doctor' | 'cabecalho';
+  // Prefix for the SVG ids, unique per instance on the page.
+  prefixo: string;
+  class?: string;
+}
+
+const { parte, prefixo, class: classe } = Astro.props;
+const idTaz = `${prefixo}-taz`;
+const idDoctor = `${prefixo}-doctor`;
+
+// Throw-up build, back to front: a dark drop, the 3D extrusion, the dark outline, then the face.
+// The outline and extrusion are the same letters with a wide mitred stroke, so corners stay sharp.
+type Camada = { classe: string; x: number; traco: number };
+const camadasTaz: Camada[] = [
+  { classe: 'logo-escura', x: 12, traco: 14 },
+  { classe: 'logo-spray', x: 8, traco: 14 },
+  { classe: 'logo-spray', x: 4, traco: 14 },
+  { classe: 'logo-escura', x: 0, traco: 14 },
+  { classe: 'logo-lima', x: 0, traco: 2 },
+];
+const camadasDoctor: Camada[] = [
+  { classe: 'logo-escura', x: 10, traco: 12 },
+  { classe: 'logo-lima', x: 6, traco: 12 },
+  { classe: 'logo-lima', x: 3, traco: 12 },
+  { classe: 'logo-escura', x: 0, traco: 12 },
+  { classe: 'logo-creme', x: 0, traco: 2 },
+];
+// Header: no deep 3D, "TheDoctor" at 60% sitting on the same baseline as "Taz".
+const camadasTazPequeno: Camada[] = [
+  { classe: 'logo-spray', x: 5, traco: 16 },
+  { classe: 'logo-escura', x: 0, traco: 16 },
+  { classe: 'logo-lima', x: 0, traco: 3 },
+];
+const camadasDoctorPequeno: Camada[] = [
+  { classe: 'logo-escura', x: 0, traco: 22 },
+  { classe: 'logo-creme', x: 0, traco: 4 },
+];
+const ESCALA_DOCTOR = 0.6;
+const posicaoDoctor = `translate(372 ${200 - 200 * ESCALA_DOCTOR}) scale(${ESCALA_DOCTOR})`;
+
+const viewBox = { taz: '-20 -40 460 290', doctor: '-20 -40 940 290', cabecalho: '-20 -40 960 290' }[parte];
+const inclinacao = parte === 'doctor' ? 'translate(40 0) skewX(-8)' : 'translate(36 0) skewX(-8)';
+---
+
+{/*
+  Drawn "gótico afiado" logo: blackletter letters from src/lib/arte.ts, slanted 8°, built as a
+  throw-up (outline, 3D, arrows). Purely decorative: the name is always real text next to it.
+*/}
+<svg class:list={['logo-taz', classe]} viewBox={viewBox} aria-hidden="true" focusable="false">
+  <defs>
+    {
+      parte !== 'doctor' && (
+        <g id={idTaz}>
+          {LOGO_TAZ.map((l) => (
+            <g transform={l.transform}>
+              {l.pontos.map((p) => (
+                <polygon points={p} />
+              ))}
+            </g>
+          ))}
+        </g>
+      )
+    }
+    {
+      parte !== 'taz' && (
+        <g id={idDoctor}>
+          {LOGO_DOCTOR.map((l) => (
+            <g transform={l.transform}>
+              {l.pontos.map((p) => (
+                <polygon points={p} />
+              ))}
+            </g>
+          ))}
+        </g>
+      )
+    }
+  </defs>
+  <g transform={inclinacao}>
+    {
+      parte === 'taz' && (
+        <>
+          {camadasTaz.map((c) => (
+            <use href={`#${idTaz}`} class={c.classe} transform={`translate(${c.x} ${c.x})`} stroke-width={c.traco} />
+          ))}
+          <path class="logo-brilho" d="M71 34 L66 70 M234 100 L232 126" />
+          <g transform="translate(-8 -6) rotate(-6 314 140)">
+            <path class="logo-seta-fundo" d="M350 196 L396 214 L404 170" />
+            <path class="logo-seta logo-seta-creme" d="M350 196 L396 214 L404 170" />
+            <polygon class="logo-ponta logo-creme" points="390,172 406,134 420,174" />
+          </g>
+        </>
+      )
+    }
+    {
+      parte === 'doctor' && (
+        <>
+          {camadasDoctor.map((c) => (
+            <use href={`#${idDoctor}`} class={c.classe} transform={`translate(${c.x} ${c.x})`} stroke-width={c.traco} />
+          ))}
+          <g transform="translate(0 -4) rotate(-5 818 140)">
+            <path class="logo-seta-fundo" d="M850 92 L884 56" />
+            <path class="logo-seta logo-seta-spray" d="M850 92 L884 56" />
+            <polygon class="logo-ponta logo-spray" points="866,50 898,38 888,72" />
+          </g>
+        </>
+      )
+    }
+    {
+      parte === 'cabecalho' && (
+        <>
+          {camadasTazPequeno.map((c) => (
+            <use href={`#${idTaz}`} class={c.classe} transform={`translate(${c.x} ${c.x})`} stroke-width={c.traco} />
+          ))}
+          {camadasDoctorPequeno.map((c) => (
+            <use href={`#${idDoctor}`} class={c.classe} transform={posicaoDoctor} stroke-width={c.traco} />
+          ))}
+        </>
+      )
+    }
+  </g>
+</svg>

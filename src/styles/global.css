@@ -114,10 +114,21 @@
 }
 
 /* fit-content: the spray reveal sweeps across the words, not the empty width after them. */
+/*
+  Section titles in blackletter (tema.fonte_gotica) with a light throw-up: a dark outline painted
+  under the letters and a lime offset shadow. Mixed case, since blackletter caps are hard to read.
+  On the light band (.fundo-creme, below) the outline goes and only the lime shadow stays.
+*/
 @utility titulo-secao {
   width: fit-content;
   max-width: 100%;
-  @apply text-5xl leading-[0.95] sm:text-6xl lg:text-7xl;
+  font-family: var(--fonte-gotica);
+  text-transform: none;
+  letter-spacing: 0.005em;
+  -webkit-text-stroke: 0.05em var(--tinta-escura);
+  paint-order: stroke fill;
+  text-shadow: 0.055em 0.055em 0 var(--tinta-lima);
+  @apply text-5xl leading-[1] sm:text-6xl lg:text-7xl;
 }
 
 /* Monospace kicker above section titles, e.g. "02 / música". */
@@ -1796,4 +1807,94 @@ li:nth-child(2n) > .lambe-lambe::after {
 .advertencia-amarela .advertencia-titulo,
 .advertencia-amarela .advertencia-texto {
   color: var(--tinta-escura);
+}
+
+/* Light band: dark blackletter titles keep only the lime shadow, no outline. */
+.fundo-creme .titulo-secao {
+  -webkit-text-stroke: 0;
+}
+
+/*
+  Drawn "gótico afiado" logo (arte/Logo.astro). Colors are tokens; each layer's stroke width comes
+  from the component, with mitred joins so the blackletter corners stay sharp. Decorative SVG: the
+  name is real text beside it (sr-only).
+*/
+.logo-taz {
+  display: block;
+  height: auto;
+  overflow: visible;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 6;
+}
+
+.logo-escura {
+  fill: var(--tinta-escura);
+  stroke: var(--tinta-escura);
+}
+
+.logo-spray {
+  fill: var(--cor-spray);
+  stroke: var(--cor-spray);
+}
+
+.logo-lima {
+  fill: var(--tinta-lima);
+  stroke: var(--tinta-lima);
+}
+
+.logo-creme {
+  fill: var(--tinta-creme);
+  stroke: var(--tinta-creme);
+}
+
+.logo-brilho {
+  fill: none;
+  stroke: var(--tinta-creme);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* Arrows: a dark stroke under a thinner colored one, and an outlined head. */
+.logo-seta-fundo,
+.logo-seta {
+  fill: none;
+  stroke-linejoin: miter;
+}
+
+.logo-seta-fundo {
+  stroke: var(--tinta-escura);
+  stroke-width: 16;
+}
+
+.logo-seta {
+  stroke-width: 7;
+}
+
+.logo-seta-creme {
+  stroke: var(--tinta-creme);
+}
+
+.logo-seta-spray {
+  stroke: var(--cor-spray);
+}
+
+polygon.logo-ponta {
+  stroke: var(--tinta-escura);
+  stroke-width: 4;
+}
+
+/* Hero: "Taz" big, "TheDoctor" under it, tucked up into the space below the z. */
+.nome-logo-taz {
+  width: clamp(15rem, 68vw, 28rem);
+}
+
+.nome-logo-doctor {
+  width: clamp(18rem, 88vw, 38rem);
+  margin-top: -0.6rem;
+}
+
+/* Header: both words in one lockup, sized by height. */
+.logo-cabecalho {
+  width: auto;
+  height: 2.6rem;
 }

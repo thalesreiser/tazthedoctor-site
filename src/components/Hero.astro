@@ -1,7 +1,9 @@
 ---
 import Imagem from './Imagem.astro';
 import Adesivo from './arte/Adesivo.astro';
+import Logo from './arte/Logo.astro';
 import Rabisco from './arte/Rabisco.astro';
+import { LOGO_NOME } from '../lib/arte.ts';
 import { ancoraSecao, type SecaoDo } from '../lib/schema.ts';
 
 interface Props {
@@ -13,6 +15,8 @@ const { secao } = Astro.props;
 // misregistered lime copy and extra drips, "TheDoctor" on a strip of torn white paper. Names that
 // do not split into capitalized words stay whole.
 const partes = secao.titulo.match(/[A-Z][a-z]+/g);
+// The drawn "gótico afiado" logo replaces both words while the name is the one it was drawn for.
+const logoDesenhado = secao.titulo === LOGO_NOME;
 const [tinta, tag] = partes && partes.length > 1 && partes.join('') === secao.titulo ? [partes[0]!, partes.slice(1).join('')] : ['', secao.titulo];
 // Sticker slots around the photo: top-right corner, bottom-right, top-left.
 const slots = [
@@ -56,7 +60,15 @@ const externo = (href: string) => /^https?:/.test(href);
             </g>
           </svg>
           {
-            tinta && (
+            logoDesenhado && (
+              <span class="nome-logo block">
+                <Logo parte="taz" prefixo="hero" class="nome-logo-taz" />
+                <Logo parte="doctor" prefixo="hero" class="nome-logo-doctor" />
+              </span>
+            )
+          }
+          {
+            !logoDesenhado && tinta && (
               <span class="nome-tinta glitch" data-texto={tinta}>
                 <span class="nome-registro">{tinta}</span>
                 {tinta}
@@ -67,7 +79,7 @@ const externo = (href: string) => /^https?:/.test(href);
               </span>
             )
           }
-          <span class="nome-tag-linha block"><span class="nome-tag glitch" data-texto={tag}>{tag}</span></span>
+          {!logoDesenhado && <span class="nome-tag-linha block"><span class="nome-tag glitch" data-texto={tag}>{tag}</span></span>}
         </span>
       </h1>
       <p class="mt-6 flex items-center gap-3 font-titulo text-2xl text-destaque uppercase sm:text-3xl" style="--i:2">

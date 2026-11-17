@@ -268,6 +268,8 @@ export const conteudoSchema = z
       fonte_tinta: z.string(),
       // Hand-written marker notes stuck around the hero photo (optional).
       fonte_marcador: z.string().optional(),
+      // Blackletter for section titles, with the light throw-up outline (optional; falls back to fonte_titulo).
+      fonte_gotica: z.string().optional(),
       // Monospace stack for labels; system fonts only, nothing is downloaded.
       fonte_mono: z.string().default('ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'),
       fontes: z.array(fonte).default([]),
@@ -309,7 +311,7 @@ export const conteudoSchema = z
     const pilhas = pilhasDoTema(conteudo.tema).flatMap(separarPilha).map((nome) => nome.toLowerCase());
     conteudo.tema.fontes.forEach((f, i) => {
       if (!pilhas.includes(f.familia.toLowerCase())) {
-        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo, fonte_texto, fonte_tinta nem fonte_marcador` });
+        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo, fonte_texto, fonte_tinta, fonte_marcador nem fonte_gotica` });
       }
     });
     conteudo.secoes.forEach((s, i) => {
@@ -340,8 +342,14 @@ export type Imagem = z.output<typeof imagem>;
 export type Lancamento = z.output<typeof lancamento>;
 
 /** Font stacks that may use the self-hosted families, in fallback lookup order. */
-export function pilhasDoTema(tema: Pick<Conteudo['tema'], 'fonte_titulo' | 'fonte_texto' | 'fonte_tinta' | 'fonte_marcador'>): string[] {
-  return [tema.fonte_titulo, tema.fonte_texto, tema.fonte_tinta, ...(tema.fonte_marcador ? [tema.fonte_marcador] : [])];
+export function pilhasDoTema(tema: Pick<Conteudo['tema'], 'fonte_titulo' | 'fonte_texto' | 'fonte_tinta' | 'fonte_marcador' | 'fonte_gotica'>): string[] {
+  return [
+    tema.fonte_titulo,
+    tema.fonte_texto,
+    tema.fonte_tinta,
+    ...(tema.fonte_marcador ? [tema.fonte_marcador] : []),
+    ...(tema.fonte_gotica ? [tema.fonte_gotica] : []),
+  ];
 }
 
 /** Anchor id of a section: its `id`, or its type in kebab-case. */
