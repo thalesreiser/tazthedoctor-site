@@ -62,7 +62,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`, `fonte_marcador`, `fonte_gotica`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |
@@ -148,12 +148,19 @@ respingos); verde de embalagem de remédio `#BFE6C8` como acento frio; e uma fai
 bula nas redes, com links em verde-escuro `#2C5A36`. Vermelho `#C42127` e caramelo `#C98E4E` da
 seda e o amarelo de piteira `#E3B25A` aparecem **só nos adesivos e colagens**; o vermelho é sempre
 fundo, nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo
-ou embalagem real. Títulos em Anton, texto em Manrope, anotações à mão em Permanent Marker; o nome
-(hero, logo e rodapé) é todo na tinta escorrendo da Rubik Wet Paint.
+ou embalagem real. Títulos de seção em letra gótica (Pirata One, `fonte_gotica`) com contorno escuro
+e sombra lima, como um throw-up leve (na faixa clara, só a sombra); texto em Manrope; selos e nomes
+pequenos em Anton; anotações à mão em Permanent Marker; tinta escorrendo da Rubik Wet Paint no
+"Taz" apagado da parede e no rodapé.
 
-O hero é uma colagem lambe-lambe: "Taz" grande em amarelo spray com uma cópia lima fora de
-registro e pingos extras, "TheDoctor" numa tira de papel branco rasgado, uma pauta musical
-rabiscada atrás do nome e um "Taz" gigante e apagado na parede. A foto vem recortada à mão, com
+O logo é desenhado, não digitado: "Taz" e "TheDoctor" em letra gótica afiada (hastes com pé em
+losango, espinhos, cada letra com seu giro e altura, tudo inclinado 8°), montados como throw-up com
+contorno, 3D e setas (`src/lib/arte.ts`, `LOGO_TAZ` e `LOGO_DOCTOR`; `arte/Logo.astro`). Aparece
+grande no hero e pequeno no cabeçalho, com o nome em texto real para leitores de tela. Só essas letras
+foram desenhadas: se `site.nome` mudar, o hero e o cabeçalho voltam a usar as fontes.
+
+O hero é uma colagem lambe-lambe: o logo desenhado ("Taz" lima com 3D amarelo e "TheDoctor" branco
+com 3D lima), uma pauta musical rabiscada atrás do nome e um "Taz" gigante e apagado na parede. A foto vem recortada à mão, com
 sombra amarela, camadas de papel de seda caramelo e vermelho, a `tarja` de remédio colada no
 canto, uma fita cassete se desenrolando e até duas `anotacoes` de marcador (todos em
 `content/site.json`, seção `hero`). Tudo isso é decoração, escondida dos leitores de tela.

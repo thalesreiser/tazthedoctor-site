@@ -7,6 +7,9 @@ import {
   duasLinhas,
   explosao,
   GLIFOS,
+  LOGO_DOCTOR,
+  LOGO_NOME,
+  LOGO_TAZ,
   letrasSemGlifo,
   linhaDeLetras,
   MODELOS_ADESIVO,
@@ -64,4 +67,23 @@ test('stickers: models listed, two-line split and starburst points', () => {
   assert.deepEqual(duasLinhas('REC'), ['REC', '']);
   assert.equal(numeros(explosao(70, 70, 60, 48, 12)).length, 12 * 2 * 2);
   assert.ok(NOMES_RABISCOS.includes('coroa') && NOMES_RABISCOS.includes('raio'));
+});
+
+test('the drawn logo is the site name, so the hero and header use it', () => {
+  assert.equal(LOGO_NOME, site.site.nome);
+  assert.equal(LOGO_NOME, site.secoes.find((s: { tipo: string }) => s.tipo === 'hero').titulo);
+  // One drawn letter per letter of "Taz" and "TheDoctor".
+  assert.equal(LOGO_TAZ.length, 'Taz'.length);
+  assert.equal(LOGO_DOCTOR.length, 'TheDoctor'.length);
+});
+
+test('every logo polygon is a closed shape of numeric points', () => {
+  for (const letra of [...LOGO_TAZ, ...LOGO_DOCTOR]) {
+    assert.ok(letra.pontos.length > 0);
+    for (const p of letra.pontos) {
+      const pares = p.trim().split(/\s+/);
+      assert.ok(pares.length >= 3, `polygon with fewer than 3 points: ${p}`);
+      assert.ok(pares.every((par) => /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(par)), `bad point in: ${p}`);
+    }
+  }
 });

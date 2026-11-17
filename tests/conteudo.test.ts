@@ -161,6 +161,16 @@ test('the dripping paint font is self-hosted through its stack, and the old tag 
   assert.equal(valido(dados), false);
 });
 
+test('section titles use the self-hosted blackletter through fonte_gotica', () => {
+  const { tema } = conteudoSchema.parse(original);
+  assert.ok(tema.fontes.some((f) => f.familia === 'Pirata One'));
+  assert.ok(tema.fonte_gotica?.includes('Pirata One'));
+  // Without the stack that uses it, Pirata One would be downloaded for nothing: the schema refuses.
+  const dados = copia();
+  delete dados.tema.fonte_gotica;
+  assert.equal(valido(dados), false);
+});
+
 test('stickers: known models, short texts, at most three per section', () => {
   const { secoes } = conteudoSchema.parse(original);
   const adesivos = secoes.flatMap((s) => s.adesivos);
