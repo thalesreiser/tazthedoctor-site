@@ -44,6 +44,7 @@ const variaveisTema = [
   `--fonte-titulo:${pilhaComFontes(tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-texto:${pilhaComFontes(tema.fonte_texto, tema.fontes, pilhas)}`,
   `--fonte-tinta:${pilhaComFontes(tema.fonte_tinta, tema.fontes, pilhas)}`,
+  `--fonte-marcador:${pilhaComFontes(tema.fonte_marcador ?? tema.fonte_tinta, tema.fontes, pilhas)}`,
   `--fonte-mono:${tema.fonte_mono}`,
 ].join(';');
 

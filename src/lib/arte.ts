@@ -82,19 +82,20 @@ export type NomeRabisco = keyof typeof RABISCOS;
 export const NOMES_RABISCOS = Object.keys(RABISCOS) as NomeRabisco[];
 
 /*
-  "TTD" monogram as a single-line hand tag (120 x 60 box): two flowing Ts, a looped D, a crown on
-  top and the swoosh underneath, with one drip.
+  "Ninja" as a single-line hand tag (120 x 60 box): a tall N with a crown, the lower-case letters
+  in one flow, the swoosh underneath and one drip.
 */
 export const MONOGRAMA = [
-  'M7 15 C19 10 33 9 46 12',
-  'M26 12 C25 24 23 36 19 49',
-  'M39 21 C49 17 60 16 70 18',
-  'M55 18 C54 28 53 38 51 47',
-  'M72 21 C71 31 70 40 68 48',
-  'M71 21 C101 15 106 47 67 48',
-  'M5 55 C38 51 78 51 112 43 L103 39',
-  'M84 12 L86 3 L92 8 L96 0 L100 8 L106 4 L105 13 Z',
-  'M93 47 L93 57',
+  'M6 48 C7 36 8 24 10 12 C16 26 22 38 28 48 C29 36 30 24 31 12',
+  'M38 30 C38 36 38 42 38 48',
+  'M38 21 L38.6 22.2',
+  'M46 48 C46 40 46 34 47 30 C52 26 60 27 60 34 C60 39 60 44 60 48',
+  'M70 30 C70 40 70 50 68 55 C66 59 60 59 58 55',
+  'M70.4 21 L71 22.2',
+  'M92 34 C86 28 78 30 78 39 C78 47 88 49 92 40 C92 44 93 47 96 48',
+  'M4 58 C40 54 80 54 114 46 L105 42',
+  'M3 9 L5 1 L10 6 L14 -1 L18 6 L23 2 L22 10 Z',
+  'M104 47 L104 57',
 ];
 
 /**
