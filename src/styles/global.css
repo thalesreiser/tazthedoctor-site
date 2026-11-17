@@ -1043,11 +1043,19 @@ li:nth-child(2n) > .lambe-lambe::after {
 .adesivo-pos {
   display: block;
   z-index: 6;
-  rotate: var(--giro, 0deg);
 }
 
 .adesivo-colar {
   display: block;
+}
+
+/*
+  The tilt lives here, on a box that never animates: when it sat on the floating box, the sticker
+  became a rotated bitmap and looked blurry. Same for the shadow, now drawn inside the SVG.
+*/
+.adesivo-giro {
+  display: block;
+  rotate: var(--giro, 0deg);
 }
 
 .adesivo {
@@ -1055,7 +1063,6 @@ li:nth-child(2n) > .lambe-lambe::after {
   width: 100%;
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 3px 2px rgb(0 0 0 / 0.35)) drop-shadow(0 10px 12px rgb(0 0 0 / 0.25));
 }
 
 .a-borda {
