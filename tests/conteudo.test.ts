@@ -161,6 +161,16 @@ test('the dripping paint font is self-hosted through its stack, and the old tag 
   assert.equal(valido(dados), false);
 });
 
+test('section titles use the self-hosted blackletter through fonte_gotica', () => {
+  const { tema } = conteudoSchema.parse(original);
+  assert.ok(tema.fontes.some((f) => f.familia === 'Pirata One'));
+  assert.ok(tema.fonte_gotica?.includes('Pirata One'));
+  // Without the stack that uses it, Pirata One would be downloaded for nothing: the schema refuses.
+  const dados = copia();
+  delete dados.tema.fonte_gotica;
+  assert.equal(valido(dados), false);
+});
+
 test('stickers: known models, short texts, at most three per section', () => {
   const { secoes } = conteudoSchema.parse(original);
   const adesivos = secoes.flatMap((s) => s.adesivos);
@@ -173,8 +183,22 @@ test('stickers: known models, short texts, at most three per section', () => {
   secao(longo, 'hero').adesivos[0].texto = 'um texto comprido demais para caber';
   assert.deepEqual(caminhos(longo), ['secoes.0.adesivos.0.texto']);
   const muitos = copia();
-  secao(muitos, 'hero').adesivos.push({ modelo: 'rec', texto: 'REC' });
+  while (secao(muitos, 'hero').adesivos.length <= 3) secao(muitos, 'hero').adesivos.push({ modelo: 'rec', texto: 'REC' });
   assert.equal(valido(muitos), false);
+});
+
+// Thales dropped the "TTD" acronym (2026-11-08): the short marks are Taz, Ninja or TheDoctor.
+test('the "TTD" acronym appears nowhere in the content', () => {
+  assert.equal(/\bTTD\b/i.test(JSON.stringify(original)), false);
+});
+
+test('hero collage: short warning strip and at most two marker notes', () => {
+  const longa = copia();
+  secao(longa, 'hero').tarja = { titulo: 'Tarja vermelha', texto: 'um texto de tarja comprido demais para caber na faixa' };
+  assert.deepEqual(caminhos(longa), ['secoes.0.tarja.texto']);
+  const muitas = copia();
+  secao(muitas, 'hero').anotacoes = ['um', 'dois', 'três'];
+  assert.deepEqual(caminhos(muitas), ['secoes.0.anotacoes']);
 });
 
 test('the tickers are gone: no scrolling strip fields left in the content', () => {

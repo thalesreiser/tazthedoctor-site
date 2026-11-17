@@ -37,6 +37,14 @@ const adesivo = z.object({
   texto: z.string().min(1).max(22, 'texto de adesivo: até 22 caracteres'),
 });
 
+// Parody warning box in the style of tobacco-pack notices, shown at the end of a section.
+const advertencia = z.object({
+  titulo: z.string().min(3).max(60),
+  texto: z.string().max(120).optional(),
+  variante: z.enum(['preta', 'amarela']).default('preta'),
+});
+export type Advertencia = z.infer<typeof advertencia>;
+
 const comum = {
   // Up to three stickers slapped on the section; each component decides where they go.
   adesivos: z.array(adesivo).max(3, 'no máximo 3 adesivos por seção').default([]),
@@ -44,6 +52,7 @@ const comum = {
   menu: z.string().optional(),
   ativo: z.boolean().default(true),
   fundo: z.enum(FUNDOS).optional(),
+  advertencia: advertencia.optional(),
 };
 
 const hero = z.object({
@@ -57,6 +66,10 @@ const hero = z.object({
   // Short tags (styles, instrument), shown as chips.
   etiquetas: z.array(z.string()).max(5).default([]),
   foto: imagem,
+  // Collage around the photo (decorative, hidden from screen readers): a medicine-box warning
+  // strip pasted on the corner and up to two short marker notes.
+  tarja: z.object({ titulo: z.string().max(24), texto: z.string().max(40) }).optional(),
+  anotacoes: z.array(z.string().min(1).max(24)).max(2).default([]),
   acao_principal: acao,
   acao_secundaria: acao.optional(),
 });
@@ -253,6 +266,10 @@ export const conteudoSchema = z
       fonte_texto: z.string(),
       // Dripping paint (artist name, logo, footer): one or two words at a time.
       fonte_tinta: z.string(),
+      // Hand-written marker notes stuck around the hero photo (optional).
+      fonte_marcador: z.string().optional(),
+      // Blackletter for section titles, with the light throw-up outline (optional; falls back to fonte_titulo).
+      fonte_gotica: z.string().optional(),
       // Monospace stack for labels; system fonts only, nothing is downloaded.
       fonte_mono: z.string().default('ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'),
       fontes: z.array(fonte).default([]),
@@ -294,7 +311,7 @@ export const conteudoSchema = z
     const pilhas = pilhasDoTema(conteudo.tema).flatMap(separarPilha).map((nome) => nome.toLowerCase());
     conteudo.tema.fontes.forEach((f, i) => {
       if (!pilhas.includes(f.familia.toLowerCase())) {
-        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo, fonte_texto nem fonte_tinta` });
+        ctx.addIssue({ code: 'custom', path: ['tema', 'fontes', i, 'familia'], message: `"${f.familia}" não aparece em fonte_titulo, fonte_texto, fonte_tinta, fonte_marcador nem fonte_gotica` });
       }
     });
     conteudo.secoes.forEach((s, i) => {
@@ -325,8 +342,14 @@ export type Imagem = z.output<typeof imagem>;
 export type Lancamento = z.output<typeof lancamento>;
 
 /** Font stacks that may use the self-hosted families, in fallback lookup order. */
-export function pilhasDoTema(tema: Pick<Conteudo['tema'], 'fonte_titulo' | 'fonte_texto' | 'fonte_tinta'>): string[] {
-  return [tema.fonte_titulo, tema.fonte_texto, tema.fonte_tinta];
+export function pilhasDoTema(tema: Pick<Conteudo['tema'], 'fonte_titulo' | 'fonte_texto' | 'fonte_tinta' | 'fonte_marcador' | 'fonte_gotica'>): string[] {
+  return [
+    tema.fonte_titulo,
+    tema.fonte_texto,
+    tema.fonte_tinta,
+    ...(tema.fonte_marcador ? [tema.fonte_marcador] : []),
+    ...(tema.fonte_gotica ? [tema.fonte_gotica] : []),
+  ];
 }
 
 /** Anchor id of a section: its `id`, or its type in kebab-case. */

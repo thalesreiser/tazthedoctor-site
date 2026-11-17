@@ -3,6 +3,8 @@ import { Font, type CssVariable } from 'astro:assets';
 import '../styles/global.css';
 import AvisoCookies from '../components/AvisoCookies.astro';
 import Revelar from '../components/Revelar.astro';
+import Logo from '../components/arte/Logo.astro';
+import { LOGO_NOME } from '../lib/arte.ts';
 import { temRastreamento } from '../lib/consentimento.ts';
 import { pilhaComFontes, variavelFonte } from '../lib/fontes.ts';
 import { ancoraSecao, pilhasDoTema, type Conteudo } from '../lib/schema.ts';
@@ -44,6 +46,8 @@ const variaveisTema = [
   `--fonte-titulo:${pilhaComFontes(tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-texto:${pilhaComFontes(tema.fonte_texto, tema.fontes, pilhas)}`,
   `--fonte-tinta:${pilhaComFontes(tema.fonte_tinta, tema.fontes, pilhas)}`,
+  `--fonte-marcador:${pilhaComFontes(tema.fonte_marcador ?? tema.fonte_tinta, tema.fontes, pilhas)}`,
+  `--fonte-gotica:${pilhaComFontes(tema.fonte_gotica ?? tema.fonte_titulo, tema.fontes, pilhas)}`,
   `--fonte-mono:${tema.fonte_mono}`,
 ].join(';');
 
@@ -102,6 +106,22 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
         <feTurbulence type="fractalNoise" baseFrequency="0.04 0.09" numOctaves="2" seed="7" result="ruido" />
         <feDisplacementMap in="SourceGraphic" in2="ruido" scale="3.5" xChannelSelector="R" yChannelSelector="G" />
       </filter>
+      {/*
+        Sticker drop shadow (Adesivo.astro): a tight contact shadow plus a soft one, made from the
+        art's silhouette only, so the art itself never goes through a filter and stays sharp.
+      */}
+      <filter id="sombra-adesivo" x="-20%" y="-20%" width="140%" height="160%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="perto" />
+        <feOffset in="perto" dy="3" result="perto" />
+        <feComponentTransfer in="perto" result="perto"><feFuncA type="linear" slope="0.35" /></feComponentTransfer>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="longe" />
+        <feOffset in="longe" dy="10" result="longe" />
+        <feComponentTransfer in="longe" result="longe"><feFuncA type="linear" slope="0.25" /></feComponentTransfer>
+        <feMerge>
+          <feMergeNode in="longe" />
+          <feMergeNode in="perto" />
+        </feMerge>
+      </filter>
     </svg>
     <a
       href="#conteudo"
@@ -128,7 +148,16 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
           <span class="equalizador text-primaria" aria-hidden="true">
             <span style="--i:0;--h:.5"></span><span style="--i:1;--h:.9"></span><span style="--i:2;--h:.65"></span>
           </span>
-          {conteudo.site.nome}
+          {
+            conteudo.site.nome === LOGO_NOME ? (
+              <>
+                <Logo parte="cabecalho" prefixo="cabecalho" class="logo-cabecalho" />
+                <span class="sr-only">{conteudo.site.nome}</span>
+              </>
+            ) : (
+              conteudo.site.nome
+            )
+          }
         </a>
         {
           menu.length > 0 && (

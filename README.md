@@ -44,7 +44,7 @@ content/
 src/
 ├── components/   # Hero, Servicos, Musica + Player, Sobre, Equipamento, Plataformas,
 │                 # Contato, Rodape, Rasgo, Revelar, AvisoCookies, ACompletar, ...
-│   └── arte/     # throw-up, tag TTD, rabiscos e adesivos (SVG)
+│   └── arte/     # throw-up, tag "Ninja", rabiscos e adesivos (SVG)
 ├── layouts/Base.astro  # head, tema, aviso "em construção", cabeçalho
 ├── lib/          # schema (Zod), SEO e JSON-LD, players, imagem de compartilhamento, contraste, arte
 ├── assets/site/  # fotos já tratadas (otimizadas de novo no build)
@@ -62,7 +62,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`, `fonte_marcador`, `fonte_gotica`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |
@@ -71,7 +71,12 @@ falha o build com o caminho do campo.
 Tipos de seção: `hero`, `servicos`, `musica`, `sobre`, `equipamento`, `plataformas`,
 `contato` e `rodape`. Todas aceitam `id` (âncora), `menu` (link no cabeçalho), `ativo: false`
 (esconde sem apagar), `fundo` (`palco`, `superficie` ou `creme`; sem ele, os dois fundos
-escuros se alternam) e `adesivos`.
+escuros se alternam), `adesivos` e `advertencia`.
+
+`advertencia` põe, no fim da seção, uma caixa de aviso no estilo das advertências de maço, como
+paródia própria (nunca as imagens nem o layout oficiais): `titulo` (até 60 caracteres), `texto`
+opcional (até 120) e `variante` `preta` (branco sobre preto) ou `amarela` (preto sobre amarelo, com
+moldura de fita zebrada). É texto de verdade, lido pelos leitores de tela.
 
 A seção `equipamento` (menu "Estúdio") traz `grupos` (ícone, título e descrição de como cada parte
 do setup entra no trabalho) e usa a `foto` só como fundo estilizado: cinza, apagada e com retícula,
@@ -91,8 +96,11 @@ só repetem ou enfeitam o que a página já diz. Modelos:
 | `etiqueta` | etiqueta vermelho seda com estrela amarela, texto claro em duas linhas |
 | `explosao` | explosão caramelo de seda, texto em duas linhas |
 | `fita` | fita cassete com o texto na etiqueta lima |
-| `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "TTD") |
+| `palheta` | palheta verde de farmácia, texto curto na tinta escorrendo (ex.: "Taz") |
 | `rec` | "REC" com a luz piscando |
+| `tarja` | tarja de remédio: faixa vermelha de seda com o texto em branco e listra preta |
+| `isqueiro` | isqueiro lima com chama amarela, texto subindo pelo corpo (curto) |
+| `piteira` | papel de piteira amarelo com pontinhos de cortiça |
 
 Os textos passam pelo mesmo `revisao.termos_vetados` do resto (por isso não há "100%").
 
@@ -133,30 +141,46 @@ convertidos para JPEG antes (o sharp desta máquina não lê HEIC).
 
 ### Identidade visual
 
-A paleta mistura tabacaria e farmácia: preto  e superfície , texto branco
- e cinza ; verde-limão de isqueiro  nos botões, links e no brilho do
-hero; amarelo das advertências de maço  nos destaques e no spray (tags, "Taz",
-respingos); verde de embalagem de remédio  como acento frio; e uma faixa clara branca de
-bula nas redes, com links em verde-escuro . Vermelho  e caramelo  da
-seda e o amarelo de piteira  aparecem **só nos adesivos**; o vermelho é sempre fundo,
-nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo ou
-embalagem real. Títulos em Anton, texto em Manrope; o nome (hero, logo e rodapé) é todo na tinta
-escorrendo da Rubik Wet Paint: "Taz" grande em amarelo spray com pingos extras, "TheDoctor"
-menor, em branco, com sombra 3D lima.
+A paleta mistura tabacaria e farmácia: preto `#0B0C0A` e superfície `#1A1C17`, texto branco
+`#F5F5EF` e cinza `#B4B8AC`; verde-limão de isqueiro `#B6E12A` nos botões, links e no brilho do
+hero; amarelo das advertências de maço `#FFD31A` nos destaques e no spray (tags, "Taz",
+respingos); verde de embalagem de remédio `#BFE6C8` como acento frio; e uma faixa clara branca de
+bula nas redes, com links em verde-escuro `#2C5A36`. Vermelho `#C42127` e caramelo `#C98E4E` da
+seda e o amarelo de piteira `#E3B25A` aparecem **só nos adesivos e colagens**; o vermelho é sempre
+fundo, nunca texto sobre o preto (não passaria AA). Só as cores servem de referência: nenhum logo
+ou embalagem real. Títulos de seção em letra gótica (Pirata One, `fonte_gotica`) com contorno escuro
+e sombra lima, como um throw-up leve (na faixa clara, só a sombra); texto em Manrope; selos e nomes
+pequenos em Anton; anotações à mão em Permanent Marker; tinta escorrendo da Rubik Wet Paint no
+"Taz" apagado da parede e no rodapé.
+
+O logo é desenhado, não digitado: "Taz" e "TheDoctor" em letra gótica afiada (hastes com pé em
+losango, espinhos, cada letra com seu giro e altura, tudo inclinado 8°), montados como throw-up com
+contorno, 3D e setas (`src/lib/arte.ts`, `LOGO_TAZ` e `LOGO_DOCTOR`; `arte/Logo.astro`). Aparece
+grande no hero e pequeno no cabeçalho, com o nome em texto real para leitores de tela. Só essas letras
+foram desenhadas: se `site.nome` mudar, o hero e o cabeçalho voltam a usar as fontes.
+
+O hero é uma colagem lambe-lambe: o logo desenhado ("Taz" lima com 3D amarelo e "TheDoctor" branco
+com 3D lima), uma pauta musical rabiscada atrás do nome e um "Taz" gigante e apagado na parede. A foto vem recortada à mão, com
+sombra amarela, camadas de papel de seda caramelo e vermelho, a `tarja` de remédio colada no
+canto, uma fita cassete se desenrolando e até duas `anotacoes` de marcador (todos em
+`content/site.json`, seção `hero`). Tudo isso é decoração, escondida dos leitores de tela.
 `tests/contraste.test.ts` confere 4,5:1 (WCAG AA) em todos os pares usados, inclusive sobre o
 brilho lima, o grão, a parede de concreto, a faixa clara e os textos de cada adesivo.
 
 Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem imagem baixada:
 
 - **Arte** (`src/lib/arte.ts` e `src/components/arte/`): o throw-up "TAZ / THEDOCTOR" do rodapé
-  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "TTD" com
-  coroa no hero, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
+  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "Ninja" com
+  coroa na seção Sobre, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
   seta, pingos) e os adesivos recortados com borda branca e canto descolando.
 - **Passagem entre seções** (`Rasgo.astro`): em vez de um corte reto, o papel da seção seguinte
   rasgado por cima da anterior, às vezes com um cartaz antigo aparecendo por baixo, fita crepe,
   respingos de spray, pingos escorrendo e, na primeira, a linha de um osciloscópio.
 - **Texturas**: parede de concreto (Sobre e Contato), retícula de fotocópia nas fotos, borda
-  rasgada nos cartazes lambe-lambe, grão de fotocópia, filtro áspero no nome.
+  rasgada nos cartazes lambe-lambe, grão de fotocópia, filtro áspero no nome, papel de seda
+  caramelo entre os cartazes rasgados e, na faixa clara, uma marca d'água pequena e repetida como a
+  das sedas, com elementos de música (notas, palheta, forma de onda, fita, knob, faders) e uma cruz
+  de farmácia discreta, em verde de remédio.
 
 As animações (entrada do hero, adesivos colados com tapa e flutuando, tags e rabiscos se
 desenhando, títulos pintados com spray, pingos escorrendo, cartazes balançando no hover, LEDs do

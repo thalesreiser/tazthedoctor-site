@@ -25,7 +25,9 @@ Mesma base técnica do `dev-landing` (site único, conteúdo em JSON).
 - Acessível (rótulos, contraste AA em todos os pares do teste, foco visível, `alt`
   descritivo) e responsivo (legível a 360 px). Animações respeitam `prefers-reduced-motion`
   e o conteúdo aparece sem JS. Meta: 95+ no Lighthouse mobile.
-- Rode `npm run check`, `npm test` e `npm run build` antes de dizer que terminou.
+- Nada roda localmente (nem build, testes, servidor ou Lighthouse): `npm run check`,
+  `npm test` e `npm run build` rodam no CI do PR. Só diga que terminou com o CI verde, e
+  confira o visual no preview do Cloudflare.
 - Nunca commitar `.env`, credenciais ou dados pessoais além do que já é público.
 - Deploy só pelo GitHub Actions (Cloudflare Pages, projeto `tazthedoctor`). O token existe
   apenas como secret do repositório (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`);

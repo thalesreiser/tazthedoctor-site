@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Advertencia from '../components/Advertencia.astro';
 import Contato from '../components/Contato.astro';
 import Equipamento from '../components/Equipamento.astro';
 import Hero from '../components/Hero.astro';
@@ -27,7 +28,7 @@ const { em_construcao: emConstrucao } = conteudo;
 // Ripped-poster boundary on top of every section after the first. The extras rotate so no two
 // neighbouring edges look alike: an older poster under the tear, or a strip of tape; the
 // oscilloscope line only on the first boundary.
-const cartazes = ['lima', 'menta', 'spray'] as const;
+const cartazes = ['lima', 'seda', 'menta', 'spray'] as const;
 const rasgo = (i: number) => ({
   semente: i * 17 + 3,
   cartaz: i % 2 === 1 ? cartazes[((i - 1) / 2) % cartazes.length] : undefined,
@@ -62,6 +63,7 @@ const rasgo = (i: number) => ({
               return <Contato secao={secao} conteudo={conteudo} rotulo={rotulo} />;
           }
         })()}
+        {secao.advertencia && <Advertencia advertencia={secao.advertencia} />}
       </div>
     ))
   }
