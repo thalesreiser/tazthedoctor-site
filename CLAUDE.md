@@ -5,14 +5,15 @@ Mesma base técnica do `dev-landing` (site único, conteúdo em JSON).
 
 ## Regras
 - Astro + Tailwind CSS. Nada de frameworks extras (React, Vue, bibliotecas de UI) sem
-  perguntar. Formulário via Web3Forms ou Formspree, sem backend.
+  perguntar. Contato só por e-mail, sem formulário nem backend.
 - Todo o conteúdo fica em `content/site.json` (validado por `src/lib/schema.ts`) e as
   imagens em `src/assets/site/`. Nenhum texto do site fixo em `src/`.
 - Textos em português do Brasil, com personalidade (underground, direto), sem exagero:
   nada de "o melhor", números de seguidores ou plays, shows, parceiros, prêmios, discografia
   ou citações que não existam. `revisao.termos_vetados` reprova os termos no `npm test`.
 - Lançamentos: só o que está publicado e verificável no SoundCloud ou no YouTube (título,
-  data e link reais). Hoje há uma faixa (em duas versões) e dois Shorts.
+  data e link reais). Hoje há uma faixa (em duas versões) e dois Shorts. Faixas ainda sem
+  data ficam em `musica.em_producao`, sem data nem link.
 - Contato público: só o e-mail `tazthedoctor@gmail.com`. Sem WhatsApp nem telefone.
 - Players do SoundCloud e do YouTube só carregam depois do clique (`Player.astro`). Nenhum
   iframe, script ou imagem de terceiros no carregamento da página.
@@ -21,7 +22,7 @@ Mesma base técnica do `dev-landing` (site único, conteúdo em JSON).
   recorte, lado maior até 1600 px, sem nenhum metadado (`tests/fotos.test.ts` confere). Antes
   de commitar, confira que nada de `fotos-originais/` está no stage.
 - `em_construcao: true` mostra o aviso, as caixas "A completar" e marca `noindex`. Só passe
-  para `false` com a chave do formulário e sem itens em `a_completar`; o schema reprova.
+  para `false` sem itens em `a_completar` (o schema reprova) e quando o Thales decidir publicar.
 - Acessível (rótulos, contraste AA em todos os pares do teste, foco visível, `alt`
   descritivo) e responsivo (legível a 360 px). Animações respeitam `prefers-reduced-motion`
   e o conteúdo aparece sem JS. Meta: 95+ no Lighthouse mobile.

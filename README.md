@@ -7,20 +7,13 @@ Porto Alegre/RS.
 Feita em **Astro + Tailwind CSS**, na mesma base do site de dev: todo o conteúdo fica em um
 arquivo JSON validado, as fotos são otimizadas no build e o deploy é na Cloudflare Pages.
 
-## Antes de publicar de verdade
+## Publicação
 
-O site sai com o aviso "Site em construção" (mais `noindex`). Falta:
-
-| O quê | Onde | Hoje |
-| --- | --- | --- |
-| Chave do formulário (Web3Forms ou Formspree) | `secoes` › `contato` › `chave` | vazia: modo de demonstração, nada é enviado (o e-mail funciona) |
-| Próximos lançamentos | `secoes` › `musica` › `itens` (e apagar o item de `a_completar`) | uma faixa do SoundCloud e dois Shorts do YouTube |
-
-Depois, troque `"em_construcao": true` por `false`. O schema **reprova o build** se o
-e-mail for provisório (`@example.com`), se o formulário estiver ativo sem chave (preencha a
-chave ou desligue a seção com `"ativo": false`) ou se ainda houver itens em `a_completar`.
-Enquanto `em_construcao` for `true`, cada `a_completar` aparece na página como uma caixa
-tracejada "A completar".
+O site está publicado (`"em_construcao": false`): sem o aviso "Site em construção" e sem
+`noindex`. Para voltar ao modo de construção, troque para `true`: o aviso volta, as páginas
+ganham `noindex` e cada `a_completar` aparece como uma caixa tracejada "A completar". Para
+publicar de novo, o schema **reprova o build** se o e-mail for provisório (`@example.com`) ou se
+ainda houver itens em `a_completar`.
 
 ## Como rodar
 
@@ -119,6 +112,10 @@ Só entra o que está publicado. Cada item tem `titulo`, `formato` ("Faixa", "V�
   depois de `tracks%2F`).
 - `youtube`: `video_id` (os 11 caracteres do link) e `vertical: true` para Shorts.
 
+O que ainda está sendo feito vai em `musica.em_producao` (opcional): um `titulo` e `itens` com
+`titulo`, `estilo` e `texto`, sem data nem link. Aparecem como cartões tracejados abaixo dos
+players. Quando a faixa sair, ela passa para `itens` e sai de `em_producao`.
+
 Os players **não carregam nada antes do clique**: a página mostra uma capa gerada (sem imagem
 de terceiros) que é um link para a plataforma; com JavaScript, o clique troca a capa pelo
 player do SoundCloud ou do YouTube (`youtube-nocookie.com`).
@@ -198,11 +195,11 @@ desenhando, títulos pintados com spray, pingos escorrendo, cartazes balançando
 player reagindo, estouro de spray nos botões, glitch raro no nome) respeitam
 `prefers-reduced-motion` e `animacoes: "nenhuma"`, e todo o conteúdo aparece sem JavaScript.
 
-### Formulário
+### Contato
 
-[Web3Forms](https://web3forms.com) (padrão) ou [Formspree](https://formspree.io), sem backend.
-Em `chave`, use a access key (Web3Forms) ou o id do formulário (Formspree); as duas são
-públicas por natureza. Com `chave` vazia, o formulário não envia nada e indica o e-mail.
+Só por e-mail, sem formulário: a seção `contato` mostra os `topicos` e o botão `texto_email`,
+que abre o e-mail de `contato.email` com o `assunto_email` preenchido. Nada é enviado pela
+página nem passa por serviço de terceiros.
 
 ## SEO
 

@@ -30,6 +30,26 @@ const idTitulo = `${ancora}-titulo`;
       {secao.itens.map((item) => <Player item={item} cor={cor} />)}
     </div>
     {secao.nota && <p class="mt-10 font-titulo text-2xl text-texto uppercase sm:text-3xl">{secao.nota}</p>}
+    {
+      /* Tracks in the making: no date, no link, no player; a dashed edge marks them as unfinished. */
+      secao.em_producao && (
+        <div class="mt-14">
+          <h3 class="flex items-center gap-2 font-mono text-sm font-semibold tracking-[0.2em] text-destaque-frio uppercase">
+            <span class="led-rec" aria-hidden="true"></span>
+            {secao.em_producao.titulo}
+          </h3>
+          <ul class="mt-6 grid gap-5 md:grid-cols-3 md:gap-6" data-revelar-grupo>
+            {secao.em_producao.itens.map((item) => (
+              <li class="em-producao h-full p-6">
+                <p class="font-mono text-xs tracking-[0.15em] text-texto-suave uppercase">{item.estilo}</p>
+                <h4 class="mt-3 text-2xl font-bold break-words text-texto">{item.titulo}</h4>
+                <p class="mt-3 text-texto-suave">{item.texto}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
     <ACompletar itens={secao.a_completar} emConstrucao={emConstrucao} />
   </div>
 </section>

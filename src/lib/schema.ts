@@ -110,6 +110,13 @@ const musica = z.object({
   itens: z.array(lancamento).min(1),
   // Honest closing line under the releases (e.g. more recorded than released).
   nota: z.string().optional(),
+  // Tracks still being made: no date, no link, only what each one is going to be.
+  em_producao: z
+    .object({
+      titulo: z.string(),
+      itens: z.array(z.object({ titulo: z.string(), estilo: z.string(), texto: z.string() })).min(1),
+    })
+    .optional(),
   a_completar: aCompletar,
 });
 
@@ -177,38 +184,14 @@ const plataformas = z.object({
   fotos: z.array(imagem).max(2).default([]),
 });
 
-const campo = z.object({
-  nome: z.string().regex(/^[a-z_]+$/),
-  rotulo: z.string(),
-  tipo: z.enum(['text', 'email', 'tel', 'textarea', 'select']),
-  obrigatorio: z.boolean().default(true),
-  autocomplete: z.string().optional(),
-  opcoes: z.array(z.string()).optional(),
-  placeholder: z.string().optional(),
-  ajuda: z.string().optional(),
-  erro: z.string().optional(),
-});
-
 const contato = z.object({
   ...comum,
   tipo: z.literal('contato'),
   titulo: z.string(),
   texto: z.string().optional(),
-  // What the artist takes on, shown as a short list next to the form.
+  // What the artist takes on, shown as a short list next to the e-mail button.
   topicos: z.array(z.string()).default([]),
   texto_email: z.string(),
-  provedor: z.enum(['formspree', 'web3forms']),
-  // Public form id (Formspree) or access key (Web3Forms). Empty = demo mode, nothing is sent.
-  chave: z.string().default(''),
-  campos: z
-    .array(campo)
-    .min(1)
-    .refine((campos) => campos.every((c) => c.tipo !== 'select' || (c.opcoes?.length ?? 0) > 0), {
-      message: 'campos do tipo select precisam de opcoes',
-    }),
-  consentimento: z.string(),
-  botao: z.string(),
-  mensagem_sucesso: z.string(),
 });
 
 const rodape = z.object({
@@ -331,15 +314,12 @@ export const conteudoSchema = z
         ctx.addIssue({ code: 'custom', path: ['secoes', i, 'fundo'], message: 'o contato não aceita fundo "creme"; use "palco" ou "superficie"' });
       }
     });
-    // Leaving "em construção" requires a real e-mail, a working form and no pending notes.
+    // Leaving "em construção" requires a real e-mail and no pending notes.
     if (!conteudo.em_construcao) {
       if (EMAIL_PROVISORIO.test(conteudo.contato.email)) {
         ctx.addIssue({ code: 'custom', path: ['contato', 'email'], message: 'e-mail provisório: preencha o e-mail real antes de tirar em_construcao' });
       }
       conteudo.secoes.forEach((s, i) => {
-        if (s.tipo === 'contato' && s.ativo && s.chave === '') {
-          ctx.addIssue({ code: 'custom', path: ['secoes', i, 'chave'], message: 'formulário sem chave: preencha a chave do provedor ou use "ativo": false' });
-        }
         if ('a_completar' in s && s.ativo && s.a_completar.length > 0) {
           ctx.addIssue({ code: 'custom', path: ['secoes', i, 'a_completar'], message: 'ainda há itens a completar nesta seção' });
         }

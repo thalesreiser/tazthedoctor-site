@@ -170,8 +170,6 @@ const { google_analytics, meta_pixel, aviso_cookies: aviso } = Astro.props.conte
       const link = (evento.target as Element | null)?.closest?.('a[href]');
       if (link instanceof HTMLAnchorElement && ehLinkEmail(link.href)) converter('email');
     });
-    // Contato.astro dispatches it after the provider accepted a real submission.
-    document.addEventListener('formulario-enviado', () => converter('formulario'));
 
     carregar();
     if (mostrarAviso(escolha)) aviso.hidden = false;

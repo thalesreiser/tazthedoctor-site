@@ -48,6 +48,8 @@ test('lists only the audio releases as recordings', () => {
 test('publishes the real e-mail and never a placeholder one', () => {
   const dados = ler();
   assert.equal(tipo(parse(dados), 'MusicGroup')!.email, dados.contato.email);
+  // A placeholder is only allowed while under construction, and it is never published.
+  dados.em_construcao = true;
   dados.contato.email = 'contato@example.com';
   assert.equal('email' in tipo(parse(dados), 'MusicGroup')!, false);
 });
