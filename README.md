@@ -151,7 +151,7 @@ fundo, nunca texto sobre o preto (não passaria AA). Só as cores servem de refe
 ou embalagem real. Títulos de seção em letra gótica (Pirata One, `fonte_gotica`) com contorno escuro
 e sombra lima, como um throw-up leve (na faixa clara, só a sombra); texto em Manrope; selos e nomes
 pequenos em Anton; anotações à mão em Permanent Marker; tinta escorrendo da Rubik Wet Paint no
-"Taz" apagado da parede e no rodapé.
+"Taz" apagado da parede.
 
 O logo é desenhado, não digitado: "Taz" e "TheDoctor" em letra gótica afiada (hastes com pé em
 losango, espinhos, cada letra com seu giro e altura, tudo inclinado 8°), montados como throw-up com
@@ -169,8 +169,9 @@ brilho lima, o grão, a parede de concreto, a faixa clara e os textos de cada ad
 
 Camada de rua (`global.css`, fim do arquivo), toda desenhada em código, sem imagem baixada:
 
-- **Arte** (`src/lib/arte.ts` e `src/components/arte/`): o throw-up "TAZ / THEDOCTOR" do rodapé
-  (letras-bolha feitas de traços, com bloco 3D, contorno, recheio e brilho), o tag "Ninja" com
+- **Arte** (`src/lib/arte.ts` e `src/components/arte/`): o throw-up "TAZ / THEDOCTOR", único nome
+  do rodapé (letras-bolha feitas de traços sobre uma nuvem verde-escura de borda lima que escorre,
+  com bloco 3D lima, contorno, recheio em degradê amarelo→lima e creme→menta, brilho, coroa e faíscas), o tag "Ninja" com
   coroa na seção Sobre, os rabiscos ao lado de cada título (coroa, raio, estrela, equalizador, palheta,
   seta, pingos) e os adesivos recortados com borda branca e canto descolando.
 - **Passagem entre seções** (`Rasgo.astro`): em vez de um corte reto, o papel da seção seguinte

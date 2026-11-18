@@ -1,44 +1,95 @@
 ---
-import { linhaDeLetras } from '../../lib/arte.ts';
+import { aleatorio, linhaDeLetras, RABISCOS } from '../../lib/arte.ts';
 
 interface Props {
   // The artist name, e.g. "TazTheDoctor": the first word big, the rest as a smaller line.
   nome: string;
+  // Prefix for the gradient ids, unique per instance on the page.
+  prefixo?: string;
   class?: string;
 }
 
-const { nome, class: classe } = Astro.props;
+const { nome, prefixo = 'tu', class: classe } = Astro.props;
 const partes = nome.match(/[A-Z][a-z]*/g) ?? [nome];
 const [primeira, resto] = partes.length > 1 ? [partes[0]!, partes.slice(1).join('')] : [nome, ''];
 
-// Line 1 at full size, line 2 at 45%, both centred; the margin leaves room for the 3D block.
+// Line 1 at full size, line 2 at 45%, both centred. The margin leaves room for the background
+// bubble around the letters, the crown on top and the drips underneath.
 const ESCALA_2 = 0.45;
-const MARGEM = 4.5;
+const MARGEM = 6.5;
+const Y2 = MARGEM + 13.2;
+const arred = (n: number) => Math.round(n * 10) / 10;
 const medida1 = linhaDeLetras(primeira).largura;
 const medida2 = resto ? linhaDeLetras(resto, { escala: ESCALA_2 }).largura : 0;
 const largura = Math.max(medida1, medida2) + MARGEM * 2;
-const linha1 = linhaDeLetras(primeira, { x: (largura - medida1) / 2, y: MARGEM, semente: 11 });
-const linha2 = resto ? linhaDeLetras(resto, { x: (largura - medida2) / 2, y: MARGEM + 13.2, escala: ESCALA_2, semente: 23 }) : null;
-const altura = MARGEM * 2 + (linha2 ? 13.2 + 10 * ESCALA_2 : 10) + 1.5;
-const viewBox = `0 0 ${Math.round(largura * 10) / 10} ${Math.round(altura * 10) / 10}`;
+const x1 = (largura - medida1) / 2;
+const x2 = (largura - medida2) / 2;
+const linha1 = linhaDeLetras(primeira, { x: x1, y: MARGEM, semente: 11 });
+const linha2 = resto ? linhaDeLetras(resto, { x: x2, y: Y2, escala: ESCALA_2, semente: 23 }) : null;
+const baseLetras = linha2 ? Y2 + 10 * ESCALA_2 : MARGEM + 10;
+const altura = baseLetras + MARGEM + 3;
+const viewBox = `0 0 ${arred(largura)} ${arred(altura)}`;
+
+// Letters keep their order across layers (--j), so each one paints all its layers together.
+const letras = (linha: typeof linha1, inicio: number) => linha.tracos.map((t, i) => ({ ...t, i: inicio + i }));
+const recheio1 = letras(linha1, 0);
+const recheio2 = linha2 ? letras(linha2, linha1.tracos.length) : [];
+const todas = [...recheio1, ...recheio2];
+
+// Back to front: the lime rim and the dark-green bubble behind the whole name, the lime 3D
+// block, the cream cut line and the dark outline. The fills (gradients) come after.
 const camadas = [
+  { classe: 'tu-aura', deslocamento: '' },
+  { classe: 'tu-nuvem', deslocamento: '' },
   { classe: 'tu-bloco', deslocamento: 'translate(1.3 1.5)' },
   { classe: 'tu-corte', deslocamento: '' },
   { classe: 'tu-contorno', deslocamento: '' },
 ];
-// Letters keep their order across layers (--i), so each one paints all its layers together.
-const letras = (linha: typeof linha1, inicio: number) => linha.tracos.map((t, i) => ({ ...t, i: inicio + i }));
-const todas = [...letras(linha1, 0), ...(linha2 ? letras(linha2, linha1.tracos.length) : [])];
-const recheio1 = letras(linha1, 0);
-const recheio2 = linha2 ? letras(linha2, linha1.tracos.length) : [];
+
+// Paint dripping from the bottom of the bubble: seeded, so every build drips the same way.
+const sorte = aleatorio(5);
+const larguraBase = linha2 ? medida2 : medida1;
+const xBase = linha2 ? x2 : x1;
+const inicioPingo = baseLetras + 1.2;
+const pingos = [0.12, 0.34, 0.58, 0.8, 0.93].map((f) => {
+  const x = arred(xBase + larguraBase * f + (sorte() - 0.5) * 2);
+  const fim = arred(inicioPingo + 1.6 + sorte() * (MARGEM - 1.5));
+  return { x, fim, gota: `M${x} ${arred(fim - 0.6)} c-0.9 1.1 -0.75 2 0 2 c0.75 0 0.9 -0.9 0 -2 Z` };
+});
+
+// Crown over the first letter: the 48-unit doodle shrunk to ~6 units and tilted.
+const coroa = `translate(${arred(x1 - 1.4)} ${arred(MARGEM - 6.2)}) rotate(-14 3 3) scale(0.13)`;
+const gradiente1 = `${prefixo}-recheio-1`;
+const gradiente2 = `${prefixo}-recheio-2`;
 ---
 
 {/*
-  Throw-up of the artist name, built from stroked letter skeletons (src/lib/arte.ts): amber 3D
-  block, cream cut line, dark outline, spray and mint fills and a short shine on each stroke.
-  Decorative: the name is written as text right next to it.
+  Throw-up of the artist name, built from stroked letter skeletons (src/lib/arte.ts): a dark-green
+  bubble with a lime rim behind the name, dripping, then the lime 3D block, cream cut line, dark
+  outline, faded fills (yellow into lime, mint into cream), a shine on each stroke, a crown and
+  sparkles. Decorative only.
 */}
 <svg class:list={['throw-up', classe]} viewBox={viewBox} aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id={gradiente1} gradientUnits="userSpaceOnUse" x1="0" y1={MARGEM} x2="0" y2={MARGEM + 10}>
+      <stop offset="0.35" style="stop-color:var(--cor-spray)" />
+      <stop offset="1" style="stop-color:var(--tinta-lima)" />
+    </linearGradient>
+    <linearGradient id={gradiente2} gradientUnits="userSpaceOnUse" x1="0" y1={Y2} x2="0" y2={Y2 + 10 * ESCALA_2}>
+      <stop offset="0.3" style="stop-color:var(--tinta-creme)" />
+      <stop offset="1" style="stop-color:var(--tinta-menta)" />
+    </linearGradient>
+  </defs>
+  <g class="tu-pingos">
+    {
+      pingos.map((p, i) => (
+        <>
+          <path class="desenha" d={`M${p.x} ${arred(inicioPingo - 1.5)} L${p.x} ${p.fim}`} pathLength="1" style={`--j:${todas.length + i}`} />
+          <path class="tu-gota" d={p.gota} />
+        </>
+      ))
+    }
+  </g>
   {
     camadas.map((camada) => (
       <g class={camada.classe} transform={camada.deslocamento || undefined}>
@@ -49,17 +100,22 @@ const recheio2 = linha2 ? letras(linha2, linha1.tracos.length) : [];
     ))
   }
   <g class="tu-recheio">
-    {recheio1.map((t) => <path class="desenha" d={t.d} transform={t.transform} pathLength="1" style={`--j:${t.i}`} />)}
+    {recheio1.map((t) => <path class="desenha" d={t.d} transform={t.transform} stroke={`url(#${gradiente1})`} pathLength="1" style={`--j:${t.i}`} />)}
   </g>
-  <g class="tu-recheio tu-recheio-2">
-    {recheio2.map((t) => <path class="desenha" d={t.d} transform={t.transform} pathLength="1" style={`--j:${t.i}`} />)}
+  <g class="tu-recheio">
+    {recheio2.map((t) => <path class="desenha" d={t.d} transform={t.transform} stroke={`url(#${gradiente2})`} pathLength="1" style={`--j:${t.i}`} />)}
   </g>
   <g class="tu-brilho" transform="translate(-0.45 -0.5)">
     {todas.map((t) => <path d={t.d} transform={t.transform} pathLength="1" />)}
   </g>
-  {/* Two sparkles, the classic shine marks of a piece. */}
+  <g class="tu-coroa" transform={coroa}>
+    {RABISCOS.coroa.map((d) => <path class="tu-coroa-contorno" d={d} />)}
+    <path class="tu-coroa-recheio" d={RABISCOS.coroa[0]} />
+  </g>
+  {/* Sparkles, the classic shine marks of a piece. */}
   <g class="tu-faisca">
-    <path d={`M${largura - 3.2} 1.2 l0.5 1.6 l1.6 0.5 l-1.6 0.5 l-0.5 1.6 l-0.5 -1.6 l-1.6 -0.5 l1.6 -0.5 Z`} />
-    <path d="M2.4 8.6 l0.35 1.1 l1.1 0.35 l-1.1 0.35 l-0.35 1.1 l-0.35 -1.1 l-1.1 -0.35 l1.1 -0.35 Z" />
+    <path d={`M${arred(largura - 3.2)} 1.6 l0.6 1.9 l1.9 0.6 l-1.9 0.6 l-0.6 1.9 l-0.6 -1.9 l-1.9 -0.6 l1.9 -0.6 Z`} />
+    <path d={`M2.6 ${arred(Y2 + 1)} l0.4 1.2 l1.2 0.4 l-1.2 0.4 l-0.4 1.2 l-0.4 -1.2 l-1.2 -0.4 l1.2 -0.4 Z`} />
+    <path d={`M${arred(x1 + medida1 + 2.2)} ${arred(MARGEM + 1)} l0.3 0.9 l0.9 0.3 l-0.9 0.3 l-0.3 0.9 l-0.3 -0.9 l-0.9 -0.3 l0.9 -0.3 Z`} />
   </g>
 </svg>
