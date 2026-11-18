@@ -398,15 +398,48 @@
   }
 }
 
-/* Platform photo tiles: warm duotone at rest, full color on hover. */
+/*
+  Platform photo tiles: pharmacy-green duotone at rest (grayscale photo, mint multiplied in for
+  the lights, dark green lightened in for the shadows), full color on hover. The halftone dots
+  (.reticula::after) stay on top.
+*/
+.azulejo {
+  isolation: isolate;
+}
+
 .foto-azulejo {
-  filter: sepia(0.35) saturate(0.85) contrast(1.05);
+  filter: grayscale(1) contrast(1.2) brightness(1.08);
   transition: filter 300ms;
+}
+
+.azulejo::before,
+.azulejo-sombra {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 300ms;
+}
+
+.azulejo::before {
+  background: var(--tinta-menta);
+  mix-blend-mode: multiply;
+}
+
+.azulejo-sombra {
+  background: color-mix(in srgb, var(--creme-primaria) 55%, var(--tinta-escura));
+  mix-blend-mode: lighten;
 }
 
 @media (hover: hover) {
   .azulejo:hover .foto-azulejo {
     filter: none;
+  }
+
+  .azulejo:hover::before,
+  .azulejo:hover .azulejo-sombra {
+    opacity: 0;
   }
 }
 
@@ -597,31 +630,23 @@
 }
 
 /*
-  Hero photo as a photocopied poster: grayscale with extra contrast, then the palette on top
-  (amber light, dark brown shadows). Decorative layers only; the photo keeps its alt text.
+  Natural color, cooled (hero and Sobre photos): less saturation takes the warm cast out, and a faint
+  lime soft-light layer pulls the photo toward the palette. The files themselves are untouched.
 */
-.foto-poster img {
-  filter: grayscale(1) contrast(1.3) brightness(1.05);
+.foto-esfriada img {
+  filter: saturate(0.7) contrast(1.08) brightness(0.98);
 }
 
-.foto-poster::before,
-.foto-poster::after {
+.foto-esfriada::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
-  border-radius: 4px;
+  border-radius: inherit;
   pointer-events: none;
-}
-
-.foto-poster::before {
-  background: linear-gradient(165deg, var(--cor-primaria), var(--cor-destaque) 85%);
-  mix-blend-mode: multiply;
-}
-
-.foto-poster::after {
-  background: var(--cor-fundo);
-  mix-blend-mode: lighten;
+  background: var(--tinta-lima);
+  mix-blend-mode: soft-light;
+  opacity: 0.22;
 }
 
 /*
