@@ -139,6 +139,11 @@ Os originais ficam em `fotos-originais/`, que **nunca vai para o Git** (está em
 rotação pendente ou lado maior acima de 1600 px. Arquivos HEIC do iPhone precisam ser
 convertidos para JPEG antes (o sharp desta máquina não lê HEIC).
 
+O tom das fotos é ajustado só no CSS (`global.css`), sem mexer nos arquivos: o hero e a Sobre ficam
+com a cor natural esfriada (`.foto-esfriada`, menos saturação e um véu lima leve), as duas fotos de
+Plataformas em duotone verde-farmácia (voltam à cor com o mouse por cima) e o fundo do Estúdio em
+preto e branco apagado.
+
 ### Identidade visual
 
 A paleta mistura tabacaria e farmácia: preto `#0B0C0A` e superfície `#1A1C17`, texto branco
