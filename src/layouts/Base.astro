@@ -6,7 +6,7 @@ import Revelar from '../components/Revelar.astro';
 import Logo from '../components/arte/Logo.astro';
 import { LOGO_NOME } from '../lib/arte.ts';
 import { temRastreamento } from '../lib/consentimento.ts';
-import { pilhaComFontes, variavelFonte } from '../lib/fontes.ts';
+import { fontesCriticas, pilhaComFontes, variavelFonte } from '../lib/fontes.ts';
 import { ancoraSecao, pilhasDoTema, type Conteudo } from '../lib/schema.ts';
 import { ALTURA_OG, CAMINHO_OG, chamadaPrincipal, LARGURA_OG, localeOg, urlAbsoluta } from '../lib/seo.ts';
 
@@ -20,6 +20,7 @@ const { conteudo, titulo = conteudo.site.titulo, descricao = conteudo.site.descr
 const { tema, rastreamento } = conteudo;
 
 const pilhas = pilhasDoTema(tema);
+const preCarregar = fontesCriticas([tema.fonte_texto, tema.fonte_titulo], tema.fontes);
 const variaveisTema = [
   `--cor-fundo:${tema.cor_fundo}`,
   `--cor-superficie:${tema.cor_superficie}`,
@@ -91,8 +92,8 @@ const altOg = `${conteudo.site.nome}, ${chamadaPrincipal(conteudo)}: guitarra Le
       )
     }
     <meta name="twitter:card" content="summary_large_image" />
-    {/* Self-hosted at build time (astro.config.mjs reads tema.fontes); preloaded, with metric-matched fallbacks. */}
-    {tema.fontes.map((fonte) => <Font cssVariable={variavelFonte(fonte.familia) as CssVariable} preload />)}
+    {/* Self-hosted at build time (astro.config.mjs reads tema.fontes), with metric-matched fallbacks; only text and title fonts are preloaded. */}
+    {tema.fontes.map((fonte) => <Font cssVariable={variavelFonte(fonte.familia) as CssVariable} preload={preCarregar.has(fonte.familia)} />)}
     {conteudo.em_construcao && <meta name="robots" content="noindex" />}
     <slot name="head" />
   </head>

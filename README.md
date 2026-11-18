@@ -62,7 +62,7 @@ falha o build com o caminho do campo.
 | `em_construcao` | `true` mostra o aviso, as caixas "A completar" e marca as páginas `noindex` |
 | `site` | nome, título e descrição (SEO, até 170 caracteres), `url` de produção |
 | `artista` | nome artístico, nome, apelido, bairro, cidade, UF, ano, gêneros e perfis (JSON-LD) |
-| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`, `fonte_marcador`, `fonte_gotica`; Google Fonts servidas pelo próprio site) e `animacoes` (`sutil` ou `nenhuma`) |
+| `tema` | cores (incluindo `cor_spray` e as três cores só dos adesivos, `cor_seda_vermelho`, `cor_piteira` e `cor_seda_caramelo`), fontes (`fonte_titulo`, `fonte_texto`, `fonte_tinta`, `fonte_marcador`, `fonte_gotica`; Google Fonts servidas pelo próprio site; só a do texto e a dos títulos são pré-carregadas) e `animacoes` (`sutil` ou `nenhuma`) |
 | `contato` | e-mail público e o assunto que já vem preenchido no `mailto:` |
 | `rastreamento` | `google_analytics` e `meta_pixel`, opcionais; com um deles aparece o aviso de cookies (LGPD) |
 | `revisao.termos_vetados` | palavras que os textos nunca podem usar (exageros, números, "discografia"); o `npm test` reprova |

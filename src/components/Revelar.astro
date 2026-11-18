@@ -2,48 +2,49 @@
   Scroll reveal (global.css, .revelar and .anima). Progressive: content is visible by default and only this
   script hides it, skipping the hero, anything already on screen and reduced motion. Children of
   [data-revelar-grupo] enter one after another (--i). Rendered only with tema.animacoes "sutil".
+  No layout reads: a first IntersectionObserver pass (asynchronous, no forced reflow) sorts what is
+  already on screen from what is below the fold, and only the latter is hidden and revealed later.
 */}
 <script>
   if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const entrada of entradas) {
-          if (!entrada.isIntersecting) continue;
-          entrada.target.classList.add('revelado');
-          observador.unobserve(entrada.target);
+    // Reveal when in view: .revelado for text blocks, .anima-visto for street art.
+    const revelar = (classe: string, margem: string) =>
+      new IntersectionObserver(
+        (entradas, observador) => {
+          for (const entrada of entradas) {
+            if (!entrada.isIntersecting) continue;
+            entrada.target.classList.add(classe);
+            observador.unobserve(entrada.target);
+          }
+        },
+        { rootMargin: margem },
+      );
+    const blocos = revelar('revelado', '0px 0px -8% 0px');
+    const arte = revelar('anima-visto', '0px 0px -12% 0px');
+
+    // First pass: below the fold, hide and hand over to the reveal observer; on screen, leave it alone.
+    const triagem = new IntersectionObserver((entradas) => {
+      for (const { target, isIntersecting } of entradas) {
+        triagem.unobserve(target);
+        if (isIntersecting) continue;
+        const el = target as HTMLElement;
+        if (el.hasAttribute('data-anima')) {
+          el.classList.add('anima');
+          arte.observe(el);
+          continue;
         }
-      },
-      { rootMargin: '0px 0px -8% 0px' },
+        const grupo = el.parentElement!;
+        const ordem = grupo.hasAttribute('data-revelar-grupo') ? [...grupo.children].indexOf(el) : 0;
+        el.style.setProperty('--i', String(Math.min(ordem, 5)));
+        el.classList.add('revelar');
+        blocos.observe(el);
+      }
+    });
+    const textos = [...document.querySelectorAll<HTMLElement>('main section:not([data-hero]) :is(.container-site, [data-revelar-grupo]) > *')].filter(
+      (el) => !el.hasAttribute('data-revelar-grupo') && !el.hasAttribute('data-anima'),
     );
-    // Read every position first, then write, so the page is laid out only once.
-    const alvos = [...document.querySelectorAll<HTMLElement>('main section:not([data-hero]) :is(.container-site, [data-revelar-grupo]) > *')]
-      .filter((el) => !el.hasAttribute('data-revelar-grupo') && !el.hasAttribute('data-anima'))
-      .map((el) => ({ el, topo: el.getBoundingClientRect().top }));
-    for (const { el, topo } of alvos) {
-      if (topo < innerHeight) continue;
-      const grupo = el.parentElement!;
-      const ordem = grupo.hasAttribute('data-revelar-grupo') ? [...grupo.children].indexOf(el) : 0;
-      el.style.setProperty('--i', String(Math.min(ordem, 5)));
-      el.classList.add('revelar');
-      observador.observe(el);
-    }
-    // Street art (tags, doodles, stickers, torn edges): drawn, slapped on or dripped once it is in
-    // view. Only below the fold; what is already on screen stays as it is.
-    const arte = new IntersectionObserver(
-      (entradas) => {
-        for (const entrada of entradas) {
-          if (!entrada.isIntersecting) continue;
-          entrada.target.classList.add('anima-visto');
-          arte.unobserve(entrada.target);
-        }
-      },
-      { rootMargin: '0px 0px -12% 0px' },
-    );
-    const pecas = [...document.querySelectorAll<HTMLElement>('[data-anima]')].map((el) => ({ el, topo: el.getBoundingClientRect().top }));
-    for (const { el, topo } of pecas) {
-      if (topo < innerHeight) continue;
-      el.classList.add('anima');
-      arte.observe(el);
-    }
+    // Street art (tags, doodles, stickers, torn edges): drawn, slapped on or dripped once in view.
+    const pecas = document.querySelectorAll<HTMLElement>('[data-anima]');
+    for (const el of [...textos, ...pecas]) triagem.observe(el);
   }
 </script>
