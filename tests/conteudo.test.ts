@@ -69,20 +69,27 @@ test('em_construcao is required, so the notice is never dropped by accident', ()
   assert.equal(valido(dados), false);
 });
 
-test('leaving em_construcao requires a form key and no pending notes', () => {
+test('leaving em_construcao is blocked only by pending notes', () => {
   const dados = copia();
   dados.em_construcao = false;
-  const erros = caminhos(dados);
-  assert.ok(erros.some((c) => /^secoes\.\d+\.chave$/.test(c)), erros.join(', '));
-  assert.ok(erros.some((c) => /^secoes\.\d+\.a_completar$/.test(c)), erros.join(', '));
+  assert.equal(valido(dados), true, caminhos(dados).join(', '));
+  secao(dados, 'sobre').a_completar = ['Algo pendente'];
+  assert.ok(caminhos(dados).some((c) => /^secoes\.\d+\.a_completar$/.test(c)));
+});
 
-  secao(dados, 'contato').chave = 'chave-publica';
-  for (const s of dados.secoes) if ('a_completar' in s) s.a_completar = [];
-  assert.equal(valido(dados), true);
-  // Turning the form off is the other way out.
-  secao(dados, 'contato').chave = '';
-  secao(dados, 'contato').ativo = false;
-  assert.equal(valido(dados), true);
+test('contact is e-mail only: the old form fields are gone', () => {
+  const contato = secao(original, 'contato');
+  for (const campo of ['provedor', 'chave', 'campos', 'consentimento', 'botao', 'mensagem_sucesso']) assert.equal(campo in contato, false, campo);
+  assert.ok(contato.texto_email);
+});
+
+test('upcoming tracks have no date or link, only what they are going to be', () => {
+  const { em_producao } = secao(original, 'musica');
+  assert.deepEqual(
+    em_producao.itens.map((item: { titulo: string }) => item.titulo),
+    ['apesarDosPesares', 'metalAmplificado', 'likeAHipHop'],
+  );
+  for (const item of em_producao.itens) assert.deepEqual(Object.keys(item).sort(), ['estilo', 'texto', 'titulo']);
 });
 
 test('a placeholder e-mail blocks publishing', () => {
@@ -104,12 +111,6 @@ test('rejects duplicated section ids', () => {
   const resultado = conteudoSchema.safeParse(dados);
   assert.equal(resultado.success, false);
   assert.match(resultado.error!.message, /ids de seção repetidos: estudio/);
-});
-
-test('requires options on select fields', () => {
-  const dados = copia();
-  delete secao(dados, 'contato').campos.find((c: { tipo: string }) => c.tipo === 'select').opcoes;
-  assert.equal(valido(dados), false);
 });
 
 test('the contact section cannot use the cream band', () => {

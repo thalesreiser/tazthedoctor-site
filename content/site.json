@@ -145,9 +145,14 @@
       ],
       "nota": "Os próximos lançamentos saem primeiro no SoundCloud.",
       "advertencia": { "titulo": "Advertência: este som causa dependência", "texto": "Produzido na Vila Nova. Ouça com moderação, de preferência no volume máximo.", "variante": "preta" },
-      "a_completar": [
-        "Próximos lançamentos: título, data e link de cada faixa ou vídeo que for ao ar"
-      ]
+      "em_producao": {
+        "titulo": "No forno, sem data ainda",
+        "itens": [
+          { "titulo": "apesarDosPesares", "estilo": "Acústica · sentimental", "texto": "Quatro acordes na guitarra que voltam o tempo todo, como quem não consegue largar o que passou. A letra vai na contramão: é sobre virar a página. O lado mais calmo do estúdio." },
+          { "titulo": "metalAmplificado", "estilo": "Nu metal · 808", "texto": "Guitarras empilhadas pra dar peso e um clima macabro em cima de bateria eletrônica e 808 estourado. A sujeira da rua com as manhas do nu metal." },
+          { "titulo": "likeAHipHop", "estilo": "Experimental · hip hop · prog", "texto": "Bateria de hip hop na base de tudo, baixo e guitarra principal por cima e uma guitarra solo improvisada do começo ao fim, puxando pro rock progressivo com o meu blues e o meu nu metal. Mixagem e master feitas por mim, no padrão de mercado." }
+        ]
+      }
     },
     {
       "tipo": "sobre",
@@ -217,18 +222,7 @@
       "adesivos": [{ "modelo": "isqueiro", "texto": "acende o beat" }],
       "texto": "Tem uma faixa pra produzir, uma mix pra fechar ou precisa de guitarra e baixo na gravação, no ensaio ou no show? Me conta a ideia, manda referências e, se já tiver, data e local. Respondo por e-mail.",
       "topicos": ["Produção musical", "Mixagem", "Guitarra e baixo em gravações", "Beats e programação MIDI", "Ensaios e shows"],
-      "texto_email": "Mandar e-mail",
-      "provedor": "web3forms",
-      "chave": "",
-      "campos": [
-        { "nome": "nome", "rotulo": "Nome ou nome artístico", "tipo": "text", "autocomplete": "name" },
-        { "nome": "email", "rotulo": "E-mail", "tipo": "email", "autocomplete": "email" },
-        { "nome": "assunto", "rotulo": "Assunto", "tipo": "select", "opcoes": ["Produção musical", "Mixagem", "Gravação de guitarra ou baixo", "Beats e programação MIDI", "Ensaio ou show", "Outro"], "erro": "Escolha uma opção." },
-        { "nome": "mensagem", "rotulo": "Conta a ideia", "tipo": "textarea", "ajuda": "O que você precisa, prazo e, se tiver, links de referência." }
-      ],
-      "consentimento": "Concordo com o uso dos meus dados para receber o retorno deste contato, conforme a",
-      "botao": "Enviar mensagem",
-      "mensagem_sucesso": "Mensagem enviada. Respondo assim que sair do estúdio."
+      "texto_email": "Mandar e-mail"
     },
     {
       "tipo": "rodape",

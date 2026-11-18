@@ -1939,3 +1939,10 @@ polygon.logo-ponta {
   width: auto;
   height: 2.6rem;
 }
+
+/* Tracks in the making (Musica.astro, em_producao): dark cards with a dashed lime edge, unfinished. */
+.em-producao {
+  background: color-mix(in srgb, var(--cor-fundo) 70%, transparent);
+  border: 2px dashed color-mix(in srgb, var(--cor-primaria) 55%, transparent);
+  border-radius: 4px;
+}

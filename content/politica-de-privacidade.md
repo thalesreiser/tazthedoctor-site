@@ -3,8 +3,8 @@ acontece com os dados enviados por este site.
 
 ## Quais dados coleto
 
-- Os dados que você informa no formulário de contato ou por e-mail: nome, e-mail e a
-  descrição do trabalho que você tem em mente.
+- Os dados que você manda por e-mail: nome, e-mail e a descrição do trabalho que você tem
+  em mente. O site não tem formulário: nada do que você escreve passa por ele.
 - Dados de navegação coletados por ferramentas de medição de audiência, somente se elas
   estiverem ativadas neste site e você aceitar, como páginas visitadas e tipo de dispositivo.
 
@@ -17,8 +17,7 @@ Não vendo nem compartilho seus dados para fins de publicidade de terceiros.
 
 ## Com quem compartilho
 
-- O serviço que recebe o formulário (Formspree ou Web3Forms), apenas para entregar sua
-  mensagem.
+- O provedor do meu e-mail, que recebe e guarda as mensagens.
 - Ferramentas de medição (Google Analytics ou Meta), somente quando ativadas e aceitas.
 
 ## Players do SoundCloud e do YouTube
