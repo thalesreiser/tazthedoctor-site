@@ -7,18 +7,13 @@ Porto Alegre/RS.
 Feita em **Astro + Tailwind CSS**, na mesma base do site de dev: todo o conteúdo fica em um
 arquivo JSON validado, as fotos são otimizadas no build e o deploy é na Cloudflare Pages.
 
-## Antes de publicar de verdade
+## Publicação
 
-O site sai com o aviso "Site em construção" (mais `noindex`). Falta:
-
-| O quê | Onde | Hoje |
-| --- | --- | --- |
-| Decidir a publicação | `em_construcao` | `true`; nada mais está pendente (não há itens em `a_completar`) |
-
-Para publicar, troque `"em_construcao": true` por `false`. O schema **reprova o build** se o
-e-mail for provisório (`@example.com`) ou se ainda houver itens em `a_completar`.
-Enquanto `em_construcao` for `true`, cada `a_completar` aparece na página como uma caixa
-tracejada "A completar".
+O site está publicado (`"em_construcao": false`): sem o aviso "Site em construção" e sem
+`noindex`. Para voltar ao modo de construção, troque para `true`: o aviso volta, as páginas
+ganham `noindex` e cada `a_completar` aparece como uma caixa tracejada "A completar". Para
+publicar de novo, o schema **reprova o build** se o e-mail for provisório (`@example.com`) ou se
+ainda houver itens em `a_completar`.
 
 ## Como rodar
 
