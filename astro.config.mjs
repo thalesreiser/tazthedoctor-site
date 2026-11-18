@@ -35,6 +35,8 @@ export default defineConfig({
   site,
   fonts,
   integrations: site ? [sitemap()] : [],
+  // The stylesheet goes inline in the HTML: one page, so no request blocking the first paint.
+  build: { inlineStylesheets: 'always' },
   vite: {
     plugins: [tailwindcss()],
   },

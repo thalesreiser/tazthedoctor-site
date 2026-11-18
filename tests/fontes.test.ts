@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { pilhaComFontes, reservasDaFonte, separarPilha, variavelFonte } from '../src/lib/fontes.ts';
+import { fontesCriticas, pilhaComFontes, reservasDaFonte, separarPilha, variavelFonte } from '../src/lib/fontes.ts';
 
 test('splits a font stack and strips quotes', () => {
   assert.deepEqual(separarPilha(`"Source Serif 4", Georgia, 'Times New Roman', serif`), ['Source Serif 4', 'Georgia', 'Times New Roman', 'serif']);
@@ -27,4 +27,11 @@ test('self-hosted families become their variable, without repeating its fallback
 
 test('system stacks are left as they are', () => {
   assert.equal(pilhaComFontes('system-ui, "Segoe UI", sans-serif', []), 'system-ui, "Segoe UI", sans-serif');
+});
+
+test('only the text and title fonts are preloaded', () => {
+  const fontes = [{ familia: 'Anton' }, { familia: 'Manrope' }, { familia: 'Rubik Wet Paint' }, { familia: 'Pirata One' }];
+  const criticas = fontesCriticas(['Manrope, system-ui, sans-serif', 'Anton, Impact, sans-serif'], fontes);
+  assert.deepEqual([...criticas].sort(), ['Anton', 'Manrope']);
+  assert.equal(fontesCriticas(['system-ui, sans-serif'], fontes).size, 0);
 });

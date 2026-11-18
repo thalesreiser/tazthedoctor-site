@@ -53,3 +53,13 @@ export function pilhaComFontes(pilha: string, fontes: Pick<FonteSite, 'familia'>
   }
   return saida.join(', ');
 }
+
+/**
+ * Self-hosted families worth preloading: the first family of the text and title stacks, which
+ * paint the first screen. The others (paint, marker, blackletter) load on use, so they do not
+ * compete with the hero photo for bandwidth.
+ */
+export function fontesCriticas(pilhasCriticas: string[], fontes: Pick<FonteSite, 'familia'>[]): Set<string> {
+  const primeiras = pilhasCriticas.map((pilha) => separarPilha(pilha)[0]?.toLowerCase());
+  return new Set(fontes.filter((fonte) => primeiras.includes(fonte.familia.toLowerCase())).map((fonte) => fonte.familia));
+}
