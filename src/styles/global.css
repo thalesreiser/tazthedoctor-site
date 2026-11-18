@@ -1012,7 +1012,41 @@ li:nth-child(2n) > .lambe-lambe::after {
   stroke-width: 4.2;
 }
 
-/* Throw-up: the same letter strokes stacked into bubble letters (ThrowUp.astro). */
+/*
+  Throw-up: the same letter strokes stacked into bubble letters (ThrowUp.astro). The widest strokes
+  merge into one dark-green bubble with a lime rim behind the whole name.
+*/
+.tu-aura path {
+  stroke: var(--tinta-lima);
+  stroke-width: 12;
+}
+
+.tu-nuvem path {
+  stroke: color-mix(in srgb, var(--creme-primaria) 60%, var(--tinta-escura));
+  stroke-width: 10.6;
+}
+
+.tu-pingos path {
+  stroke: var(--tinta-lima);
+  stroke-width: 0.9;
+}
+
+.throw-up .tu-gota {
+  fill: var(--tinta-lima);
+  stroke: none;
+}
+
+.tu-coroa-contorno {
+  stroke: var(--tinta-escura);
+  stroke-width: 9;
+}
+
+.throw-up .tu-coroa-recheio {
+  fill: var(--cor-spray);
+  stroke: var(--cor-spray);
+  stroke-width: 2.5;
+}
+
 .tu-bloco path {
   stroke: var(--tinta-lima);
   stroke-width: 6.2;
@@ -1028,13 +1062,9 @@ li:nth-child(2n) > .lambe-lambe::after {
   stroke-width: 4.6;
 }
 
+/* Fill colour comes from the gradient on each path (stroke attribute), so no stroke here. */
 .tu-recheio path {
-  stroke: var(--cor-spray);
   stroke-width: 3;
-}
-
-.tu-recheio-2 path {
-  stroke: var(--tinta-menta);
 }
 
 .tu-brilho path {
@@ -1052,23 +1082,9 @@ li:nth-child(2n) > .lambe-lambe::after {
   --cor-secao: var(--cor-superficie);
 }
 
-.rodape-estrela {
-  display: inline-block;
-  width: 0.42em;
-  height: 0.42em;
-  margin-left: 0.1em;
-  vertical-align: 0.55em;
-  color: var(--cor-spray);
-  rotate: 12deg;
-}
-
-.rodape-pingos {
-  position: absolute;
-  right: -0.5rem;
-  bottom: -1.75rem;
-  width: 3rem;
-  color: var(--cor-spray);
-  rotate: -6deg;
+/* Faint lime spray mist behind the footer piece: a static gradient, no blur filter. */
+.rodape-peca {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--tinta-lima) 14%, transparent), transparent);
 }
 
 /*
@@ -1409,11 +1425,11 @@ li:nth-child(2n) > .lambe-lambe::after {
     stroke-dashoffset: 1.05;
   }
 
-  .anima :is(.tu-brilho, .tu-faisca) {
+  .anima :is(.tu-brilho, .tu-faisca, .tu-gota, .tu-coroa) {
     transition: opacity 400ms 1.6s;
   }
 
-  .anima:not(.anima-visto) :is(.tu-brilho, .tu-faisca) {
+  .anima:not(.anima-visto) :is(.tu-brilho, .tu-faisca, .tu-gota, .tu-coroa) {
     opacity: 0;
   }
 
