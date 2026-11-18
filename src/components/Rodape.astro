@@ -29,6 +29,7 @@ const lugar = [artista.bairro, `${artista.cidade}/${artista.uf}`].filter(Boolean
         <ThrowUp nome={conteudo.site.nome} prefixo="rodape" class="w-full" />
       </div>
       {secao.texto && <p class="mt-6 max-w-xl text-lg text-texto-suave">{secao.texto}</p>}
+      {secao.bula && <p class="mt-4 max-w-2xl font-mono text-xs leading-relaxed text-texto-suave sm:text-sm">{secao.bula}</p>}
     </div>
     <div class="mt-12 grid gap-10 md:grid-cols-3">
       <address class="text-sm not-italic text-texto-suave">

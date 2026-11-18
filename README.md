@@ -78,6 +78,11 @@ paródia própria (nunca as imagens nem o layout oficiais): `titulo` (até 60 ca
 opcional (até 120) e `variante` `preta` (branco sobre preto) ou `amarela` (preto sobre amarelo, com
 moldura de fita zebrada). É texto de verdade, lido pelos leitores de tela.
 
+Textos de farmácia, todos opcionais: cada item de `servicos` aceita `posologia` (linha "Posologia:
+…" no pé do cartaz, ex.: "uso contínuo"), o `rodape` aceita `bula` (indicações e contraindicações
+em letra miúda, abaixo do throw-up) e o `hero` já tem a `tarja` ("Venda sob prescrição do Doctor").
+Passam pelos `termos_vetados` como o resto.
+
 A seção `equipamento` (menu "Estúdio") traz `grupos` (ícone, título e descrição de como cada parte
 do setup entra no trabalho) e usa a `foto` só como fundo estilizado: cinza, apagada e com retícula,
 sem texto alternativo (é decoração). A mesma foto continua sendo a base da imagem de

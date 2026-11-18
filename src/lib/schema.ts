@@ -119,7 +119,17 @@ const servicos = z.object({
   tipo: z.literal('servicos'),
   titulo: z.string(),
   subtitulo: z.string().optional(),
-  itens: z.array(z.object({ icone: z.enum(NOMES_ICONES), titulo: z.string(), descricao: z.string() })).min(1),
+  itens: z
+    .array(
+      z.object({
+        icone: z.enum(NOMES_ICONES),
+        titulo: z.string(),
+        descricao: z.string(),
+        // Optional pharmacy-label line under the text, e.g. "Uso contínuo".
+        posologia: z.string().optional(),
+      }),
+    )
+    .min(1),
 });
 
 const registro = z.object({ rotulo: z.string(), valor: z.string(), href: https.optional() });
@@ -205,6 +215,8 @@ const rodape = z.object({
   ...comum,
   tipo: z.literal('rodape'),
   texto: z.string().optional(),
+  // Optional medicine-leaflet line under the throw-up (indications and contraindications).
+  bula: z.string().optional(),
   // Discreet link to the developer page; no dev content on this site.
   link_dev: z.object({ texto: z.string(), href: https }).optional(),
 });

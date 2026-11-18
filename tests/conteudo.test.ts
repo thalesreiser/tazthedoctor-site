@@ -205,3 +205,8 @@ test('the tickers are gone: no scrolling strip fields left in the content', () =
   assert.equal('faixa' in secao(original, 'hero'), false);
   assert.equal('faixa' in secao(original, 'contato'), false);
 });
+
+test('the pharmacy copy is in place: a posologia on every service and the footer leaflet', () => {
+  assert.ok(secao(original, 'servicos').itens.every((item: { posologia?: string }) => item.posologia && item.posologia.length <= 40));
+  assert.match(secao(original, 'rodape').bula ?? '', /^Bula/);
+});
